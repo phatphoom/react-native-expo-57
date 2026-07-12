@@ -17,18 +17,17 @@ export interface Product {
   createdAt: string;
 }
 
-// 2. ข้อมูล Mockup ชุดตัวอย่าง
+// 2. ข้อมูล Mockup ชุดตัวอย่าง (อัปเดตข้อมูลตามภาพโคมไฟ)
 export const MOCK_PRODUCTS: Product[] = [
   {
     id: "prod-001",
-    name: "Wireless Noise-Canceling Headphones",
+    name: "Modern Wooden Desk Lamp",
     description:
-      "Premium over-ear headphones with active noise cancellation and 40-hour battery life.",
-    price: 5900,
+      "Adjustable wooden table lamp with warm lighting, perfect for study and office spaces.",
+    price: 510,
     currency: "THB",
-    category: "Electronics",
-    imageUrl:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
+    category: "Home & Living",
+    imageUrl: "https://images.unsplash.com/photo-1551380701-5dd33d5b5d06?w=500",
     rating: {
       rate: 4.8,
       count: 128,
@@ -40,14 +39,14 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-002",
-    name: "Minimalist Leather Wallet",
+    name: "Minimalist Globe Table Lamp",
     description:
-      "Genuine slim leather wallet with RFID blocking technology. Holds up to 8 cards.",
-    price: 890,
+      "Compact round orb table lamp with warm ambient light and wooden base.",
+    price: 289,
     currency: "THB",
-    category: "Clothing",
+    category: "Home & Living",
     imageUrl:
-      "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500",
+      "https://images.unsplash.com/photo-1775498868106-83ec596026a9?w=500",
     rating: {
       rate: 4.5,
       count: 64,
@@ -58,32 +57,32 @@ export const MOCK_PRODUCTS: Product[] = [
   },
   {
     id: "prod-003",
-    name: "Smart Fitness Watch v2",
+    name: "Matte Black Metal Reading Lamp",
     description:
-      "Track your workouts, heart rate, and sleep with AMOLED display and water resistance.",
-    price: 3490,
+      "Sleek industrial style metal reading lamp with adjustable head for focused illumination.",
+    price: 349,
     currency: "THB",
-    category: "Electronics",
+    category: "Home & Living",
     imageUrl:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500",
+      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=500",
     rating: {
       rate: 4.2,
       count: 210,
     },
-    inStock: false, // ตัวอย่างเคสสินค้าหมด
+    inStock: false, // สินค้าหมดตามการ์ดใบที่ 3
     stockCount: 0,
     createdAt: "2026-02-18T14:00:00Z",
   },
   {
     id: "prod-004",
-    name: "Ergonomic Ceramic Coffee Mug",
+    name: "Vintage Gooseneck Table Lamp",
     description:
-      "Matte finish ceramic mug designed to keep your coffee warm and fit perfectly in your hand.",
+      "Retro cream ceramic and metal gooseneck desk lamp for cozy home decor.",
     price: 450,
     currency: "THB",
     category: "Home & Living",
     imageUrl:
-      "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=500",
+      "https://images.unsplash.com/photo-1570974802254-4b0ad1a755f5?w=500",
     rating: {
       rate: 4.9,
       count: 45,

@@ -62,12 +62,7 @@ const styles = StyleSheet.create({
     gap: 2,
     height: 40,
   },
-  txtInput: {
-    flex: 1,
-    fontSize: 12,
-    color: "#1f2937",
-    height: "100%",
-  },
+
   btnSearch: {
     flexDirection: "row",
     alignItems: "center",
@@ -86,9 +81,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 8,
     gap: 4,
   },
-
-  txtHaeder: {
-    fontSize: 18,
-    fontWeight: "600",
+  txtInput: {
+    flex: 1,
+    fontSize: 12,
+    color: "#1f2937",
+    height: "100%",
   },
 });

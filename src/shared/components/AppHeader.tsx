@@ -14,7 +14,7 @@ const HeaderBar = ({ title }: HeaderProps) => {
       </TouchableOpacity>
       <Text style={styles.txtHaeder}>{title}</Text>
       <TouchableOpacity>
-        <MaterialIcons name="account-circle" size={24} color="black" />
+        <MaterialIcons name="account-circle" size={28} color="black" />
       </TouchableOpacity>
     </View>
   );

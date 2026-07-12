@@ -31,10 +31,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
     padding: 8,
+    marginBottom: 8,
   },
   cardDetails: {
     flex: 1,
-    backgroundColor: "blue",
   },
   image: {
     width: 100,

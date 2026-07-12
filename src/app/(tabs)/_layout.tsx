@@ -1,5 +1,6 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Tabs } from "expo-router";
 
 export default function TabLayout() {
@@ -20,6 +21,16 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="add"
+        options={{
+          title: "Add",
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <AntDesign name="plus" size={24} color="black" />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="product"
         options={{
           title: "Product",
@@ -30,11 +41,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="setting"
+        name="category"
         options={{
-          title: "Setting",
+          title: "Category",
+          headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <AntDesign name="menu" size={24} color={color} />
+            <MaterialIcons name="category" size={24} color="black" />
           ),
         }}
       />
