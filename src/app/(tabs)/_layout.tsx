@@ -12,7 +12,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="Home"
         options={{
           title: "Home",
           tabBarIcon: ({ color, focused }) => (
@@ -21,7 +21,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="add"
+        name="Add"
         options={{
           title: "Add",
           headerShown: false,
@@ -31,7 +31,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="product"
+        name="Product"
         options={{
           title: "Product",
           headerShown: false,
@@ -41,7 +41,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="category"
+        name="Category"
         options={{
           title: "Category",
           headerShown: false,
