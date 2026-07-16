@@ -26,7 +26,7 @@ export default function TabLayout() {
           title: "Add",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <AntDesign name="plus" size={24} color="black" />
+            <AntDesign name="plus" size={24} color={color} />
           ),
         }}
       />
@@ -46,7 +46,7 @@ export default function TabLayout() {
           title: "Category",
           headerShown: false,
           tabBarIcon: ({ color, focused }) => (
-            <MaterialIcons name="category" size={24} color="black" />
+            <MaterialIcons name="category" size={24} color={color} />
           ),
         }}
       />
