@@ -1,30 +1,10 @@
-import { getCategory } from "@/features/product/services/productService";
+import { useCategory } from "@/features/product/hooks/use-product";
 import HeaderBar from "@/shared/components/AppHeader";
-import { useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-interface CategoryItem {
-  id: string;
-  name: string;
-}
-
 export default function Category() {
-  const [category, setCategory] = useState<CategoryItem[] | null>([]);
-  useEffect(() => {
-    const getTodos = async () => {
-      try {
-        const data = await getCategory();
-
-        if (data && data.length > 0) {
-          setCategory(data);
-        }
-      } catch (error: any) {
-        console.error("Error fetching todos:", error.message);
-      }
-    };
-    getTodos();
-  }, []);
+  const { category } = useCategory();
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       <HeaderBar title="Category" />
