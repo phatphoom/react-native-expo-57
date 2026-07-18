@@ -1,13 +1,22 @@
 import { supabase } from "@/lib/supabase";
 
-export async function getProduct() {
-  const { data, error } = await supabase.from("products").select("*");
+export async function getAllProduct() {
+  const { data, error } = await supabase.from("products").select(
+    `
+  *,categories! category_id  (
+    id,
+    name
+  )
+  `,
+  );
   if (error) throw error;
   return data;
 }
 
-export async function getCategory() {
-  const { data, error } = await supabase.from("categories").select("*");
-  if (error) throw error;
-  return data;
-}
+// import { supabase } from "@/lib/supabase";
+
+// export async function getAllProduct() {
+//   const { data, error } = await supabase.from("products").select("*");
+//   if (error) throw error;
+//   return data;
+// }

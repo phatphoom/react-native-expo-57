@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import { getCategory } from "../services/productService";
+import { getCategory } from "../services/categoryService";
 
 interface CategoryItem {
   id: string;
   name: string;
 }
+
 export function useCategory() {
   const [category, setCategory] = useState<CategoryItem[] | null>([]);
   useEffect(() => {
-    const getTodos = async () => {
+    const fetchData = async () => {
       try {
         const data = await getCategory();
 
@@ -19,7 +20,7 @@ export function useCategory() {
         console.error("Error fetching todos:", error.message);
       }
     };
-    getTodos();
+    fetchData();
   }, []);
   return { category };
 }

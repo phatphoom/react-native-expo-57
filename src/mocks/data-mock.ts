@@ -6,7 +6,7 @@ export interface Product {
   price: number;
   currency: string;
   category: "Electronics" | "Clothing" | "Home & Living" | "Books"; // กำหนดหมวดหมู่แบบเจาะจง
-  imageUrl: string;
+  image_url: string;
   rating: {
     rate: number;
     count: number;

@@ -1,4 +1,4 @@
-import type { Product } from "@/mocks/data-mock";
+import type { Product } from "@/types/product";
 import { Image, StyleSheet, Text, View } from "react-native";
 
 interface ProductCardProps {
@@ -8,12 +8,12 @@ interface ProductCardProps {
 const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <View style={styles.CardWrapper}>
-      <Image source={{ uri: product.imageUrl }} style={styles.image} />
+      <Image source={{ uri: product.image_url }} style={styles.image} />
       <View style={styles.cardDetails}>
         <Text>{product.name}</Text>
-        <Text>Category : {product.category}</Text>
+        <Text>Category : {product.categories.name}</Text>
         <View style={styles.cardBt}>
-          <Text>{product.inStock ? "In Stock" : "Out of Stock"}</Text>
+          <Text>{product.in_stock ? "In Stock" : "Out of Stock"}</Text>
           <Text>
             {product.price} {product.currency}
           </Text>
