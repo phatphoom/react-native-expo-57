@@ -11,7 +11,7 @@ export function useProductAll() {
     try {
       const data = await getAllProduct();
       setProducts(data);
-      console.log(products);
+      // console.log(data);
     } catch (error: any) {
       console.error("Error fetching todos:", error.message);
     }

@@ -1,6 +1,6 @@
 import { useProductAll } from "@/features/product/hooks/useProduct";
 import { FlatList, StyleSheet } from "react-native";
-import ProductCard from "./product-list/Card";
+import ProductCard from "./Card";
 const ProductList = () => {
   const { products } = useProductAll();
   return (

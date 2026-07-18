@@ -1,6 +1,6 @@
 import HeaderBar from "@/shared/components/AppHeader";
 import { StyleSheet, View } from "react-native";
-import { SearchBar } from "./header";
+import SearchBar from "./SearchBar";
 
 const ProductHeader = () => {
   return (
