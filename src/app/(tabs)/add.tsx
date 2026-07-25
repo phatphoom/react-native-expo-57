@@ -16,19 +16,39 @@ export default function Add() {
       <View style={styles.formContainer}>
         <View style={styles.formControl}>
           <Text>Name*</Text>
-          <TextInput style={styles.form} />
+          <TextInput style={styles.formInput} />
         </View>
         <View style={styles.formControl}>
           <Text>Description</Text>
-          <TextInput style={styles.form} />
+          <TextInput style={styles.formInput} />
+        </View>
+        <View style={styles.pricingForm}>
+          <View>
+            <Text>Price</Text>
+            <TextInput style={styles.formInput} keyboardType="number-pad" />
+          </View>
+          <View>
+            <Text>Currentcy</Text>
+            <TextInput style={styles.formInput} placeholder="dropdodwn นะ" />
+          </View>
+          <View>
+            <Text>Discount</Text>
+            <TextInput style={styles.formInput} placeholder="do later" />
+          </View>
+        </View>
+        {/* upload image -> store in cloud -> in db */}
+        <View style={styles.uploadImage}>
+          <View style={styles.formControl}>
+            <Text>Add Image</Text>
+            <TextInput style={styles.formInput} placeholder="do later" />
+          </View>
+          <TouchableOpacity style={styles.btnSubmit}>
+            <Text style={styles.btnTxt}>Upload</Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.formControl}>
-          <Text>Price</Text>
-          <TextInput style={styles.form} keyboardType="number-pad" />
-        </View>
-        <View style={styles.formControl}>
-          <Text>Currency</Text>
-          <TextInput style={styles.form} />
+          <Text>Add Stock</Text>
+          <TextInput style={styles.formInput} />
         </View>
       </View>
       <View style={styles.btnContainer}>
@@ -53,10 +73,18 @@ const styles = StyleSheet.create({
   formControl: {
     marginBottom: 10,
   },
-  form: {
+  formInput: {
     backgroundColor: "#dddd",
     borderRadius: 8,
     paddingHorizontal: 10,
+  },
+  pricingForm: {
+    flexDirection: "row",
+    flex: 1,
+    gap: 1,
+  },
+  uploadImage: {
+    flexDirection: "row",
   },
   btnContainer: {
     marginVertical: 10,
