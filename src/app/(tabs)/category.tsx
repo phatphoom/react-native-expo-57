@@ -4,18 +4,18 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Category() {
-  const { category } = useCategory();
+  const { categories } = useCategory();
+
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       <HeaderBar title="Category" />
       <FlatList
-        data={category}
+        data={categories}
         renderItem={({ item }) => (
-          <View style={styles.CardWrapper}>
-            <Text>{item.name}</Text>
+          <View key={item.cate_id}>
+            <Text>{item.cate_name}</Text>
           </View>
         )}
-        style={{ flex: 1 }}
       />
     </SafeAreaView>
   );
