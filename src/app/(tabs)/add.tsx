@@ -1,128 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import HeaderBar from "@/shared/components/AppHeader";
+import React from 'react';
 import {
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Alert,
   ActivityIndicator,
   Modal,
   FlatList
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CategoryApi from "@/api/categoryApi";
-import { router } from "expo-router";
-import type { Category } from "@/types/product";
-import { useCreateProduct } from "@/features/product/hooks/useProduct";
+import { HeaderBar, FormField } from "@/shared/components";
+import { useAddProductForm } from "@/features/product/hooks/useAddProductForm";
 
 export default function Add() {
-  const { createProduct, loading } = useCreateProduct();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [showCategoryModal, setShowCategoryModal] = useState(false);
-
-  const [form, setForm] = useState({
-    prod_name: '',
-    description: '',
-    price: '',
-    currency: 'THB',
-    discount_pct: '',
-    image_url: '',
-    stock_count: '',
-    cate_id: '',
-  });
-
-  // โหลดรายชื่อหมวดหมู่เมื่อเข้าสู่หน้านี้
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const fetchCategories = async () => {
-    try {
-      const data = await CategoryApi.getAllCategory();
-      setCategories(data);
-      // ตั้งค่าหมวดหมู่แรกเป็นค่าเริ่มต้นถ้ามีข้อมูล
-      if (data && data.length > 0) {
-        setForm(prev => ({ ...prev, cate_id: String(data[0].cate_id) }));
-      }
-    } catch (error) {
-      console.error("Failed to fetch categories", error);
-    }
-  };
-
-  const handleChange = (field: keyof typeof form, value: string) => {
-    setForm(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubmit = async () => {
-    if (!form.prod_name || !form.price) {
-      Alert.alert('ข้อผิดพลาด', 'กรุณากรอกชื่อสินค้าและราคา');
-      return;
-    }
-
-    if (!form.cate_id) {
-      Alert.alert('ข้อผิดพลาด', 'กรุณาเลือกหมวดหมู่สินค้า');
-      return;
-    }
-
-    // ส่ง cate_id ของหมวดหมู่ที่เลือก (หากมี selectedCategory ให้ใช้ cate_id ของมันโดยตรง)
-    const cateIdToSend = selectedCategory ? selectedCategory.cate_id : form.cate_id;
-
-    const result = await createProduct({
-      prod_name: form.prod_name,
-      description: form.description,
-      price: Number(form.price),
-      currency: form.currency || 'THB',
-      discount_pct: Number(form.discount_pct) || 0,
-      image_url: form.image_url,
-      stock_count: Number(form.stock_count) || 0,
-      in_stock: Number(form.stock_count) > 0,
-      cate_id: cateIdToSend,
-      // เพิ่ม rating ตามที่ Backend คาดหวัง
-      rating_rate: 0,
-      rating_count: 0,
-    });
-
-    if (result.success) {
-      Alert.alert('สำเร็จ', 'เพิ่มสินค้าใหม่เรียบร้อยแล้ว!', [
-        { 
-          text: 'ตกลง', 
-          onPress: () => {
-            setForm({
-              prod_name: '', description: '', price: '', currency: 'THB', 
-              discount_pct: '', image_url: '', stock_count: '', cate_id: String(categories[0]?.cate_id || '1')
-            });
-            router.push('/product');
-          }
-        }
-      ]);
-    } else {
-      Alert.alert('ข้อผิดพลาด', 'ไม่สามารถเพิ่มสินค้าได้: ' + result.error);
-    }
-  };
-
-  // หาชื่อหมวดหมู่ที่เลือกเพื่อแสดงบนปุ่ม
-  const selectedCategory = categories.find(c => String(c.cate_id) === String(form.cate_id));
-
-  // --- TEST HELPER (ปลด/ใส่ Comment ทั้งบล็อกนี้ได้เลยเวลาใช้งานจริง) ---
-  const fillDummyData = () => {
-    const randomId = Math.floor(Math.random() * 1000);
-    setForm({
-      prod_name: `สินค้าทดสอบ #${randomId}`,
-      description: 'นี่คือรายละเอียดสินค้าทดสอบ สำหรับทดสอบระบบการเพิ่มสินค้าและรีโหลดข้อมูล',
-      price: (Math.floor(Math.random() * 500) + 99).toString(),
-      currency: 'THB',
-      discount_pct: '10',
-      image_url: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e',
-      stock_count: '20',
-      cate_id: String(categories[0]?.cate_id || '1'),
-    });
-  };
-  // -------------------------------------------------------------
+  const {
+    form,
+    categories,
+    selectedCategory,
+    showCategoryModal,
+    submitting,
+    setShowCategoryModal,
+    handleChange,
+    handleSubmit,
+    fillDummyData,
+  } = useAddProductForm();
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
@@ -140,73 +44,61 @@ export default function Add() {
           </TouchableOpacity>
 
           <View style={styles.formContainer}>
-            <View style={styles.formControl}>
-              <Text style={styles.label}>ชื่อสินค้า *</Text>
-              <TextInput 
-                style={styles.formInput} 
-                value={form.prod_name}
-                onChangeText={(val) => handleChange('prod_name', val)}
-                placeholder="Product Name"
+            <FormField
+              label="ชื่อสินค้า *"
+              value={form.prod_name}
+              onChangeText={(val) => handleChange('prod_name', val)}
+              placeholder="Product Name"
+            />
+
+            <FormField
+              label="รายละเอียด"
+              multiline
+              value={form.description}
+              onChangeText={(val) => handleChange('description', val)}
+              placeholder="Product Description"
+            />
+
+            <View style={styles.row}>
+              <FormField
+                containerStyle={{ flex: 1 }}
+                label="ราคา *"
+                labelNumberOfLines={1}
+                keyboardType="decimal-pad"
+                value={form.price}
+                onChangeText={(val) => handleChange('price', val)}
+                placeholder="0.00"
               />
-            </View>
-            
-            <View style={styles.formControl}>
-              <Text style={styles.label}>รายละเอียด</Text>
-              <TextInput 
-                style={[styles.formInput, { height: 80, textAlignVertical: 'top' }]} 
-                multiline
-                value={form.description}
-                onChangeText={(val) => handleChange('description', val)}
-                placeholder="Product Description"
+              <FormField
+                containerStyle={{ flex: 1 }}
+                label="สกุลเงิน"
+                labelNumberOfLines={1}
+                value={form.currency}
+                onChangeText={(val) => handleChange('currency', val)}
+                placeholder="THB"
+              />
+              <FormField
+                containerStyle={{ flex: 1 }}
+                label="ลด (%)"
+                labelNumberOfLines={1}
+                keyboardType="number-pad"
+                value={form.discount_pct}
+                onChangeText={(val) => handleChange('discount_pct', val)}
+                placeholder="0"
               />
             </View>
 
             <View style={styles.row}>
-              <View style={[styles.formControl, { flex: 1 }]}>
-                <Text style={styles.label} numberOfLines={1}>ราคา *</Text>
-                <TextInput 
-                  style={styles.formInput} 
-                  keyboardType="decimal-pad" 
-                  value={form.price}
-                  onChangeText={(val) => handleChange('price', val)}
-                  placeholder="0.00"
-                />
-              </View>
-              <View style={[styles.formControl, { flex: 1 }]}>
-                <Text style={styles.label} numberOfLines={1}>สกุลเงิน</Text>
-                <TextInput 
-                  style={styles.formInput} 
-                  value={form.currency}
-                  onChangeText={(val) => handleChange('currency', val)}
-                  placeholder="THB"
-                />
-              </View>
-              <View style={[styles.formControl, { flex: 1 }]}>
-                <Text style={styles.label} numberOfLines={1}>ลด (%)</Text>
-                <TextInput 
-                  style={styles.formInput} 
-                  keyboardType="number-pad"
-                  value={form.discount_pct}
-                  onChangeText={(val) => handleChange('discount_pct', val)}
-                  placeholder="0"
-                />
-              </View>
-            </View>
-
-            <View style={styles.row}>
-              <View style={[styles.formControl, { flex: 1 }]}>
-                <Text style={styles.label}>จำนวนในสต็อก</Text>
-                <TextInput 
-                  style={styles.formInput} 
-                  keyboardType="number-pad"
-                  value={form.stock_count}
-                  onChangeText={(val) => handleChange('stock_count', val)}
-                  placeholder="0"
-                />
-              </View>
+              <FormField
+                containerStyle={{ flex: 1 }}
+                label="จำนวนในสต็อก"
+                keyboardType="number-pad"
+                value={form.stock_count}
+                onChangeText={(val) => handleChange('stock_count', val)}
+                placeholder="0"
+              />
               <View style={[styles.formControl, { flex: 1 }]}>
                 <Text style={styles.label}>หมวดหมู่</Text>
-                {/* เปลี่ยนจาก TextInput เป็นปุ่มกดเพื่อเลือก Category */}
                 <TouchableOpacity 
                   style={[styles.formInput, styles.dropdownButton]} 
                   onPress={() => setShowCategoryModal(true)}
@@ -219,26 +111,23 @@ export default function Add() {
               </View>
             </View>
 
-            <View style={styles.formControl}>
-              <Text style={styles.label}>ลิงก์รูปภาพ (Image URL)</Text>
-              <TextInput 
-                style={styles.formInput} 
-                value={form.image_url}
-                onChangeText={(val) => handleChange('image_url', val)}
-                placeholder="https://example.com/image.jpg"
-              />
-              <Text style={styles.hintText}>*ระบบอัปโหลดรูปภาพกำลังพัฒนา ตอนนี้สามารถใส่เป็น URL แทนได้</Text>
-            </View>
+            <FormField
+              label="ลิงก์รูปภาพ (Image URL)"
+              value={form.image_url}
+              onChangeText={(val) => handleChange('image_url', val)}
+              placeholder="https://example.com/image.jpg"
+              hintText="*ระบบอัปโหลดรูปภาพกำลังพัฒนา ตอนนี้สามารถใส่เป็น URL แทนได้"
+            />
 
           </View>
           
           <View style={styles.btnContainer}>
             <TouchableOpacity 
-              style={[styles.btnSubmit, loading && styles.btnDisabled]} 
+              style={[styles.btnSubmit, submitting && styles.btnDisabled]} 
               onPress={handleSubmit}
-              disabled={loading}
+              disabled={submitting}
             >
-              {loading ? (
+              {submitting ? (
                 <ActivityIndicator color="#fff" />
               ) : (
                 <Text style={styles.btnTxt}>บันทึกข้อมูลสินค้า</Text>
@@ -297,7 +186,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   scrollContent: {
-    // padding ถูกย้ายไปที่ container แล้วเพื่อให้ขอบของ HeaderBar ไม่ชิดจอ
     paddingBottom: 24,
   },
   formContainer: {
@@ -330,7 +218,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12, // ปรับให้เท่ากับ input ตัวอื่น
+    paddingVertical: 12,
   },
   dropdownButtonText: {
     fontSize: 16,
@@ -341,12 +229,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#999',
     marginLeft: 8,
-  },
-  hintText: {
-    fontSize: 12,
-    color: '#888',
-    marginTop: 6,
-    fontStyle: 'italic',
   },
   btnContainer: {
     marginTop: 20,
@@ -420,7 +302,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 
-  /* Test Button Styles (Comment Out easily) */
+  /* Test Button Styles */
   btnTest: {
     backgroundColor: '#E8F2FF',
     borderWidth: 1,
