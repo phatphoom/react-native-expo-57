@@ -1,26 +1,20 @@
+import CategoryApi from "@/api/categoryApi";
+import type { Category } from "@/types/product";
 import { useEffect, useState } from "react";
-import { getCategory } from "../services/categoryService";
-
-interface CategoryItem {
-  id: string;
-  name: string;
-}
 
 export function useCategory() {
-  const [category, setCategory] = useState<CategoryItem[] | null>([]);
+  const [categories, setCategories] = useState<Category[] | null>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getCategory();
-
-        if (data && data.length > 0) {
-          setCategory(data);
-        }
-      } catch (error: any) {
-        console.error("Error fetching todos:", error.message);
+        const res = await CategoryApi.getAllCategory();
+        setCategories(res);
+      } catch (err: any) {
+        console.log(err.message);
       }
     };
+
     fetchData();
   }, []);
-  return { category };
+  return { categories };
 }
