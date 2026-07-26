@@ -1,16 +1,23 @@
-import type { CreateProductDto, UpdateProductDto } from "@/types/product";
+import type {
+  ApiSuccessResponse,
+  CreateProductDto,
+  Product,
+  UpdateProductDto,
+} from "@/types/product";
 import api from "./axios";
 const ProductApi = {
-  getAllProducts: () => {
-    return api.get("/products");
+  getAllProducts: async () => {
+    const res = await api.get<ApiSuccessResponse<Product[]>>("/product/all");
+    return res.data.data;
   },
 
-  getProductById: (id: string) => {
-    return api.get(`/products/${id}`);
+  getProductById: async (id: string) => {
+    const res = await api.get<ApiSuccessResponse<Product[]>>(`/product/${id}`);
+    return res.data.data;
   },
 
   createProduct: (productData: CreateProductDto) => {
-    return api.post("/products", productData);
+    return api.post("/product/add", productData);
   },
 
   updateProduct: (id: string, updateData: UpdateProductDto) => {
