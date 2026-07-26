@@ -1,0 +1,237 @@
+import React from 'react';
+import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import type { Product } from '@/types/product';
+
+interface DetailProdctProps {
+  id: string | string[];
+  data: Product[] | Product | null;
+}
+
+const DetailProdct = ({ id, data }: DetailProdctProps) => {
+  // ข้อมูลจาก API อาจจะเป็น Array (กรณี mock) หรือเป็น Object ตัวเดียว
+  const product: Product | null = Array.isArray(data) ? data[0] : (data as Product);
+
+  // ถ้ากำลังโหลดข้อมูล (ยังไม่มี product) ให้โชว์ Loading
+  if (!product) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#007AFF" />
+        <Text style={styles.loadingText}>กำลังโหลดข้อมูลสินค้า...</Text>
+      </View>
+    );
+  }
+
+  // คำนวณราคาเต็ม กรณีมีส่วนลด (discount_pct)
+  const priceNum = Number(product.price) || 0;
+  const discountPctNum = Number(product.discount_pct) || 0;
+
+  const originalPrice = discountPctNum > 0 
+    ? (priceNum / (1 - discountPctNum / 100)).toFixed(2) 
+    : null;
+
+  return (
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      {/* 1. รูปภาพสินค้า */}
+      <View style={styles.imageContainer}>
+        <Image 
+          source={{ uri: product.image_url || 'https://via.placeholder.com/400' }} 
+          style={styles.image}
+          resizeMode="cover"
+        />
+        {/* ป้าย % ส่วนลด */}
+        {discountPctNum > 0 && (
+          <View style={styles.discountBadge}>
+            <Text style={styles.discountText}>-{discountPctNum}%</Text>
+          </View>
+        )}
+      </View>
+
+      {/* 2. รายละเอียดต่างๆ (ครอบด้วย View เพื่อทำมุมโค้งซ้อนรูปภาพ) */}
+      <View style={styles.detailsContainer}>
+        
+        {/* หมวดหมู่ และ ดาวคะแนน */}
+        <View style={styles.row}>
+          <Text style={styles.categoryText}>{product.category_name || 'ทั่วไป'}</Text>
+          <View style={styles.ratingContainer}>
+            <FontAwesome name="star" size={16} color="#FFD700" />
+            <Text style={styles.ratingText}>
+              {product.rating_rate} ({product.rating_count})
+            </Text>
+          </View>
+        </View>
+
+        {/* ชื่อสินค้า */}
+        <Text style={styles.title}>{product.prod_name}</Text>
+
+        {/* ราคา */}
+        <View style={styles.priceContainer}>
+          <Text style={styles.price}>
+            {priceNum.toFixed(2)} {product.currency}
+          </Text>
+          {originalPrice && (
+            <Text style={styles.originalPrice}>
+              {originalPrice} {product.currency}
+            </Text>
+          )}
+        </View>
+
+        {/* สถานะสินค้าคงคลัง */}
+        <View style={styles.stockContainer}>
+          <MaterialIcons 
+            name={product.in_stock ? "check-circle" : "cancel"} 
+            size={20} 
+            color={product.in_stock ? "#4CAF50" : "#F44336"} 
+          />
+          <Text style={[styles.stockText, { color: product.in_stock ? "#4CAF50" : "#F44336" }]}>
+            {product.in_stock ? `มีสินค้า (${product.stock_count} ชิ้น)` : 'สินค้าหมด'}
+          </Text>
+        </View>
+
+        <View style={styles.divider} />
+
+        {/* คำอธิบายสินค้า */}
+        <Text style={styles.sectionTitle}>รายละเอียดสินค้า</Text>
+        <Text style={styles.description}>
+          {product.description || 'ไม่มีรายละเอียดสินค้า'}
+        </Text>
+
+      </View>
+      
+      {/* เพิ่มพื้นที่ว่างด้านล่างเผื่อไว้ให้ Scroll ถึง */}
+      <View style={{ height: 100 }} />
+    </ScrollView>
+  );
+};
+
+export default DetailProdct;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    width: '100%',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 40,
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+    color: '#666',
+  },
+  imageContainer: {
+    width: '100%',
+    height: 380,
+    backgroundColor: '#f5f5f5',
+    position: 'relative',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
+  },
+  discountBadge: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    backgroundColor: '#FF3B30',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+  },
+  discountText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  detailsContainer: {
+    padding: 24,
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    marginTop: -30, // ดึงให้ขอบโค้งขึ้นไปซ้อนบนรูปภาพนิดนึง
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  categoryText: {
+    fontSize: 14,
+    color: '#007AFF',
+    fontWeight: '600',
+    backgroundColor: '#E5F1FF',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  ratingText: {
+    fontSize: 15,
+    color: '#555',
+    fontWeight: '600',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#222',
+    marginBottom: 12,
+    lineHeight: 34,
+  },
+  priceContainer: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    gap: 10,
+    marginBottom: 20,
+  },
+  price: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#FF3B30',
+  },
+  originalPrice: {
+    fontSize: 16,
+    color: '#999',
+    textDecorationLine: 'line-through',
+    fontWeight: '500',
+  },
+  stockContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    backgroundColor: '#F8F9FA',
+    padding: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#E9ECEF',
+  },
+  stockText: {
+    fontSize: 15,
+    fontWeight: '600',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#F1F3F5',
+    marginVertical: 24,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 12,
+  },
+  description: {
+    fontSize: 16,
+    color: '#666',
+    lineHeight: 26,
+  },
+});
