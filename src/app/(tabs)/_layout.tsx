@@ -21,7 +21,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="Add"
+        name="add"
         options={{
           title: "Add",
           headerShown: false,

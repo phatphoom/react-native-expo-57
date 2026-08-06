@@ -1,5 +1,5 @@
 import ProductApi from "@/api/productApi";
-import type { CreateProductDto, Product } from "@/types/product";
+import type { CreateProductDto, Product, UpdateProductDto } from "@/types/product";
 import { useEffect, useState } from "react";
 
 export function useProductAll() {
@@ -26,7 +26,7 @@ export function useProductAll() {
 }
 
 export function useProduct({ id }: { id: string }) {
-  const [product, setProduct] = useState<Product[] | null>([]);
+  const [product, setProduct] = useState<Product | Product[] | null>(null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -68,4 +68,48 @@ export function useCreateProduct() {
   };
 
   return { createProduct, loading, error };
+}
+
+export function useUpdateProduct() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const updateProduct = async (id: string, updateData: UpdateProductDto) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await ProductApi.updateProduct(id, updateData);
+      return { success: true, data: response.data };
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message || "Failed to update product";
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { updateProduct, loading, error };
+}
+
+export function useDeleteProduct() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const deleteProduct = async (id: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await ProductApi.deleteProduct(id);
+      return { success: true, data: response };
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message || "Failed to delete product";
+      setError(errorMessage);
+      return { success: false, error: errorMessage };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { deleteProduct, loading, error };
 }

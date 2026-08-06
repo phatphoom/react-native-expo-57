@@ -1,10 +1,10 @@
-import { useCategory } from "@/features/product/hooks/useCategory";
+import { useCategories } from "@/features/product/hooks/useCategory";
 import HeaderBar from "@/shared/components/AppHeader";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Category() {
-  const { categories } = useCategory();
+  const { categories } = useCategories();
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
