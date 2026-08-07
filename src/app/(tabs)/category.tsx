@@ -1,21 +1,21 @@
+import CategoryCard from "@/features/product/components/CategoryCard";
 import { useCategories } from "@/features/product/hooks/useCategory";
 import HeaderBar from "@/shared/components/AppHeader";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Category() {
-  const { categories } = useCategories();
+  const { categories, loading } = useCategories();
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
       <HeaderBar title="Category" />
       <FlatList
         data={categories}
-        renderItem={({ item }) => (
-          <View key={item.cate_id}>
-            <Text>{item.cate_name}</Text>
-          </View>
-        )}
+        keyExtractor={(item) => String(item.cate_id)}
+        renderItem={({ item }) => <CategoryCard item={item} />}
+        contentContainerStyle={styles.listContent}
+        showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
   );
@@ -26,13 +26,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 12,
+    backgroundColor: "#F8F9FA",
   },
-
-  CardWrapper: {
-    borderWidth: 1,
-    flexDirection: "row",
-    // gap: 8,
-    padding: 8,
-    marginBottom: 8,
+  listContent: {
+    paddingTop: 12,
+    paddingBottom: 24,
   },
 });
