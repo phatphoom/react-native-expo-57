@@ -1,21 +1,67 @@
-import React from 'react';
+import React from "react";
 import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  ActivityIndicator,
-  Modal,
-  FlatList
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { HeaderBar, FormField } from "@/shared/components";
-import { useAddProductForm } from "@/features/product/hooks/useAddProductForm";
+import { useRouter } from "expo-router";
+import { FormField, HeaderBar } from "@/shared/components";
+import { useCreateProduct } from "@/features/product/hooks/useProduct";
+import { useProductForm, type ProductFormValues } from "@/features/product/hooks/useProductForm";
 
 export default function Add() {
+  const router = useRouter();
+  const { createProduct } = useCreateProduct();
+
+  const handleCreate = async (values: ProductFormValues) => {
+    if (!values.prod_name || !values.price) {
+      Alert.alert("ข้อผิดพลาด", "กรุณากรอกชื่อสินค้าและราคา");
+      return { success: false, error: "Validation failed" };
+    }
+
+    const cateIdToSend = values.cate_id
+      ? (isNaN(Number(values.cate_id)) ? values.cate_id : Number(values.cate_id))
+      : 1;
+
+    const result = await createProduct({
+      prod_name: values.prod_name,
+      description: values.description,
+      price: Number(values.price),
+      currency: values.currency || "THB",
+      discount_pct: Number(values.discount_pct) || 0,
+      image_url: values.image_url,
+      stock_count: Number(values.stock_count) || 0,
+      in_stock: Number(values.stock_count) > 0,
+      cate_id: cateIdToSend,
+      rating_rate: 0,
+      rating_count: 0,
+    });
+
+    if (result.success) {
+      Alert.alert("สำเร็จ", "เพิ่มสินค้าใหม่เรียบร้อยแล้ว!", [
+        {
+          text: "ตกลง",
+          onPress: () => {
+            router.push("/product");
+          },
+        },
+      ]);
+      return { success: true };
+    } else {
+      Alert.alert("ข้อผิดพลาด", "ไม่สามารถเพิ่มสินค้าได้: " + result.error);
+      return { success: false, error: result.error };
+    }
+  };
+
   const {
     form,
     categories,
@@ -25,8 +71,31 @@ export default function Add() {
     setShowCategoryModal,
     handleChange,
     handleSubmit,
-    fillDummyData,
-  } = useAddProductForm();
+    setFormValues,
+    resetForm,
+  } = useProductForm({
+    onSubmit: async (values) => {
+      const res = await handleCreate(values);
+      if (res.success) {
+        resetForm();
+      }
+      return res;
+    },
+  });
+
+  const fillDummyData = () => {
+    const randomId = Math.floor(Math.random() * 1000);
+    setFormValues({
+      prod_name: `สินค้าทดสอบ #${randomId}`,
+      description: "นี่คือรายละเอียดสินค้าทดสอบ สำหรับทดสอบระบบการเพิ่มสินค้าและรีโหลดข้อมูล",
+      price: (Math.floor(Math.random() * 500) + 99).toString(),
+      currency: "THB",
+      discount_pct: "10",
+      image_url: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
+      stock_count: "20",
+      cate_id: String(categories[0]?.cate_id || "1"),
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container} edges={["top", "left", "right"]}>
