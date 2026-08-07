@@ -1,14 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import type { Product } from '@/types/product';
 
 interface DetailProdctProps {
   id: string | string[];
   data: Product[] | Product | null;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  isDeleting?: boolean;
 }
 
-const DetailProdct = ({ id, data }: DetailProdctProps) => {
+const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctProps) => {
   // ข้อมูลจาก API อาจจะเป็น Array (กรณี mock) หรือเป็น Object ตัวเดียว
   const product: Product | null = Array.isArray(data) ? data[0] : (data as Product);
 
@@ -22,12 +25,16 @@ const DetailProdct = ({ id, data }: DetailProdctProps) => {
     );
   }
 
-  // คำนวณราคาเต็ม กรณีมีส่วนลด (discount_pct)
+  // คำนวณราคาจริงหลังหักส่วนลด (finalPrice) และราคาเต็มก่อนลด (originalPrice)
   const priceNum = Number(product.price) || 0;
   const discountPctNum = Number(product.discount_pct) || 0;
 
+  const finalPrice = discountPctNum > 0 
+    ? (priceNum * (1 - discountPctNum / 100)).toFixed(2) 
+    : priceNum.toFixed(2);
+
   const originalPrice = discountPctNum > 0 
-    ? (priceNum / (1 - discountPctNum / 100)).toFixed(2) 
+    ? priceNum.toFixed(2)
     : null;
 
   return (
@@ -67,7 +74,7 @@ const DetailProdct = ({ id, data }: DetailProdctProps) => {
         {/* ราคา */}
         <View style={styles.priceContainer}>
           <Text style={styles.price}>
-            {priceNum.toFixed(2)} {product.currency}
+            {finalPrice} {product.currency}
           </Text>
           {originalPrice && (
             <Text style={styles.originalPrice}>
@@ -95,6 +102,39 @@ const DetailProdct = ({ id, data }: DetailProdctProps) => {
         <Text style={styles.description}>
           {product.description || 'ไม่มีรายละเอียดสินค้า'}
         </Text>
+
+        {/* ปุ่มจัดการ (แก้ไข & ลบ) */}
+        {(onEdit || onDelete) && (
+          <View style={styles.actionContainer}>
+            {onEdit && (
+              <TouchableOpacity
+                style={styles.editButton}
+                onPress={onEdit}
+                activeOpacity={0.8}
+              >
+                <FontAwesome name="pencil" size={18} color="#fff" style={styles.buttonIcon} />
+                <Text style={styles.buttonText}>แก้ไขสินค้า</Text>
+              </TouchableOpacity>
+            )}
+            {onDelete && (
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={onDelete}
+                disabled={isDeleting}
+                activeOpacity={0.8}
+              >
+                {isDeleting ? (
+                  <ActivityIndicator size="small" color="#fff" />
+                ) : (
+                  <>
+                    <FontAwesome name="trash" size={18} color="#fff" style={styles.buttonIcon} />
+                    <Text style={styles.buttonText}>ลบสินค้า</Text>
+                  </>
+                )}
+              </TouchableOpacity>
+            )}
+          </View>
+        )}
 
       </View>
       
@@ -233,5 +273,46 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     lineHeight: 26,
+  },
+  actionContainer: {
+    marginTop: 28,
+    flexDirection: 'row',
+    gap: 12,
+  },
+  editButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#007AFF',
+    paddingVertical: 14,
+    borderRadius: 14,
+    shadowColor: '#007AFF',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  deleteButton: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#FF3B30',
+    paddingVertical: 14,
+    borderRadius: 14,
+    shadowColor: '#FF3B30',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  buttonIcon: {
+    marginRight: 8,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });

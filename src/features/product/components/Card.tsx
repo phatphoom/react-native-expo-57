@@ -8,12 +8,17 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  // ดักการแปลงค่าตัวเลขให้ปลอดภัย ป้องกัน error แบบเดิม
   const priceNum = Number(product.price) || 0;
   const discountPctNum = Number(product.discount_pct) || 0;
   
+  // ราคาขายจริง (ถ้ามีส่วนลดจะคำนวณราคาที่หักส่วนลดแล้ว)
+  const finalPrice = discountPctNum > 0
+    ? (priceNum * (1 - discountPctNum / 100)).toFixed(2)
+    : priceNum.toFixed(2);
+
+  // ราคาเต็มเดิม (แสดงแบบขีดฆ่าเมื่อมีส่วนลด)
   const originalPrice = discountPctNum > 0 
-    ? (priceNum / (1 - discountPctNum / 100)).toFixed(2) 
+    ? priceNum.toFixed(2)
     : null;
 
   return (
@@ -58,7 +63,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <View style={styles.cardFooter}>
             <View style={styles.priceContainer}>
               <View style={styles.priceRow}>
-                <Text style={styles.price}>{priceNum.toFixed(2)}</Text>
+                <Text style={styles.price}>{finalPrice}</Text>
                 <Text style={styles.currency}> {product.currency}</Text>
               </View>
               {originalPrice && (
