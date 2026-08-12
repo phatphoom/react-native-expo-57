@@ -9,12 +9,12 @@ type HeaderProps = {
 const HeaderBar = ({ title }: HeaderProps) => {
   return (
     <View style={styles.header}>
-      <TouchableOpacity>
-        <Feather name="menu" size={24} color="black" />
+      <TouchableOpacity activeOpacity={0.7} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+        <Feather name="menu" size={22} color="#1E293B" />
       </TouchableOpacity>
-      <Text style={styles.txtHaeder}>{title}</Text>
-      <TouchableOpacity>
-        <MaterialIcons name="account-circle" size={28} color="black" />
+      <Text style={styles.txtHeader}>{title}</Text>
+      <TouchableOpacity activeOpacity={0.7} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
+        <MaterialIcons name="account-circle" size={26} color="#2563EB" />
       </TouchableOpacity>
     </View>
   );
@@ -25,12 +25,16 @@ export default HeaderBar;
 const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 6,
-    marginBottom: 6,
+    paddingVertical: 10,
+    paddingHorizontal: 4,
+    marginBottom: 8,
   },
-  txtHaeder: {
-    fontSize: 18,
-    fontWeight: "600",
+  txtHeader: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: "#0F172A",
+    letterSpacing: -0.3,
   },
 });

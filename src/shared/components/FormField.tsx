@@ -31,6 +31,8 @@ export const FormField: React.FC<FormFieldProps> = ({
   style,
   ...textInputProps
 }) => {
+  const [isFocused, setIsFocused] = React.useState(false);
+
   return (
     <View style={[styles.formControl, containerStyle]}>
       <Text style={[styles.label, labelStyle]} numberOfLines={labelNumberOfLines}>
@@ -39,12 +41,22 @@ export const FormField: React.FC<FormFieldProps> = ({
       <TextInput
         style={[
           styles.formInput,
+          isFocused && styles.formInputFocused,
+          error && styles.formInputError,
           multiline && styles.multilineInput,
           inputStyle,
           style,
         ]}
         multiline={multiline}
-        placeholderTextColor="#999"
+        placeholderTextColor="#94A3B8"
+        onFocus={(e) => {
+          setIsFocused(true);
+          if (textInputProps.onFocus) textInputProps.onFocus(e);
+        }}
+        onBlur={(e) => {
+          setIsFocused(false);
+          if (textInputProps.onBlur) textInputProps.onBlur(e);
+        }}
         {...textInputProps}
       />
       {hintText ? <Text style={styles.hintText}>{hintText}</Text> : null}
@@ -62,32 +74,39 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#333",
-    marginBottom: 8,
+    color: "#334155",
+    marginBottom: 6,
   },
   formInput: {
-    backgroundColor: "#F8F9FA",
+    backgroundColor: "#F8FAFC",
     borderWidth: 1,
-    borderColor: "#E9ECEF",
-    borderRadius: 10,
+    borderColor: "#E2E8F0",
+    borderRadius: 12,
     paddingHorizontal: 14,
     paddingVertical: 12,
-    fontSize: 16,
-    color: "#333",
+    fontSize: 15,
+    color: "#0F172A",
+  },
+  formInputFocused: {
+    borderColor: "#2563EB",
+    backgroundColor: "#FFFFFF",
+  },
+  formInputError: {
+    borderColor: "#EF4444",
   },
   multilineInput: {
-    height: 80,
+    height: 90,
     textAlignVertical: "top",
   },
   hintText: {
     fontSize: 12,
-    color: "#888",
+    color: "#64748B",
     marginTop: 6,
-    fontStyle: "italic",
   },
   errorText: {
     fontSize: 12,
-    color: "#FF3B30",
+    color: "#EF4444",
     marginTop: 4,
+    fontWeight: "500",
   },
 });

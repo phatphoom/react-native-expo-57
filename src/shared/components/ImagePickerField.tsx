@@ -42,26 +42,27 @@ export const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
             </View>
           )}
           <TouchableOpacity style={styles.clearButton} onPress={onClear} disabled={uploading}>
-            <Ionicons name="close-circle" size={26} color="#FF3B30" />
+            <Ionicons name="close-circle" size={26} color="#EF4444" />
           </TouchableOpacity>
         </View>
       ) : (
         <View style={styles.placeholderContainer}>
-          <Ionicons name="image-outline" size={48} color="#A0AEC0" />
+          <Ionicons name="image-outline" size={44} color="#94A3B8" />
           <Text style={styles.placeholderText}>ยังไม่ได้เลือกรูปภาพ</Text>
         </View>
       )}
 
       {loading ? (
-        <ActivityIndicator style={{ marginVertical: 10 }} color="#007AFF" />
+        <ActivityIndicator style={{ marginVertical: 10 }} color="#2563EB" />
       ) : (
         <View style={styles.buttonRow}>
           <TouchableOpacity
             style={[styles.actionButton, styles.libraryButton]}
             onPress={onPickLibrary}
             disabled={uploading}
+            activeOpacity={0.7}
           >
-            <Ionicons name="images-outline" size={18} color="#007AFF" />
+            <Ionicons name="images-outline" size={18} color="#2563EB" />
             <Text style={styles.libraryButtonText}>เลือกรูปจากอัลบั้ม</Text>
           </TouchableOpacity>
 
@@ -69,6 +70,7 @@ export const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
             style={[styles.actionButton, styles.cameraButton]}
             onPress={onTakePhoto}
             disabled={uploading}
+            activeOpacity={0.7}
           >
             <Ionicons name="camera-outline" size={18} color="#ffffff" />
             <Text style={styles.cameraButtonText}>ถ่ายรูปด้วยกล้อง</Text>
@@ -86,19 +88,19 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#333",
-    marginBottom: 8,
+    color: "#334155",
+    marginBottom: 6,
   },
   previewContainer: {
     position: "relative",
     width: "100%",
     height: 200,
-    borderRadius: 12,
+    borderRadius: 14,
     overflow: "hidden",
-    backgroundColor: "#F8F9FA",
+    backgroundColor: "#F8FAFC",
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: "#E9ECEF",
+    borderColor: "#E2E8F0",
   },
   previewImage: {
     width: "100%",
@@ -106,7 +108,7 @@ const styles = StyleSheet.create({
   },
   uploadingOverlay: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    backgroundColor: "rgba(15, 23, 42, 0.65)",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -126,9 +128,9 @@ const styles = StyleSheet.create({
   placeholderContainer: {
     width: "100%",
     height: 140,
-    borderRadius: 12,
+    borderRadius: 14,
     borderWidth: 2,
-    borderColor: "#E2E8F0",
+    borderColor: "#CBD5E1",
     borderStyle: "dashed",
     backgroundColor: "#F8FAFC",
     justifyContent: "center",
@@ -136,9 +138,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   placeholderText: {
-    fontSize: 14,
-    color: "#718096",
+    fontSize: 13,
+    color: "#64748B",
     marginTop: 6,
+    fontWeight: "500",
   },
   buttonRow: {
     flexDirection: "row",
@@ -149,23 +152,23 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 10,
+    paddingVertical: 11,
     paddingHorizontal: 12,
-    borderRadius: 10,
+    borderRadius: 12,
     gap: 6,
   },
   libraryButton: {
-    backgroundColor: "#E8F2FF",
+    backgroundColor: "#EFF6FF",
     borderWidth: 1,
-    borderColor: "#B8D9FF",
+    borderColor: "#DBEAFE",
   },
   libraryButtonText: {
-    color: "#007AFF",
+    color: "#2563EB",
     fontSize: 13,
     fontWeight: "600",
   },
   cameraButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#2563EB",
   },
   cameraButtonText: {
     color: "#ffffff",
