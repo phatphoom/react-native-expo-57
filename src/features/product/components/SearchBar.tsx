@@ -22,16 +22,16 @@ const SearchBar = ({
   value,
   onChangeText,
   onClear,
-  placeholder = "Search product...",
+  placeholder = "ค้นหาสินค้า...",
   onFilterPress,
 }: SearchBarProps) => {
   return (
     <View style={styles.searchBar}>
       <View style={styles.searchInput}>
-        <Feather name="search" size={18} color="#6b7280" />
+        <Feather name="search" size={18} color="#64748B" />
         <TextInput
           placeholder={placeholder}
-          placeholderTextColor="#9ca3af"
+          placeholderTextColor="#94A3B8"
           style={styles.txtInput}
           value={value}
           onChangeText={onChangeText}
@@ -40,14 +40,14 @@ const SearchBar = ({
         />
         {value.length > 0 && (
           <TouchableOpacity onPress={onClear} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-            <Ionicons name="close-circle" size={18} color="#9ca3af" />
+            <Ionicons name="close-circle" size={18} color="#94A3B8" />
           </TouchableOpacity>
         )}
       </View>
 
-      <TouchableOpacity style={styles.btnFilter} onPress={onFilterPress}>
-        <Entypo name="sound-mix" size={16} color="#374151" />
-        <Text style={styles.filterText}>Filter</Text>
+      <TouchableOpacity style={styles.btnFilter} onPress={onFilterPress} activeOpacity={0.7}>
+        <Entypo name="sound-mix" size={15} color="#2563EB" />
+        <Text style={styles.filterText}>ตัวกรอง</Text>
       </TouchableOpacity>
     </View>
   );
@@ -60,41 +60,41 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    gap: 8,
+    gap: 10,
   },
   searchInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: "#d1d5db",
-    backgroundColor: "#ffffff",
+    borderColor: "#E2E8F0",
+    backgroundColor: "#F8FAFC",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 12,
-    borderRadius: 8,
-    gap: 8,
-    height: 42,
+    paddingHorizontal: 14,
+    borderRadius: 12,
+    gap: 10,
+    height: 44,
   },
   btnFilter: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 1,
-    borderColor: "#d1d5db",
-    backgroundColor: "#ffffff",
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    height: 42,
+    borderColor: "#DBEAFE",
+    backgroundColor: "#EFF6FF",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    height: 44,
     gap: 6,
   },
   filterText: {
     fontSize: 13,
-    fontWeight: "500",
-    color: "#374151",
+    fontWeight: "600",
+    color: "#2563EB",
   },
   txtInput: {
     flex: 1,
     fontSize: 14,
-    color: "#1f2937",
+    color: "#0F172A",
     height: "100%",
   },
 });

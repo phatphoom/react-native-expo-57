@@ -38,7 +38,7 @@ const ProductList = ({
 
   const renderEmptyState = () => (
     <View style={styles.emptyContainer}>
-      <Ionicons name="search-outline" size={48} color="#9ca3af" />
+      <Ionicons name="search-outline" size={48} color="#94A3B8" />
       <Text style={styles.emptyTitle}>
         {isSearching ? "ไม่พบสินค้าที่ตรงกับการค้นหา" : "ไม่มีรายการสินค้า"}
       </Text>
@@ -64,8 +64,8 @@ const ProductList = ({
         <RefreshControl
           refreshing={loading}
           onRefresh={handleRefresh}
-          colors={["#007AFF"]}
-          tintColor={"#007AFF"}
+          colors={["#2563EB"]}
+          tintColor={"#2563EB"}
         />
       }
     />
@@ -76,8 +76,8 @@ export default ProductList;
 
 const styles = StyleSheet.create({
   listContent: {
+    paddingTop: 8,
     paddingBottom: 24,
-    gap: 12,
   },
   emptyContainer: {
     alignItems: "center",
@@ -87,12 +87,12 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#374151",
+    fontWeight: "700",
+    color: "#0F172A",
   },
   emptySubText: {
     fontSize: 13,
-    color: "#6b7280",
+    color: "#64748B",
     textAlign: "center",
   },
 });

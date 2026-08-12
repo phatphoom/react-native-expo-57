@@ -16,7 +16,7 @@ const CategoryCard = ({ item, onPress }: CategoryCardProps) => {
       activeOpacity={0.7}
     >
       <View style={styles.iconContainer}>
-        <MaterialIcons name="category" size={22} color="#007AFF" />
+        <MaterialIcons name="category" size={22} color="#2563EB" />
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.categoryName}>{item.cate_name}</Text>
@@ -26,7 +26,7 @@ const CategoryCard = ({ item, onPress }: CategoryCardProps) => {
           </Text>
         ) : null}
       </View>
-      <MaterialIcons name="chevron-right" size={24} color="#C7C7CC" />
+      <MaterialIcons name="chevron-right" size={24} color="#94A3B8" />
     </TouchableOpacity>
   );
 };
@@ -38,22 +38,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#FFFFFF",
-    borderRadius: 14,
+    borderRadius: 16,
     padding: 14,
-    marginBottom: 10,
+    marginBottom: 12,
     borderWidth: 1,
-    borderColor: "#E5E5EA",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    borderColor: "#F1F5F9",
+    shadowColor: "#0F172A",
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.04,
-    shadowRadius: 6,
-    elevation: 2,
+    shadowRadius: 10,
+    elevation: 3,
   },
   iconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    backgroundColor: "#E5F1FF",
+    width: 46,
+    height: 46,
+    borderRadius: 14,
+    backgroundColor: "#EFF6FF",
     justifyContent: "center",
     alignItems: "center",
     marginRight: 14,
@@ -63,12 +63,12 @@ const styles = StyleSheet.create({
   },
   categoryName: {
     fontSize: 16,
-    fontWeight: "600",
-    color: "#1C1C1E",
+    fontWeight: "700",
+    color: "#0F172A",
   },
   categoryDesc: {
     fontSize: 13,
-    color: "#8E8E93",
+    color: "#64748B",
     marginTop: 2,
   },
 });

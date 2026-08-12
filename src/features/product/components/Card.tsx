@@ -25,7 +25,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <Link href={`/product/${product.prod_id}`} asChild>
-      {/* ใช้ Pressed style เพื่อให้มีเอฟเฟกต์ตอนผู้ใช้กด */}
       <Pressable style={({ pressed }) => [styles.cardWrapper, pressed && styles.cardPressed]}>
         
         {/* 1. รูปภาพสินค้า */}
@@ -35,7 +34,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
             style={styles.image} 
             resizeMode="cover"
           />
-          {/* ป้าย % ส่วนลดแปะทับรูปภาพ */}
           {discountPctNum > 0 && (
             <View style={styles.discountBadge}>
               <Text style={styles.discountText}>-{discountPctNum}%</Text>
@@ -46,22 +44,21 @@ const ProductCard = ({ product }: ProductCardProps) => {
         {/* 2. ข้อมูลสินค้า */}
         <View style={styles.cardDetails}>
           <View>
-            {/* แถวบนสุด: หมวดหมู่ คู่กับ ดาวคะแนน */}
             <View style={styles.headerRow}>
-              <Text style={styles.categoryText} numberOfLines={1}>
-                {product.category_name || 'ทั่วไป'}
-              </Text>
-              <View style={styles.ratingContainer}>
-                <FontAwesome name="star" size={12} color="#FFD700" />
+              <View style={styles.categoryBadge}>
+                <Text style={styles.categoryText} numberOfLines={1}>
+                  {product.category_name || 'ทั่วไป'}
+                </Text>
+              </View>
+              <View style={styles.ratingBadge}>
+                <FontAwesome name="star" size={11} color="#F59E0B" />
                 <Text style={styles.ratingText}>{product.rating_rate}</Text>
               </View>
             </View>
 
-            {/* ชื่อสินค้า */}
             <Text style={styles.productName} numberOfLines={2}>{product.prod_name}</Text>
           </View>
 
-          {/* ด้านล่างของการ์ด: ราคา และ สถานะสินค้า */}
           <View style={styles.cardFooter}>
             <View style={styles.priceContainer}>
               <View style={styles.priceRow}>
@@ -73,8 +70,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
               )}
             </View>
 
-            <View style={[styles.stockBadge, { backgroundColor: product.in_stock ? '#E8F5E9' : '#FFEBEE' }]}>
-              <Text style={[styles.stockText, { color: product.in_stock ? '#4CAF50' : '#F44336' }]}>
+            <View style={[styles.stockBadge, { backgroundColor: product.in_stock ? '#DCFCE7' : '#FEE2E2' }]}>
+              <Text style={[styles.stockText, { color: product.in_stock ? '#166534' : '#991B1B' }]}>
                 {product.in_stock ? 'มีสินค้า' : 'หมด'}
               </Text>
             </View>
@@ -91,30 +88,29 @@ export default ProductCard;
 const styles = StyleSheet.create({
   cardWrapper: {
     flexDirection: "row",
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
     borderRadius: 16,
     padding: 12,
-    marginHorizontal: 16, // ขยับการ์ดให้ห่างจากขอบจอ
-    marginBottom: 16,
-    // เพิ่มเงาให้ดูมีมิติ
-    shadowColor: '#000',
+    marginHorizontal: 16,
+    marginBottom: 14,
+    shadowColor: '#0F172A',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.04,
     shadowRadius: 10,
-    elevation: 4,
+    elevation: 3,
     borderWidth: 1,
-    borderColor: '#F4F5F7',
+    borderColor: '#F1F5F9',
   },
   cardPressed: {
-    opacity: 0.8,
-    transform: [{ scale: 0.98 }], // เล็กลงนิดนึงตอนกด
+    opacity: 0.9,
+    transform: [{ scale: 0.98 }],
   },
   imageContainer: {
-    width: 120,
-    height: 120,
+    width: 110,
+    height: 110,
     borderRadius: 12,
     overflow: 'hidden',
-    backgroundColor: '#F8F9FA',
+    backgroundColor: '#F8FAFC',
     position: 'relative',
   },
   image: {
@@ -123,21 +119,21 @@ const styles = StyleSheet.create({
   },
   discountBadge: {
     position: 'absolute',
-    top: 8,
-    left: 8,
-    backgroundColor: '#FF3B30',
-    paddingHorizontal: 8,
+    top: 6,
+    left: 6,
+    backgroundColor: '#EF4444',
+    paddingHorizontal: 7,
     paddingVertical: 3,
     borderRadius: 8,
   },
   discountText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 11,
+    color: '#FFFFFF',
+    fontWeight: '700',
+    fontSize: 10,
   },
   cardDetails: {
     flex: 1,
-    marginLeft: 16,
+    marginLeft: 14,
     justifyContent: 'space-between',
   },
   headerRow: {
@@ -146,29 +142,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 6,
   },
-  categoryText: {
-    flex: 1,
-    fontSize: 12,
-    color: '#007AFF',
-    fontWeight: '700',
-    marginRight: 8,
+  categoryBadge: {
+    backgroundColor: '#EFF6FF',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 6,
+    maxWidth: '70%',
   },
-  ratingContainer: {
+  categoryText: {
+    fontSize: 11,
+    color: '#2563EB',
+    fontWeight: '700',
+  },
+  ratingBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    backgroundColor: '#FEF3C7',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
+    gap: 3,
   },
   ratingText: {
-    fontSize: 13,
+    fontSize: 11,
     fontWeight: '700',
-    color: '#444',
+    color: '#92400E',
   },
   productName: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
-    color: '#1C1C1E',
-    lineHeight: 22,
-    marginBottom: 6,
+    color: '#0F172A',
+    lineHeight: 20,
+    marginBottom: 4,
   },
   cardFooter: {
     flexDirection: "row",
@@ -183,29 +188,29 @@ const styles = StyleSheet.create({
     alignItems: 'baseline',
   },
   price: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: '800',
-    color: '#FF3B30',
+    color: '#EF4444',
   },
   currency: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: '700',
-    color: '#FF3B30',
+    color: '#EF4444',
   },
   originalPrice: {
-    fontSize: 12,
-    color: '#8E8E93',
+    fontSize: 11,
+    color: '#94A3B8',
     textDecorationLine: 'line-through',
-    marginTop: 2,
+    marginTop: 1,
   },
   stockBadge: {
     paddingHorizontal: 8,
-    paddingVertical: 4,
+    paddingVertical: 3,
     borderRadius: 6,
-    marginLeft: 8,
+    marginLeft: 6,
   },
   stockText: {
     fontSize: 11,
-    fontWeight: '800',
+    fontWeight: '700',
   },
 });
