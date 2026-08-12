@@ -93,6 +93,17 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "โปรไฟล์",
+          tabBarIcon: ({ color, focused }) => (
+            <View style={[styles.iconWrapper, focused && styles.activeIconWrapper]}>
+              <FontAwesome5 name="user-alt" size={20} color={color} />
+            </View>
+          ),
+        }}
+      />
     </Tabs>
   );
 }

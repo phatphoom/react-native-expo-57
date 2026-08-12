@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import {
   StyleSheet,
   Text,
@@ -17,6 +18,7 @@ export interface FormFieldProps extends TextInputProps {
   labelStyle?: TextStyle;
   hintText?: string;
   error?: string;
+  isPassword?: boolean;
 }
 
 export const FormField: React.FC<FormFieldProps> = ({
@@ -27,38 +29,53 @@ export const FormField: React.FC<FormFieldProps> = ({
   labelStyle,
   hintText,
   error,
+  isPassword,
   multiline,
   style,
   ...textInputProps
 }) => {
-  const [isFocused, setIsFocused] = React.useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <View style={[styles.formControl, containerStyle]}>
       <Text style={[styles.label, labelStyle]} numberOfLines={labelNumberOfLines}>
         {label}
       </Text>
-      <TextInput
-        style={[
-          styles.formInput,
-          isFocused && styles.formInputFocused,
-          error && styles.formInputError,
-          multiline && styles.multilineInput,
-          inputStyle,
-          style,
-        ]}
-        multiline={multiline}
-        placeholderTextColor="#94A3B8"
-        onFocus={(e) => {
-          setIsFocused(true);
-          if (textInputProps.onFocus) textInputProps.onFocus(e);
-        }}
-        onBlur={(e) => {
-          setIsFocused(false);
-          if (textInputProps.onBlur) textInputProps.onBlur(e);
-        }}
-        {...textInputProps}
-      />
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={[
+            styles.formInput,
+            isFocused && styles.formInputFocused,
+            error && styles.formInputError,
+            multiline && styles.multilineInput,
+            isPassword && { paddingRight: 45 },
+            inputStyle,
+            style,
+          ]}
+          multiline={multiline}
+          placeholderTextColor="#94A3B8"
+          secureTextEntry={isPassword && !showPassword}
+          onFocus={(e) => {
+            setIsFocused(true);
+            if (textInputProps.onFocus) textInputProps.onFocus(e);
+          }}
+          onBlur={(e) => {
+            setIsFocused(false);
+            if (textInputProps.onBlur) textInputProps.onBlur(e);
+          }}
+          {...textInputProps}
+        />
+        {isPassword && (
+          <Ionicons
+            name={showPassword ? "eye-off" : "eye"}
+            size={20}
+            color="#94A3B8"
+            style={styles.eyeIcon}
+            onPress={() => setShowPassword(!showPassword)}
+          />
+        )}
+      </View>
       {hintText ? <Text style={styles.hintText}>{hintText}</Text> : null}
       {error ? <Text style={styles.errorText}>{error}</Text> : null}
     </View>
@@ -76,6 +93,10 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#334155",
     marginBottom: 6,
+  },
+  inputContainer: {
+    position: "relative",
+    justifyContent: "center",
   },
   formInput: {
     backgroundColor: "#F8FAFC",
@@ -97,6 +118,10 @@ const styles = StyleSheet.create({
   multilineInput: {
     height: 90,
     textAlignVertical: "top",
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: 14,
   },
   hintText: {
     fontSize: 12,
