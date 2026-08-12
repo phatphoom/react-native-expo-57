@@ -5,3 +5,6 @@ export { useCreateProduct } from "./useCreateProduct";
 export { useUpdateProduct } from "./useUpdateProduct";
 export { useDeleteProduct } from "./useDeleteProduct";
 export { useProductForm } from "./useProductForm";
+export { useAddProductForm } from "./useAddProductForm";
+export { useEditProductForm } from "./useEditProductForm";
+

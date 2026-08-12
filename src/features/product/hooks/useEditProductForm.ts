@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { Alert } from "react-native";
-import { useRouter } from "expo-router";
-import { useCreateProduct } from "./useCreateProduct";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { useProduct, useUpdateProduct } from "./useProduct";
 import { useProductForm, type ProductFormValues } from "./useProductForm";
 import { useImagePicker } from "@/shared/hooks/useImagePicker";
 import UploadApi from "@/api/uploadApi";
 
-export function useAddProductForm() {
+export function useEditProductForm() {
+  const { id } = useLocalSearchParams();
   const router = useRouter();
-  const { createProduct } = useCreateProduct();
+  const targetId = Array.isArray(id) ? id[0] : (id as string);
+
+  const { product, loading: loadingProduct, error: productError } = useProduct({ id: targetId });
+  const { updateProduct } = useUpdateProduct();
   const [uploadingImage, setUploadingImage] = useState(false);
 
   const {
@@ -19,7 +23,7 @@ export function useAddProductForm() {
     clearImage,
   } = useImagePicker();
 
-  const handleCreate = async (values: ProductFormValues) => {
+  const handleUpdate = async (values: ProductFormValues) => {
     if (!values.prod_name || !values.price) {
       Alert.alert("ข้อผิดพลาด", "กรุณากรอกชื่อสินค้าและราคา");
       return { success: false, error: "Validation failed" };
@@ -47,9 +51,9 @@ export function useAddProductForm() {
 
     const cateIdToSend = values.cate_id
       ? (isNaN(Number(values.cate_id)) ? values.cate_id : Number(values.cate_id))
-      : 1;
+      : (categories[0]?.cate_id || 1);
 
-    const result = await createProduct({
+    const result = await updateProduct(targetId, {
       prod_name: values.prod_name,
       description: values.description,
       price: Number(values.price),
@@ -59,23 +63,16 @@ export function useAddProductForm() {
       stock_count: Number(values.stock_count) || 0,
       in_stock: Number(values.stock_count) > 0,
       cate_id: cateIdToSend,
-      rating_rate: 0,
-      rating_count: 0,
     });
 
     if (result.success) {
       clearImage();
-      Alert.alert("สำเร็จ", "เพิ่มสินค้าใหม่เรียบร้อยแล้ว!", [
-        {
-          text: "ตกลง",
-          onPress: () => {
-            router.push("/product");
-          },
-        },
+      Alert.alert("สำเร็จ", "แก้ไขข้อมูลสินค้าเรียบร้อยแล้ว!", [
+        { text: "ตกลง", onPress: () => router.back() },
       ]);
       return { success: true };
     } else {
-      Alert.alert("ข้อผิดพลาด", "ไม่สามารถเพิ่มสินค้าได้: " + result.error);
+      Alert.alert("ข้อผิดพลาด", "ไม่สามารถแก้ไขสินค้าได้: " + result.error);
       return { success: false, error: result.error };
     }
   };
@@ -89,32 +86,10 @@ export function useAddProductForm() {
     setShowCategoryModal,
     handleChange,
     handleSubmit,
-    setFormValues,
-    resetForm,
   } = useProductForm({
-    onSubmit: async (values) => {
-      const res = await handleCreate(values);
-      if (res.success) {
-        clearImage();
-        resetForm();
-      }
-      return res;
-    },
+    initialProduct: product,
+    onSubmit: handleUpdate,
   });
-
-  const fillDummyData = () => {
-    const randomId = Math.floor(Math.random() * 1000);
-    setFormValues({
-      prod_name: `สินค้าทดสอบ #${randomId}`,
-      description: "นี่คือรายละเอียดสินค้าทดสอบ สำหรับทดสอบระบบการเพิ่มสินค้าและรีโหลดข้อมูล",
-      price: (Math.floor(Math.random() * 500) + 99).toString(),
-      currency: "THB",
-      discount_pct: "10",
-      image_url: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
-      stock_count: "20",
-      cate_id: String(categories[0]?.cate_id || "1"),
-    });
-  };
 
   const displayImageUri =
     pickedImage?.uri ||
@@ -126,6 +101,10 @@ export function useAddProductForm() {
   };
 
   return {
+    targetId,
+    product,
+    loadingProduct,
+    productError,
     form,
     categories,
     selectedCategory,
@@ -134,12 +113,12 @@ export function useAddProductForm() {
     uploadingImage,
     displayImageUri,
     imageLoading,
+    router,
     setShowCategoryModal,
     handleChange,
     handleSubmit,
     pickImageFromLibrary,
     takePhotoWithCamera,
     handleClearImage,
-    fillDummyData,
   };
 }
