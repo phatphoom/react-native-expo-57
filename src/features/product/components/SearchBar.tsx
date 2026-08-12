@@ -16,6 +16,7 @@ interface SearchBarProps {
   onClear: () => void;
   placeholder?: string;
   onFilterPress?: () => void;
+  activeFilterCount?: number;
 }
 
 const SearchBar = ({
@@ -24,6 +25,7 @@ const SearchBar = ({
   onClear,
   placeholder = "ค้นหาสินค้า...",
   onFilterPress,
+  activeFilterCount = 0,
 }: SearchBarProps) => {
   return (
     <View style={styles.searchBar}>
@@ -45,9 +47,15 @@ const SearchBar = ({
         )}
       </View>
 
-      <TouchableOpacity style={styles.btnFilter} onPress={onFilterPress} activeOpacity={0.7}>
-        <Entypo name="sound-mix" size={15} color="#2563EB" />
-        <Text style={styles.filterText}>ตัวกรอง</Text>
+      <TouchableOpacity style={[styles.btnFilter, activeFilterCount > 0 && styles.btnFilterActive]} onPress={onFilterPress} activeOpacity={0.7}>
+        <Entypo name="sound-mix" size={15} color={activeFilterCount > 0 ? "#FFFFFF" : "#2563EB"} />
+        <Text style={[styles.filterText, activeFilterCount > 0 && styles.filterTextActive]}>ตัวกรอง</Text>
+        
+        {activeFilterCount > 0 && (
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>{activeFilterCount}</Text>
+          </View>
+        )}
       </TouchableOpacity>
     </View>
   );
@@ -96,5 +104,31 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#0F172A",
     height: "100%",
+  },
+  btnFilterActive: {
+    backgroundColor: "#2563EB",
+    borderColor: "#2563EB",
+  },
+  filterTextActive: {
+    color: "#FFFFFF",
+  },
+  badge: {
+    position: "absolute",
+    top: -6,
+    right: -6,
+    backgroundColor: "#EF4444",
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 4,
+    borderWidth: 2,
+    borderColor: "#FFFFFF",
+  },
+  badgeText: {
+    color: "#FFFFFF",
+    fontSize: 10,
+    fontWeight: "bold",
   },
 });

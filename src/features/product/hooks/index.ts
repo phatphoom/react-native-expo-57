@@ -8,5 +8,6 @@ export { useProductForm } from "./useProductForm";
 export { useAddProductForm } from "./useAddProductForm";
 export { useEditProductForm } from "./useEditProductForm";
 export { useProductSearch } from "./useProductSearch";
+export { useProductSearchAndFilter } from "./useProductSearchAndFilter";
 
 

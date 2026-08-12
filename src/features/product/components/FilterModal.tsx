@@ -1,0 +1,337 @@
+import React, { useState, useEffect } from "react";
+import {
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  TextInput,
+  Switch,
+  ScrollView,
+} from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useCategories } from "../hooks/useCategory";
+import { SortOption } from "../hooks/useProductSearchAndFilter";
+
+interface FilterModalProps {
+  visible: boolean;
+  onClose: () => void;
+  // Current active states
+  activeCategoryId: string | number | null;
+  activeMinPrice: string;
+  activeMaxPrice: string;
+  activeInStockOnly: boolean;
+  activeSortBy: SortOption;
+  // Handlers to apply
+  onApplyFilters: (
+    categoryId: string | number | null,
+    minPrice: string,
+    maxPrice: string,
+    inStockOnly: boolean,
+    sortBy: SortOption
+  ) => void;
+  onResetFilters: () => void;
+}
+
+export default function FilterModal({
+  visible,
+  onClose,
+  activeCategoryId,
+  activeMinPrice,
+  activeMaxPrice,
+  activeInStockOnly,
+  activeSortBy,
+  onApplyFilters,
+  onResetFilters,
+}: FilterModalProps) {
+  const { categories } = useCategories();
+
+  // Local state for modal before applying
+  const [localCategoryId, setLocalCategoryId] = useState<string | number | null>(null);
+  const [localMinPrice, setLocalMinPrice] = useState<string>("");
+  const [localMaxPrice, setLocalMaxPrice] = useState<string>("");
+  const [localInStockOnly, setLocalInStockOnly] = useState<boolean>(false);
+  const [localSortBy, setLocalSortBy] = useState<SortOption>("latest");
+
+  // Sync local state when modal opens
+  useEffect(() => {
+    if (visible) {
+      setLocalCategoryId(activeCategoryId);
+      setLocalMinPrice(activeMinPrice);
+      setLocalMaxPrice(activeMaxPrice);
+      setLocalInStockOnly(activeInStockOnly);
+      setLocalSortBy(activeSortBy);
+    }
+  }, [visible, activeCategoryId, activeMinPrice, activeMaxPrice, activeInStockOnly, activeSortBy]);
+
+  const handleApply = () => {
+    onApplyFilters(
+      localCategoryId,
+      localMinPrice,
+      localMaxPrice,
+      localInStockOnly,
+      localSortBy
+    );
+    onClose();
+  };
+
+  const handleReset = () => {
+    setLocalCategoryId(null);
+    setLocalMinPrice("");
+    setLocalMaxPrice("");
+    setLocalInStockOnly(false);
+    setLocalSortBy("latest");
+    // Optionally apply immediately or wait for user to hit apply
+    onResetFilters();
+    onClose();
+  };
+
+  const sortOptions: { label: string; value: SortOption }[] = [
+    { label: "ล่าสุด", value: "latest" },
+    { label: "ราคาต่ำ - สูง", value: "price_asc" },
+    { label: "ราคาสูง - ต่ำ", value: "price_desc" },
+    { label: "คะแนนยอดนิยม", value: "rating" },
+  ];
+
+  return (
+    <Modal visible={visible} transparent animationType="slide">
+      <View style={styles.overlay}>
+        <View style={styles.bottomSheet}>
+          <View style={styles.header}>
+            <Text style={styles.headerTitle}>ตัวกรองสินค้า</Text>
+            <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
+              <Ionicons name="close" size={24} color="#64748B" />
+            </TouchableOpacity>
+          </View>
+
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
+            {/* Sort Section */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>เรียงลำดับตาม</Text>
+              <View style={styles.pillContainer}>
+                {sortOptions.map((opt) => (
+                  <TouchableOpacity
+                    key={opt.value}
+                    style={[styles.pill, localSortBy === opt.value && styles.pillActive]}
+                    onPress={() => setLocalSortBy(opt.value)}
+                  >
+                    <Text style={[styles.pillText, localSortBy === opt.value && styles.pillTextActive]}>
+                      {opt.label}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+
+            {/* Price Range Section */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>ช่วงราคา (บาท)</Text>
+              <View style={styles.priceContainer}>
+                <TextInput
+                  style={styles.priceInput}
+                  placeholder="ขั้นต่ำ"
+                  keyboardType="numeric"
+                  value={localMinPrice}
+                  onChangeText={setLocalMinPrice}
+                />
+                <Text style={styles.priceDivider}>-</Text>
+                <TextInput
+                  style={styles.priceInput}
+                  placeholder="สูงสุด"
+                  keyboardType="numeric"
+                  value={localMaxPrice}
+                  onChangeText={setLocalMaxPrice}
+                />
+              </View>
+            </View>
+
+            {/* Categories Section */}
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle}>หมวดหมู่</Text>
+              <View style={styles.pillContainer}>
+                <TouchableOpacity
+                  style={[styles.pill, !localCategoryId && styles.pillActive]}
+                  onPress={() => setLocalCategoryId(null)}
+                >
+                  <Text style={[styles.pillText, !localCategoryId && styles.pillTextActive]}>
+                    ทั้งหมด
+                  </Text>
+                </TouchableOpacity>
+                {categories?.map((cat) => {
+                  const isActive = localCategoryId !== null && String(localCategoryId) === String(cat.cate_id);
+                  return (
+                    <TouchableOpacity
+                      key={String(cat.cate_id)}
+                      style={[styles.pill, isActive && styles.pillActive]}
+                      onPress={() => setLocalCategoryId(cat.cate_id)}
+                    >
+                      <Text style={[styles.pillText, isActive && styles.pillTextActive]}>
+                        {cat.cate_name}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })}
+              </View>
+            </View>
+
+            {/* In Stock Section */}
+            <View style={[styles.section, styles.rowSection]}>
+              <View>
+                <Text style={styles.sectionTitle}>สินค้าพร้อมส่ง</Text>
+                <Text style={styles.sectionSubtitle}>แสดงเฉพาะสินค้าที่มีในสต็อก</Text>
+              </View>
+              <Switch
+                value={localInStockOnly}
+                onValueChange={setLocalInStockOnly}
+                trackColor={{ false: "#E2E8F0", true: "#93C5FD" }}
+                thumbColor={localInStockOnly ? "#2563EB" : "#F8FAFC"}
+              />
+            </View>
+          </ScrollView>
+
+          {/* Footer Actions */}
+          <View style={styles.footer}>
+            <TouchableOpacity style={styles.btnReset} onPress={handleReset}>
+              <Text style={styles.btnResetText}>ล้างข้อมูล</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.btnApply} onPress={handleApply}>
+              <Text style={styles.btnApplyText}>ดูผลลัพธ์</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+const styles = StyleSheet.create({
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(15, 23, 42, 0.4)",
+    justifyContent: "flex-end",
+  },
+  bottomSheet: {
+    backgroundColor: "#FFFFFF",
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    maxHeight: "85%",
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: "#F1F5F9",
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#0F172A",
+  },
+  closeBtn: {
+    padding: 4,
+  },
+  content: {
+    padding: 24,
+    paddingBottom: 40,
+  },
+  section: {
+    marginBottom: 24,
+  },
+  rowSection: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  sectionTitle: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#1E293B",
+    marginBottom: 12,
+  },
+  sectionSubtitle: {
+    fontSize: 13,
+    color: "#64748B",
+    marginTop: 2,
+  },
+  pillContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+  },
+  pill: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    backgroundColor: "#F1F5F9",
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+  },
+  pillActive: {
+    backgroundColor: "#EFF6FF",
+    borderColor: "#2563EB",
+  },
+  pillText: {
+    fontSize: 14,
+    color: "#475569",
+    fontWeight: "500",
+  },
+  pillTextActive: {
+    color: "#2563EB",
+    fontWeight: "600",
+  },
+  priceContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  priceInput: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    fontSize: 15,
+    color: "#0F172A",
+    backgroundColor: "#F8FAFC",
+  },
+  priceDivider: {
+    color: "#94A3B8",
+    fontSize: 18,
+  },
+  footer: {
+    flexDirection: "row",
+    padding: 24,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: "#F1F5F9",
+    gap: 12,
+  },
+  btnReset: {
+    flex: 1,
+    paddingVertical: 16,
+    backgroundColor: "#F1F5F9",
+    borderRadius: 16,
+    alignItems: "center",
+  },
+  btnResetText: {
+    color: "#475569",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  btnApply: {
+    flex: 2,
+    paddingVertical: 16,
+    backgroundColor: "#2563EB",
+    borderRadius: 16,
+    alignItems: "center",
+  },
+  btnApplyText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+});

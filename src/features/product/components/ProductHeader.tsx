@@ -7,6 +7,7 @@ interface ProductHeaderProps {
   onSearchChange: (text: string) => void;
   onClear: () => void;
   onFilterPress?: () => void;
+  activeFilterCount?: number;
 }
 
 const ProductHeader = ({
@@ -14,6 +15,7 @@ const ProductHeader = ({
   onSearchChange,
   onClear,
   onFilterPress,
+  activeFilterCount = 0,
 }: ProductHeaderProps) => {
   return (
     <View style={styles.headContainer}>
@@ -23,6 +25,7 @@ const ProductHeader = ({
         onChangeText={onSearchChange}
         onClear={onClear}
         onFilterPress={onFilterPress}
+        activeFilterCount={activeFilterCount}
       />
     </View>
   );
