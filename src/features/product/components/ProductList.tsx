@@ -22,7 +22,7 @@ const ProductList = ({
 }: ProductListProps) => {
   const { products: fetchedProducts, loading: fetchLoading, refetch } = useProductAll();
 
-  const products = customProducts ?? fetchedProducts;
+  const products = customProducts ?? fetchedProducts ?? [];
   const loading = customLoading ?? fetchLoading;
   const handleRefresh = customRefresh ?? refetch;
 
@@ -32,7 +32,7 @@ const ProductList = ({
     }, [refetch])
   );
 
-  if (loading && (!products || products.length === 0)) {
+  if (loading && products.length === 0) {
     return <ProductSkeletonList />;
   }
 

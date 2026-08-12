@@ -1,16 +1,12 @@
 import ProductApi from "@/api/productApi";
 import type { Product } from "@/types/product";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export function useProductAll() {
   const [products, setProducts] = useState<Product[] | null>([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const data = await ProductApi.getAllProducts();
@@ -20,7 +16,11 @@ export function useProductAll() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return { products, loading, refetch: fetchData };
 }
