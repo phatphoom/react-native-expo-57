@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import type { Product } from '@/types/product';
+import UploadApi from '@/api/uploadApi';
 
 interface DetailProdctProps {
   id: string | string[];
@@ -28,6 +29,7 @@ const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctPr
   // คำนวณราคาจริงหลังหักส่วนลด (finalPrice) และราคาเต็มก่อนลด (originalPrice)
   const priceNum = Number(product.price) || 0;
   const discountPctNum = Number(product.discount_pct) || 0;
+  const imageUrl = UploadApi.getFullImageUrl(product.image_url) || 'https://via.placeholder.com/400';
 
   const finalPrice = discountPctNum > 0 
     ? (priceNum * (1 - discountPctNum / 100)).toFixed(2) 
@@ -42,7 +44,7 @@ const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctPr
       {/* 1. รูปภาพสินค้า */}
       <View style={styles.imageContainer}>
         <Image 
-          source={{ uri: product.image_url || 'https://via.placeholder.com/400' }} 
+          source={{ uri: imageUrl }} 
           style={styles.image}
           resizeMode="cover"
         />

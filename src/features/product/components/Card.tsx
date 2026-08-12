@@ -2,6 +2,7 @@ import type { Product } from "@/types/product";
 import { Link } from "expo-router";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import UploadApi from "@/api/uploadApi";
 
 interface ProductCardProps {
   product: Product;
@@ -10,6 +11,7 @@ interface ProductCardProps {
 const ProductCard = ({ product }: ProductCardProps) => {
   const priceNum = Number(product.price) || 0;
   const discountPctNum = Number(product.discount_pct) || 0;
+  const imageUrl = UploadApi.getFullImageUrl(product.image_url) || 'https://via.placeholder.com/150';
   
   // ราคาขายจริง (ถ้ามีส่วนลดจะคำนวณราคาที่หักส่วนลดแล้ว)
   const finalPrice = discountPctNum > 0
@@ -29,7 +31,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         {/* 1. รูปภาพสินค้า */}
         <View style={styles.imageContainer}>
           <Image 
-            source={{ uri: product.image_url || 'https://via.placeholder.com/150' }} 
+            source={{ uri: imageUrl }} 
             style={styles.image} 
             resizeMode="cover"
           />
