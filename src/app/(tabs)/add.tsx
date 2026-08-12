@@ -58,8 +58,8 @@ export default function AddScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#F8FAFC",
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingTop: 12,
   },
 });

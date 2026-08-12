@@ -25,11 +25,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    paddingVertical: 12,
-    backgroundColor: "#F8F9FA",
+    paddingTop: 12,
+    backgroundColor: "#F8FAFC",
   },
   listContent: {
-    paddingTop: 12,
+    paddingTop: 8,
     paddingBottom: 24,
   },
 });
