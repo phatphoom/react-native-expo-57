@@ -1,24 +1,52 @@
-import { useProductAll } from "@/features/product/hooks/useProduct";
-import { FlatList, StyleSheet, RefreshControl } from "react-native";
-import ProductCard from "./Card";
-import { ProductSkeletonList } from "./SkeletonCard";
+import { useProductAll } from "@/features/product/hooks";
+import { Product } from "@/types/product";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { useFocusEffect } from "expo-router";
 import { useCallback } from "react";
+import { FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
+import ProductCard from "./Card";
+import { ProductSkeletonList } from "./SkeletonCard";
 
-const ProductList = () => {
-  const { products, loading, refetch } = useProductAll();
+interface ProductListProps {
+  products?: Product[];
+  loading?: boolean;
+  onRefresh?: () => void;
+  isSearching?: boolean;
+}
 
-  // รีโหลดข้อมูลทุกครั้งที่สลับเปิดกลับมาหน้านี้ (Screen Focus)
+const ProductList = ({
+  products: customProducts,
+  loading: customLoading,
+  onRefresh: customRefresh,
+  isSearching = false,
+}: ProductListProps) => {
+  const { products: fetchedProducts, loading: fetchLoading, refetch } = useProductAll();
+
+  const products = customProducts ?? fetchedProducts;
+  const loading = customLoading ?? fetchLoading;
+  const handleRefresh = customRefresh ?? refetch;
+
   useFocusEffect(
     useCallback(() => {
       refetch();
-    }, [])
+    }, [refetch])
   );
 
-  // ถ้ากำลังโหลดข้อมูลครั้งแรก หรือยังไม่มีข้อมูลสินค้า ให้โชว์ Skeleton
   if (loading && (!products || products.length === 0)) {
     return <ProductSkeletonList />;
   }
+
+  const renderEmptyState = () => (
+    <View style={styles.emptyContainer}>
+      <Ionicons name="search-outline" size={48} color="#9ca3af" />
+      <Text style={styles.emptyTitle}>
+        {isSearching ? "ไม่พบสินค้าที่ตรงกับการค้นหา" : "ไม่มีรายการสินค้า"}
+      </Text>
+      <Text style={styles.emptySubText}>
+        {isSearching ? "ลองค้นหาด้วยคำอื่น หรือกดล้างคำค้นหา" : "เริ่มเพิ่มสินค้าใหม่ได้เลย"}
+      </Text>
+    </View>
+  );
 
   return (
     <FlatList
@@ -26,14 +54,18 @@ const ProductList = () => {
       keyExtractor={(item) => item.prod_id}
       renderItem={({ item }) => <ProductCard product={item} />}
       style={{ flex: 1 }}
-      contentContainerStyle={styles.listContent}
+      contentContainerStyle={[
+        styles.listContent,
+        products.length === 0 && { flex: 1, justifyContent: "center" },
+      ]}
       showsVerticalScrollIndicator={false}
+      ListEmptyComponent={renderEmptyState}
       refreshControl={
         <RefreshControl
           refreshing={loading}
-          onRefresh={refetch}
-          colors={["#007AFF"]} // สีของตัวหมุน (Android)
-          tintColor={"#007AFF"} // สีของตัวหมุน (iOS)
+          onRefresh={handleRefresh}
+          colors={["#007AFF"]}
+          tintColor={"#007AFF"}
         />
       }
     />
@@ -47,22 +79,20 @@ const styles = StyleSheet.create({
     paddingBottom: 24,
     gap: 12,
   },
-  CardWrapper: {
-    borderWidth: 1,
-    flexDirection: "row",
+  emptyContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 32,
     gap: 8,
-    padding: 8,
-    marginBottom: 8,
   },
-  cardDetails: {
-    flex: 1,
+  emptyTitle: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#374151",
   },
-  image: {
-    width: 100,
-    height: 100,
-  },
-  cardBt: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  emptySubText: {
+    fontSize: 13,
+    color: "#6b7280",
+    textAlign: "center",
   },
 });

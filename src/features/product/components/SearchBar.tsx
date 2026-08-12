@@ -1,5 +1,6 @@
 import Entypo from "@expo/vector-icons/Entypo";
 import Feather from "@expo/vector-icons/Feather";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 import {
   StyleSheet,
@@ -9,26 +10,44 @@ import {
   View,
 } from "react-native";
 
-const SearchBar = () => {
+interface SearchBarProps {
+  value: string;
+  onChangeText: (text: string) => void;
+  onClear: () => void;
+  placeholder?: string;
+  onFilterPress?: () => void;
+}
+
+const SearchBar = ({
+  value,
+  onChangeText,
+  onClear,
+  placeholder = "Search product...",
+  onFilterPress,
+}: SearchBarProps) => {
   return (
     <View style={styles.searchBar}>
       <View style={styles.searchInput}>
-        <Feather name="search" size={20} color="black" />
+        <Feather name="search" size={18} color="#6b7280" />
         <TextInput
-          placeholder="Search..."
-          placeholderTextColor="#a4a4a4"
+          placeholder={placeholder}
+          placeholderTextColor="#9ca3af"
           style={styles.txtInput}
+          value={value}
+          onChangeText={onChangeText}
+          returnKeyType="search"
+          clearButtonMode="while-editing"
         />
+        {value.length > 0 && (
+          <TouchableOpacity onPress={onClear} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
+            <Ionicons name="close-circle" size={18} color="#9ca3af" />
+          </TouchableOpacity>
+        )}
       </View>
 
-      <TouchableOpacity style={styles.btnSearch}>
-        <Entypo name="plus" size={20} color="black" />
-        <Text>Search</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.btnFilter}>
-        <Entypo name="triangle-down" size={20} color="black" />
-        <Text>Filter</Text>
+      <TouchableOpacity style={styles.btnFilter} onPress={onFilterPress}>
+        <Entypo name="sound-mix" size={16} color="#374151" />
+        <Text style={styles.filterText}>Filter</Text>
       </TouchableOpacity>
     </View>
   );
@@ -37,53 +56,44 @@ const SearchBar = () => {
 export default SearchBar;
 
 const styles = StyleSheet.create({
-  headContainer: {
-    marginBottom: 15,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 6,
-    marginBottom: 6,
-  },
   searchBar: {
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "space-between",
     gap: 8,
   },
   searchInput: {
     flex: 1,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: "#d1d5db",
+    backgroundColor: "#ffffff",
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 10,
-    borderRadius: 4,
-    gap: 2,
-    height: 40,
-  },
-
-  btnSearch: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#1e85f7",
-    justifyContent: "center",
-    borderRadius: 4,
-    paddingHorizontal: 8,
-    gap: 4,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    gap: 8,
+    height: 42,
   },
   btnFilter: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    borderWidth: 1,
     borderColor: "#d1d5db",
-    borderRadius: 4,
-    paddingHorizontal: 8,
-    gap: 4,
+    backgroundColor: "#ffffff",
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    height: 42,
+    gap: 6,
+  },
+  filterText: {
+    fontSize: 13,
+    fontWeight: "500",
+    color: "#374151",
   },
   txtInput: {
     flex: 1,
-    fontSize: 12,
+    fontSize: 14,
     color: "#1f2937",
     height: "100%",
   },
