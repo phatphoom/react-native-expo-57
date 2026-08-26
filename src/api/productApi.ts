@@ -9,34 +9,45 @@ import type {
 } from "@/types/product";
 import api from "./axios";
 
+export interface GetProductsParams {
+  search?: string;
+  q?: string;
+  page?: number | string;
+  limit?: number | string;
+  category?: string;
+  cate_id?: string | number;
+}
+
 const ProductApi = {
-  // 1. Get All Products (GET /api/product/all)
-  getAllProducts: async (): Promise<Product[]> => {
-    const res = await api.get<ApiSuccessResponse<Product[]>>("/product/all");
+  // 1. Get All Products (GET /api/products)
+  getProducts: async (params?: GetProductsParams): Promise<Product[]> => {
+    const res = await api.get<ApiSuccessResponse<Product[]>>("/products", {
+      params,
+    });
     return res.data.data;
   },
 
-  // 2. Get Product By ID (GET /api/product/:id)
+  // 2. Get Product By ID (GET /api/products/:id)
   getProductById: async (id: string): Promise<Product> => {
-    const res = await api.get<ApiSuccessResponse<Product>>(`/product/${id}`);
+    const res = await api.get<ApiSuccessResponse<Product>>(`/products/${id}`);
     return res.data.data;
   },
 
-  // 3. Create Product (POST /api/product/add)
+  // 3. Create Product (POST /api/products)
   createProduct: async (productData: CreateProductDto) => {
-    const res = await api.post<ApiSuccessResponse<CreateProductResponseData>>("/product/add", productData);
+    const res = await api.post<ApiSuccessResponse<CreateProductResponseData>>("/products", productData);
     return res.data;
   },
 
-  // 4. Update Product (PUT /api/product/edit/:id)
+  // 4. Update Product (PUT /api/products/:id)
   updateProduct: async (id: string, updateData: UpdateProductDto) => {
-    const res = await api.put<ApiSuccessResponse<UpdateProductResponseData>>(`/product/edit/${id}`, updateData);
+    const res = await api.put<ApiSuccessResponse<UpdateProductResponseData>>(`/products/${id}`, updateData);
     return res.data;
   },
 
-  // 5. Delete Product (DELETE /api/product/delete/:id)
+  // 5. Delete Product (DELETE /api/products/:id)
   deleteProduct: async (id: string) => {
-    const res = await api.delete<DeleteProductResponse>(`/product/delete/${id}`);
+    const res = await api.delete<DeleteProductResponse>(`/products/${id}`);
     return res.data;
   },
 };
