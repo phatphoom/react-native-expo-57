@@ -1,5 +1,5 @@
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { tokenStorage } from "@/lib/storage";
 
 const api = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API || "",
@@ -13,12 +13,14 @@ const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     try {
-      const token = await AsyncStorage.getItem("authToken");
-      if (token) {
+      const token = await tokenStorage.getItem("authToken");
+      if (token && token !== "undefined" && token !== "null" && token.trim() !== "") {
         config.headers.Authorization = `Bearer ${token}`;
+      } else {
+        delete config.headers.Authorization;
       }
     } catch (error) {
-      console.error("Error reading token from AsyncStorage:", error);
+      console.error("Error reading token from storage:", error);
     }
     return config;
   },

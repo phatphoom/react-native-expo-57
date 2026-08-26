@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { tokenStorage } from "@/lib/storage";
 import { User, LoginRequest, RegisterRequest } from "@/types/auth";
 import { AuthApi } from "../api/authApi";
 import { useRouter } from "expo-router";
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const checkAuth = async () => {
     setIsLoading(true);
     try {
-      const storedToken = await AsyncStorage.getItem("authToken");
+      const storedToken = await tokenStorage.getItem("authToken");
       if (storedToken) {
         setToken(storedToken);
         // Fetch current profile with token
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error) {
       console.error("Auth verification failed", error);
       // Clean up invalid token
-      await AsyncStorage.removeItem("authToken");
+      await tokenStorage.removeItem("authToken");
       setToken(null);
       setUser(null);
     } finally {
@@ -50,23 +50,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (data: LoginRequest) => {
     const res = await AuthApi.login(data);
-    const { token: newToken, user: newUser } = res.data;
+    const authData = res?.data;
+    if (!authData || !authData.token) {
+      throw new Error("ไม่พบทอเคนจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้ง");
+    }
+    const newToken = authData.token;
+    const newUser = authData.user;
     
-    await AsyncStorage.setItem("authToken", newToken);
+    await tokenStorage.setItem("authToken", newToken);
     setToken(newToken);
     setUser(newUser);
   };
 
   const register = async (data: RegisterRequest) => {
-    // According to docs, register returns user but not token (usually), so they might need to login after
-    // Let's call login if register is successful, or just wait for them to login
     await AuthApi.register(data);
     // Auto login after register
     await login({ email: data.email, password: data.password });
   };
 
   const logout = async () => {
-    await AsyncStorage.removeItem("authToken");
+    await tokenStorage.removeItem("authToken");
     setToken(null);
     setUser(null);
     router.replace("/(auth)/login");
