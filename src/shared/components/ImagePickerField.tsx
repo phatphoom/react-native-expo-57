@@ -1,12 +1,12 @@
 import React from "react";
 import {
   ActivityIndicator,
-  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { Image } from "expo-image";
 import { Ionicons } from "@expo/vector-icons";
 
 export interface ImagePickerFieldProps {
@@ -34,7 +34,7 @@ export const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
 
       {imageUri ? (
         <View style={styles.previewContainer}>
-          <Image source={{ uri: imageUri }} style={styles.previewImage} resizeMode="cover" />
+          <Image source={{ uri: imageUri }} style={styles.previewImage} contentFit="cover" transition={200} />
           {uploading && (
             <View style={styles.uploadingOverlay}>
               <ActivityIndicator size="large" color="#ffffff" />

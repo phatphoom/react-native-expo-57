@@ -10,8 +10,13 @@ import {
 } from "react-native";
 import { ProductForm } from "@/features/product/components";
 import { useEditProductForm } from "@/features/product/hooks";
+import { useAuth } from "@/features/auth/hooks";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function EditProductScreen() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
+
   const {
     product,
     loadingProduct,
@@ -32,6 +37,29 @@ export default function EditProductScreen() {
     takePhotoWithCamera,
     handleClearImage,
   } = useEditProductForm();
+
+  // Role Protection Guard
+  if (!isAdmin) {
+    return (
+      <View style={styles.deniedContainer}>
+        <View style={styles.deniedIconContainer}>
+          <Ionicons name="lock-closed" size={48} color="#DC2626" />
+        </View>
+        <Text style={styles.deniedTitle}>สิทธิ์การใช้งานจำกัด</Text>
+        <Text style={styles.deniedMessage}>
+          เฉพาะบัญชีผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถแก้ไขข้อมูลสินค้าได้
+        </Text>
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={() => router.back()}
+          activeOpacity={0.8}
+        >
+          <Ionicons name="arrow-back" size={20} color="#FFFFFF" />
+          <Text style={styles.backBtnText}>ย้อนกลับ</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   if (loadingProduct && !product) {
     return (
@@ -122,5 +150,54 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
+  },
+  deniedContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 24,
+    backgroundColor: "#F8FAFC",
+  },
+  deniedIconContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: "#FEE2E2",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  deniedTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#0F172A",
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  deniedMessage: {
+    fontSize: 15,
+    color: "#64748B",
+    textAlign: "center",
+    lineHeight: 22,
+    marginBottom: 28,
+  },
+  backBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#2563EB",
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 14,
+    gap: 8,
+    shadowColor: "#2563EB",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  backBtnText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });

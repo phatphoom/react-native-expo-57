@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import type { Product } from '@/types/product';
 import UploadApi from '@/api/uploadApi';
@@ -46,7 +47,8 @@ const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctPr
         <Image 
           source={{ uri: imageUrl }} 
           style={styles.image}
-          resizeMode="cover"
+          contentFit="cover"
+          transition={300}
         />
         {/* ป้าย % ส่วนลด */}
         {discountPctNum > 0 && (

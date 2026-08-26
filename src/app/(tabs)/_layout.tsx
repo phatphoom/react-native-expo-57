@@ -4,8 +4,12 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { GlassView } from "expo-glass-effect";
 import { Tabs } from "expo-router";
 import { StyleSheet, View } from "react-native";
+import { useAuth } from "@/features/auth/hooks";
 
 export default function TabLayout() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
+
   return (
     <Tabs
       screenOptions={{
@@ -86,6 +90,7 @@ export default function TabLayout() {
         name="add"
         options={{
           title: "เพิ่มสินค้า",
+          href: isAdmin ? "/add" : null, // Hide tab icon if not admin
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconWrapper, focused && styles.activeIconWrapper]}>
               <AntDesign name="plus-circle" size={22} color={color} />

@@ -1,32 +1,35 @@
 import UploadApi from "@/api/uploadApi";
+import { useUserProfile } from "@/features/profile/hooks/useUserProfile";
 import { useCategories } from "@/features/product/hooks/useCategory";
 import { useProductAll } from "@/features/product/hooks/useProductAll";
+import { useAuth } from "@/features/auth/hooks";
 import { FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useMemo } from "react";
 import {
   ActivityIndicator,
-  Image,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { Image } from "expo-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Home() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
 
   const { products, loading: productsLoading } = useProductAll();
   const { categories, loading: categoriesLoading } = useCategories();
+  const { displayName, fullAvatarUrl } = useUserProfile();
 
   // Get latest 5 products for recent activity
   const recentProducts = useMemo(() => {
     if (!products) return [];
-    // Assuming products are already sorted by latest, or we can sort by id/date if available
-    // For now just take the first 5
     return products.slice(0, 5);
   }, [products]);
 
@@ -57,19 +60,27 @@ export default function Home() {
       <ScrollView
         contentContainerStyle={[
           styles.scrollContent,
-          { paddingTop: insets.top + 16, paddingBottom: 120 }, // Extra padding for bottom bar
+          { paddingTop: insets.top + 16, paddingBottom: 120 },
         ]}
         showsVerticalScrollIndicator={false}
       >
         {/* Header Section */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.greeting}>สวัสดี, ยินดีต้อนรับ 👋</Text>
+            <Text style={styles.greeting}>สวัสดี, {displayName} 👋</Text>
             <Text style={styles.subtitle}>จัดการร้านค้าของคุณวันนี้</Text>
           </View>
-          <View style={styles.avatarContainer}>
-            <Ionicons name="person-circle" size={48} color="#94A3B8" />
-          </View>
+          <TouchableOpacity
+            style={styles.avatarContainer}
+            onPress={() => router.push("/profile")}
+            activeOpacity={0.8}
+          >
+            {fullAvatarUrl ? (
+              <Image source={{ uri: fullAvatarUrl }} style={styles.headerAvatarImage} contentFit="cover" transition={200} />
+            ) : (
+              <Ionicons name="person-circle" size={48} color="#94A3B8" />
+            )}
+          </TouchableOpacity>
         </View>
 
         {/* Stats Section */}
@@ -93,15 +104,17 @@ export default function Home() {
         {/* Quick Actions */}
         <Text style={styles.sectionTitle}>เมนูด่วน</Text>
         <View style={styles.quickActionsContainer}>
-          <TouchableOpacity
-            style={styles.quickActionBtn}
-            onPress={() => router.push("/add")}
-          >
-            <View style={[styles.quickActionIcon, { backgroundColor: "rgba(59, 130, 246, 0.1)" }]}>
-              <Ionicons name="add-circle" size={28} color="#3B82F6" />
-            </View>
-            <Text style={styles.quickActionText}>เพิ่มสินค้า</Text>
-          </TouchableOpacity>
+          {isAdmin && (
+            <TouchableOpacity
+              style={styles.quickActionBtn}
+              onPress={() => router.push("/add")}
+            >
+              <View style={[styles.quickActionIcon, { backgroundColor: "rgba(59, 130, 246, 0.1)" }]}>
+                <Ionicons name="add-circle" size={28} color="#3B82F6" />
+              </View>
+              <Text style={styles.quickActionText}>เพิ่มสินค้า</Text>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             style={styles.quickActionBtn}
             onPress={() => router.push("/product")}
@@ -145,7 +158,7 @@ export default function Home() {
                 >
                   <View style={styles.recentProductImagePlaceholder}>
                     {imageUrl ? (
-                      <Image source={{ uri: imageUrl }} style={styles.recentProductImage} resizeMode="cover" />
+                      <Image source={{ uri: imageUrl }} style={styles.recentProductImage} contentFit="cover" transition={200} />
                     ) : (
                       <Ionicons name="image-outline" size={24} color="#CBD5E1" />
                     )}
@@ -187,7 +200,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   greeting: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "700",
     color: "#0F172A",
     marginBottom: 4,
@@ -197,13 +210,17 @@ const styles = StyleSheet.create({
     color: "#64748B",
   },
   avatarContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     backgroundColor: "#F1F5F9",
     justifyContent: "center",
     alignItems: "center",
     overflow: "hidden",
+  },
+  headerAvatarImage: {
+    width: "100%",
+    height: "100%",
   },
   statsContainer: {
     flexDirection: "row",
@@ -255,7 +272,7 @@ const styles = StyleSheet.create({
   },
   quickActionsContainer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     marginBottom: 32,
     backgroundColor: "#FFFFFF",
     borderRadius: 24,

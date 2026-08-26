@@ -3,6 +3,7 @@ import {
   useDeleteProduct,
   useProduct,
 } from "@/features/product/hooks/useProduct";
+import { useAuth } from "@/features/auth/hooks";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Stack, useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback } from "react";
@@ -11,6 +12,9 @@ import { Alert, StyleSheet, TouchableOpacity, View } from "react-native";
 export default function ProductDetail() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const { user } = useAuth();
+  const isAdmin = user?.role === "admin";
+
   const { product, refetch } = useProduct({ id: id as string });
   const { deleteProduct, loading: isDeleting } = useDeleteProduct();
 
@@ -60,32 +64,34 @@ export default function ProductDetail() {
       <Stack.Screen
         options={{
           title: "รายละเอียดสินค้า",
-          headerRight: () => (
-            <View style={styles.headerRightContainer}>
-              <TouchableOpacity
-                onPress={handleEdit}
-                style={styles.headerButton}
-                activeOpacity={0.7}
-              >
-                <FontAwesome name="pencil" size={20} color="#007AFF" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleDelete}
-                disabled={isDeleting}
-                style={styles.headerButton}
-                activeOpacity={0.7}
-              >
-                <FontAwesome name="trash-o" size={22} color="#FF3B30" />
-              </TouchableOpacity>
-            </View>
-          ),
+          headerRight: isAdmin
+            ? () => (
+                <View style={styles.headerRightContainer}>
+                  <TouchableOpacity
+                    onPress={handleEdit}
+                    style={styles.headerButton}
+                    activeOpacity={0.7}
+                  >
+                    <FontAwesome name="pencil" size={20} color="#007AFF" />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={handleDelete}
+                    disabled={isDeleting}
+                    style={styles.headerButton}
+                    activeOpacity={0.7}
+                  >
+                    <FontAwesome name="trash-o" size={22} color="#FF3B30" />
+                  </TouchableOpacity>
+                </View>
+              )
+            : undefined,
         }}
       />
       <DetailProdct
         id={id}
         data={product}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+        onEdit={isAdmin ? handleEdit : undefined}
+        onDelete={isAdmin ? handleDelete : undefined}
         isDeleting={isDeleting}
       />
     </View>
