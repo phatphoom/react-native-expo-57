@@ -19,6 +19,22 @@ export interface RegisterRequest {
   password?: string;
 }
 
+export interface ChangePasswordRequest {
+  current_password: string;
+  new_password: string;
+  confirm_password?: string;
+}
+
+export interface ResetPasswordRequest {
+  email: string;
+  new_password: string;
+  confirm_password?: string;
+}
+
+export interface DeleteAccountRequest {
+  password?: string;
+}
+
 export interface AuthResponseData {
   token: string;
   user: User;
@@ -26,3 +42,4 @@ export interface AuthResponseData {
 
 export type AuthResponse = ApiSuccessResponse<AuthResponseData>;
 export type ProfileResponse = ApiSuccessResponse<User>;
+export type BaseAuthResponse = ApiSuccessResponse<{ message?: string }>;

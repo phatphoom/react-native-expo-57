@@ -1,16 +1,20 @@
+import { AuthApi } from "@/features/auth/api/authApi";
 import { useLoginForm } from "@/features/auth/hooks";
 import { FormField } from "@/shared/components/FormField";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
+  Alert,
   Keyboard,
   KeyboardAvoidingView,
+  Modal,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -27,6 +31,53 @@ export default function LoginScreen() {
     error,
     handleLogin,
   } = useLoginForm();
+
+  // Reset Password State
+  const [showResetModal, setShowResetModal] = useState(false);
+  const [resetEmail, setResetEmail] = useState("");
+  const [resetNewPass, setResetNewPass] = useState("");
+  const [resetConfirmPass, setResetConfirmPass] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+  const [showResetNewPass, setShowResetNewPass] = useState(false);
+  const [showResetConfirmPass, setShowResetConfirmPass] = useState(false);
+
+  const handleResetPassword = async () => {
+    if (!resetEmail || !resetNewPass || !resetConfirmPass) {
+      Alert.alert("ข้อผิดพลาด", "กรุณากรอกข้อมูลให้ครบทุกช่อง");
+      return;
+    }
+    if (resetNewPass.length < 6) {
+      Alert.alert("ข้อผิดพลาด", "รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 6 ตัวอักษร");
+      return;
+    }
+    if (resetNewPass !== resetConfirmPass) {
+      Alert.alert("ข้อผิดพลาด", "รหัสผ่านใหม่และการยืนยันรหัสผ่านไม่ตรงกัน");
+      return;
+    }
+
+    setResetLoading(true);
+    try {
+      const res = await AuthApi.resetPassword({
+        email: resetEmail.trim(),
+        new_password: resetNewPass,
+        confirm_password: resetConfirmPass,
+      });
+      setShowResetModal(false);
+      setResetEmail("");
+      setResetNewPass("");
+      setResetConfirmPass("");
+      Alert.alert("สำเร็จ", res?.message || "รีเซ็ตรหัสผ่านเรียบร้อยแล้ว คุณสามารถเข้าสู่ระบบด้วยรหัสผ่านใหม่ได้ทันที");
+    } catch (err: any) {
+      const msg =
+        err?.response?.data?.message ||
+        err?.response?.data?.errors?.email ||
+        err?.message ||
+        "ไม่สามารถรีเซ็ตรหัสผ่านได้";
+      Alert.alert("ข้อผิดพลาด", msg);
+    } finally {
+      setResetLoading(false);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -73,7 +124,13 @@ export default function LoginScreen() {
               isPassword
             />
 
-            <TouchableOpacity style={styles.forgotPassword}>
+            <TouchableOpacity
+              style={styles.forgotPassword}
+              onPress={() => {
+                setResetEmail(email);
+                setShowResetModal(true);
+              }}
+            >
               <Text style={styles.forgotPasswordText}>ลืมรหัสผ่าน?</Text>
             </TouchableOpacity>
 
@@ -98,6 +155,119 @@ export default function LoginScreen() {
           </View>
         </ScrollView>
       </TouchableWithoutFeedback>
+
+      {/* Reset / Forgot Password Modal */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={showResetModal}
+        onRequestClose={() => setShowResetModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalCard}>
+            <View style={styles.modalHeader}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+                <View style={styles.modalIconBox}>
+                  <Ionicons name="lock-open" size={20} color="#2563EB" />
+                </View>
+                <Text style={styles.modalTitle}>รีเซ็ตรหัสผ่าน</Text>
+              </View>
+              <TouchableOpacity
+                onPress={() => setShowResetModal(false)}
+                hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+              >
+                <Ionicons name="close" size={24} color="#64748B" />
+              </TouchableOpacity>
+            </View>
+
+            <Text style={styles.modalSubText}>
+              กรุณากรอกอีเมลของบัญชีที่ต้องการตั้งรหัสผ่านใหม่
+            </Text>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>อีเมล (Email)</Text>
+              <TextInput
+                style={styles.textInput}
+                placeholder="example@email.com"
+                placeholderTextColor="#94A3B8"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                value={resetEmail}
+                onChangeText={setResetEmail}
+              />
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>รหัสผ่านใหม่ (New Password)</Text>
+              <View style={styles.passwordInputWrapper}>
+                <TextInput
+                  style={styles.passwordTextInput}
+                  placeholder="ความยาวอย่างน้อย 6 ตัวอักษร"
+                  placeholderTextColor="#94A3B8"
+                  secureTextEntry={!showResetNewPass}
+                  value={resetNewPass}
+                  onChangeText={setResetNewPass}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowResetNewPass(!showResetNewPass)}
+                  style={styles.eyeIconBtn}
+                >
+                  <Ionicons
+                    name={showResetNewPass ? "eye-off-outline" : "eye-outline"}
+                    size={20}
+                    color="#64748B"
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputLabel}>ยืนยันรหัสผ่านใหม่ (Confirm Password)</Text>
+              <View style={styles.passwordInputWrapper}>
+                <TextInput
+                  style={styles.passwordTextInput}
+                  placeholder="กรอกรหัสผ่านใหม่อีกครั้ง"
+                  placeholderTextColor="#94A3B8"
+                  secureTextEntry={!showResetConfirmPass}
+                  value={resetConfirmPass}
+                  onChangeText={setResetConfirmPass}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowResetConfirmPass(!showResetConfirmPass)}
+                  style={styles.eyeIconBtn}
+                >
+                  <Ionicons
+                    name={showResetConfirmPass ? "eye-off-outline" : "eye-outline"}
+                    size={20}
+                    color="#64748B"
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <View style={styles.modalActions}>
+              <TouchableOpacity
+                style={styles.modalCancelBtn}
+                onPress={() => setShowResetModal(false)}
+                disabled={resetLoading}
+              >
+                <Text style={styles.modalCancelBtnText}>ยกเลิก</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.modalSaveBtn}
+                onPress={handleResetPassword}
+                disabled={resetLoading}
+              >
+                {resetLoading ? (
+                  <ActivityIndicator size="small" color="#FFFFFF" />
+                ) : (
+                  <Text style={styles.modalSaveBtnText}>รีเซ็ตรหัสผ่าน</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </KeyboardAvoidingView>
   );
 }
@@ -207,6 +377,117 @@ const styles = StyleSheet.create({
   },
   registerLink: {
     color: "#2563EB",
+    fontSize: 15,
+    fontWeight: "bold",
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(15, 23, 42, 0.6)",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  modalCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    padding: 24,
+    width: "100%",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  modalIconBox: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: "#EFF6FF",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#0F172A",
+  },
+  modalSubText: {
+    fontSize: 13,
+    color: "#64748B",
+    marginBottom: 16,
+    lineHeight: 18,
+  },
+  inputGroup: {
+    marginBottom: 14,
+  },
+  inputLabel: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#475569",
+    marginBottom: 6,
+  },
+  textInput: {
+    backgroundColor: "#F8FAFC",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 11,
+    fontSize: 14,
+    color: "#0F172A",
+  },
+  passwordInputWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F8FAFC",
+    borderWidth: 1,
+    borderColor: "#E2E8F0",
+    borderRadius: 12,
+  },
+  passwordTextInput: {
+    flex: 1,
+    paddingHorizontal: 14,
+    paddingVertical: 11,
+    fontSize: 14,
+    color: "#0F172A",
+  },
+  eyeIconBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  modalActions: {
+    flexDirection: "row",
+    width: "100%",
+    gap: 12,
+    marginTop: 10,
+  },
+  modalCancelBtn: {
+    flex: 1,
+    backgroundColor: "#F1F5F9",
+    paddingVertical: 13,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  modalCancelBtnText: {
+    color: "#475569",
+    fontSize: 15,
+    fontWeight: "600",
+  },
+  modalSaveBtn: {
+    flex: 1,
+    backgroundColor: "#2563EB",
+    paddingVertical: 13,
+    borderRadius: 12,
+    alignItems: "center",
+  },
+  modalSaveBtnText: {
+    color: "#FFFFFF",
     fontSize: 15,
     fontWeight: "bold",
   },
