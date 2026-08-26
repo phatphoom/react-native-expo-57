@@ -1,13 +1,14 @@
 import { ProductHeader, ProductList } from "@/features/product/components";
 import CategoryPills from "@/features/product/components/CategoryPills";
 import FilterModal from "@/features/product/components/FilterModal";
-import { useProductAll, useProductSearchAndFilter } from "@/features/product/hooks";
+import { useProductSearchAndFilter } from "@/features/product/hooks";
+import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function ProductScreen() {
-  const { products, loading, refetch } = useProductAll();
+  const { cate_id } = useLocalSearchParams<{ cate_id?: string }>();
   const [isFilterModalVisible, setFilterModalVisible] = useState(false);
 
   const {
@@ -20,27 +21,25 @@ export default function ProductScreen() {
     setSelectedCategoryId,
     minPrice,
     maxPrice,
-    inStockOnly,
     sortBy,
     setMinPrice,
     setMaxPrice,
-    setInStockOnly,
     setSortBy,
     activeFilterCount,
     resetFilters,
-  } = useProductSearchAndFilter(products || []);
+    loading,
+    refetch,
+  } = useProductSearchAndFilter(cate_id);
 
   const handleApplyFilters = (
     cId: string | number | null,
     minP: string,
     maxP: string,
-    stock: boolean,
     sort: any
   ) => {
     setSelectedCategoryId(cId);
     setMinPrice(minP);
     setMaxPrice(maxP);
-    setInStockOnly(stock);
     setSortBy(sort);
   };
 
@@ -76,7 +75,6 @@ export default function ProductScreen() {
         activeCategoryId={selectedCategoryId}
         activeMinPrice={minPrice}
         activeMaxPrice={maxPrice}
-        activeInStockOnly={inStockOnly}
         activeSortBy={sortBy}
         onApplyFilters={handleApplyFilters}
         onResetFilters={resetFilters}

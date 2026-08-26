@@ -18,6 +18,7 @@ export interface Category {
   cate_id: string | number;
   cate_name: string;
   description?: string | null;
+  product_count?: number;
   created_at?: string;
   updated_at?: string;
 }

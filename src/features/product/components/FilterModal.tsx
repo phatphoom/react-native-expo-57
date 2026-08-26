@@ -20,14 +20,12 @@ interface FilterModalProps {
   activeCategoryId: string | number | null;
   activeMinPrice: string;
   activeMaxPrice: string;
-  activeInStockOnly: boolean;
   activeSortBy: SortOption;
   // Handlers to apply
   onApplyFilters: (
     categoryId: string | number | null,
     minPrice: string,
     maxPrice: string,
-    inStockOnly: boolean,
     sortBy: SortOption
   ) => void;
   onResetFilters: () => void;
@@ -39,7 +37,6 @@ export default function FilterModal({
   activeCategoryId,
   activeMinPrice,
   activeMaxPrice,
-  activeInStockOnly,
   activeSortBy,
   onApplyFilters,
   onResetFilters,
@@ -50,7 +47,6 @@ export default function FilterModal({
   const [localCategoryId, setLocalCategoryId] = useState<string | number | null>(null);
   const [localMinPrice, setLocalMinPrice] = useState<string>("");
   const [localMaxPrice, setLocalMaxPrice] = useState<string>("");
-  const [localInStockOnly, setLocalInStockOnly] = useState<boolean>(false);
   const [localSortBy, setLocalSortBy] = useState<SortOption>("latest");
 
   // Sync local state when modal opens
@@ -59,17 +55,15 @@ export default function FilterModal({
       setLocalCategoryId(activeCategoryId);
       setLocalMinPrice(activeMinPrice);
       setLocalMaxPrice(activeMaxPrice);
-      setLocalInStockOnly(activeInStockOnly);
       setLocalSortBy(activeSortBy);
     }
-  }, [visible, activeCategoryId, activeMinPrice, activeMaxPrice, activeInStockOnly, activeSortBy]);
+  }, [visible, activeCategoryId, activeMinPrice, activeMaxPrice, activeSortBy]);
 
   const handleApply = () => {
     onApplyFilters(
       localCategoryId,
       localMinPrice,
       localMaxPrice,
-      localInStockOnly,
       localSortBy
     );
     onClose();
@@ -79,9 +73,7 @@ export default function FilterModal({
     setLocalCategoryId(null);
     setLocalMinPrice("");
     setLocalMaxPrice("");
-    setLocalInStockOnly(false);
     setLocalSortBy("latest");
-    // Optionally apply immediately or wait for user to hit apply
     onResetFilters();
     onClose();
   };
@@ -172,20 +164,6 @@ export default function FilterModal({
                   );
                 })}
               </View>
-            </View>
-
-            {/* In Stock Section */}
-            <View style={[styles.section, styles.rowSection]}>
-              <View>
-                <Text style={styles.sectionTitle}>สินค้าพร้อมส่ง</Text>
-                <Text style={styles.sectionSubtitle}>แสดงเฉพาะสินค้าที่มีในสต็อก</Text>
-              </View>
-              <Switch
-                value={localInStockOnly}
-                onValueChange={setLocalInStockOnly}
-                trackColor={{ false: "#E2E8F0", true: "#93C5FD" }}
-                thumbColor={localInStockOnly ? "#2563EB" : "#F8FAFC"}
-              />
             </View>
           </ScrollView>
 

@@ -16,7 +16,7 @@ const CategoryCard = ({ item, onPress }: CategoryCardProps) => {
       activeOpacity={0.7}
     >
       <View style={styles.iconContainer}>
-        <MaterialIcons name="category" size={22} color="#2563EB" />
+        <MaterialIcons name="category" size={24} color="#2563EB" />
       </View>
       <View style={styles.infoContainer}>
         <Text style={styles.categoryName}>{item.cate_name}</Text>
@@ -26,7 +26,12 @@ const CategoryCard = ({ item, onPress }: CategoryCardProps) => {
           </Text>
         ) : null}
       </View>
-      <MaterialIcons name="chevron-right" size={24} color="#94A3B8" />
+      {item.product_count !== undefined && item.product_count !== null ? (
+        <View style={styles.countBadge}>
+          <Text style={styles.countText}>{item.product_count} รายการ</Text>
+        </View>
+      ) : null}
+      <MaterialIcons name="chevron-right" size={22} color="#94A3B8" />
     </TouchableOpacity>
   );
 };
@@ -70,5 +75,17 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#64748B",
     marginTop: 2,
+  },
+  countBadge: {
+    backgroundColor: "#F1F5F9",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 12,
+    marginRight: 8,
+  },
+  countText: {
+    fontSize: 12,
+    fontWeight: "600",
+    color: "#64748B",
   },
 });

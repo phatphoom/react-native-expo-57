@@ -385,13 +385,6 @@ export default function ProfileScreen() {
             undefined,
             () => setShowChangePasswordModal(true)
           )}
-          {renderMenuItem(
-            <Ionicons name="notifications-outline" size={20} color="#F59E0B" />,
-            "การแจ้งเตือน",
-            false,
-            undefined,
-            () => Alert.alert("การแจ้งเตือน", "เปิดใช้งานการแจ้งเตือนสถานะคำสั่งซื้อและข่าวสารเรียบร้อยแล้ว")
-          )}
           
           <View style={styles.menuDivider} />
 
