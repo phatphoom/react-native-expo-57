@@ -1,5 +1,9 @@
 export { ProfileHeroCard } from "./ProfileHeroCard";
 export { ProfileMenuItem } from "./ProfileMenuItem";
+export { PersonalDetailsCard } from "./PersonalDetailsCard";
+export { AccountSettingsCard } from "./AccountSettingsCard";
+export { OtherSettingsCard } from "./OtherSettingsCard";
+export { LogoutModal } from "./LogoutModal";
 export { EditProfileModal } from "./EditProfileModal";
 export { ChangePasswordModal } from "./ChangePasswordModal";
 export { DeleteAccountModal } from "./DeleteAccountModal";
