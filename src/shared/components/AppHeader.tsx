@@ -1,6 +1,5 @@
 import { useUserProfile } from "@/features/profile/hooks";
 import { Ionicons } from "@expo/vector-icons";
-import Feather from "@expo/vector-icons/Feather";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -15,9 +14,9 @@ const HeaderBar = ({ title }: HeaderProps) => {
 
   return (
     <View style={styles.header}>
-      <TouchableOpacity activeOpacity={0.7} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-        <Feather name="menu" size={22} color="#1E293B" />
-      </TouchableOpacity>
+      <View>
+        <Text style={styles.greeting}>{displayName}</Text>
+      </View>
       <Text style={styles.txtHeader}>{title}</Text>
       <TouchableOpacity
         style={styles.avatarContainer}
@@ -63,5 +62,11 @@ const styles = StyleSheet.create({
   headerAvatarImage: {
     width: "100%",
     height: "100%",
+  },
+  greeting: {
+    fontSize: 22,
+    fontWeight: "700",
+    color: "#0F172A",
+    marginBottom: 4,
   },
 });

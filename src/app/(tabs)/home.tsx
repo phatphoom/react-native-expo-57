@@ -4,8 +4,8 @@ import { useCategories } from "@/features/product/hooks/useCategory";
 import { useProductAll } from "@/features/product/hooks/useProductAll";
 import { useAuth } from "@/features/auth/hooks";
 import { FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import React, { useMemo } from "react";
+import { useFocusEffect, useRouter } from "expo-router";
+import React, { useCallback, useMemo } from "react";
 import {
   ActivityIndicator,
   ScrollView,
@@ -23,9 +23,16 @@ export default function Home() {
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
 
-  const { products, loading: productsLoading } = useProductAll();
-  const { categories, loading: categoriesLoading } = useCategories();
+  const { products, loading: productsLoading, refetch: refetchProducts } = useProductAll();
+  const { categories, loading: categoriesLoading, refetch: refetchCategories } = useCategories();
   const { displayName, fullAvatarUrl } = useUserProfile();
+
+  useFocusEffect(
+    useCallback(() => {
+      refetchProducts();
+      refetchCategories();
+    }, [refetchProducts, refetchCategories])
+  );
 
   // Get latest 5 products for recent activity
   const recentProducts = useMemo(() => {

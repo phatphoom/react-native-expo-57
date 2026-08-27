@@ -30,8 +30,10 @@ const ProductList = ({
 
   useFocusEffect(
     useCallback(() => {
-      refetch();
-    }, [refetch])
+      if (!customRefresh) {
+        refetch();
+      }
+    }, [customRefresh, refetch])
   );
 
   if (loading && products.length === 0) {

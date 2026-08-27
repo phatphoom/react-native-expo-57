@@ -2,8 +2,8 @@ import { ProductHeader, ProductList } from "@/features/product/components";
 import CategoryPills from "@/features/product/components/CategoryPills";
 import FilterModal from "@/features/product/components/FilterModal";
 import { useProductSearchAndFilter } from "@/features/product/hooks";
-import { useLocalSearchParams } from "expo-router";
-import { useState } from "react";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
+import { useCallback, useState } from "react";
 import { StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -30,6 +30,13 @@ export default function ProductScreen() {
     loading,
     refetch,
   } = useProductSearchAndFilter(cate_id);
+
+  // ดึงข้อมูลใหม่ทุกครั้งที่สลับแท็บหรือกลับมาที่หน้านี้
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
 
   const handleApplyFilters = (
     cId: string | number | null,

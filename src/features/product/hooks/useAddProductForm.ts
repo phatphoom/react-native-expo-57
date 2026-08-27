@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import { useRouter } from "expo-router";
 import { useCreateProduct } from "./useCreateProduct";
 import { useProductForm, type ProductFormValues } from "./useProductForm";
@@ -65,14 +65,19 @@ export function useAddProductForm() {
 
     if (result.success) {
       clearImage();
-      Alert.alert("สำเร็จ", "เพิ่มสินค้าใหม่เรียบร้อยแล้ว!", [
-        {
-          text: "ตกลง",
-          onPress: () => {
-            router.push("/product");
+      if (Platform.OS === "web") {
+        window.alert("เพิ่มสินค้าใหม่เรียบร้อยแล้ว!");
+        router.replace("/(tabs)/product");
+      } else {
+        Alert.alert("สำเร็จ", "เพิ่มสินค้าใหม่เรียบร้อยแล้ว!", [
+          {
+            text: "ตกลง",
+            onPress: () => {
+              router.replace("/(tabs)/product");
+            },
           },
-        },
-      ]);
+        ]);
+      }
       return { success: true };
     } else {
       Alert.alert("ข้อผิดพลาด", "ไม่สามารถเพิ่มสินค้าได้: " + result.error);

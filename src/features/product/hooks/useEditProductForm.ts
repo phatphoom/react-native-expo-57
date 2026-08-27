@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useProduct, useUpdateProduct } from "./useProduct";
 import { useProductForm, type ProductFormValues } from "./useProductForm";
@@ -67,9 +67,22 @@ export function useEditProductForm() {
 
     if (result.success) {
       clearImage();
-      Alert.alert("สำเร็จ", "แก้ไขข้อมูลสินค้าเรียบร้อยแล้ว!", [
-        { text: "ตกลง", onPress: () => router.back() },
-      ]);
+      const navigateBack = () => {
+        if (router.canGoBack()) {
+          router.back();
+        } else {
+          router.replace(`/product/${targetId}`);
+        }
+      };
+
+      if (Platform.OS === "web") {
+        window.alert("แก้ไขข้อมูลสินค้าเรียบร้อยแล้ว!");
+        navigateBack();
+      } else {
+        Alert.alert("สำเร็จ", "แก้ไขข้อมูลสินค้าเรียบร้อยแล้ว!", [
+          { text: "ตกลง", onPress: navigateBack },
+        ]);
+      }
       return { success: true };
     } else {
       Alert.alert("ข้อผิดพลาด", "ไม่สามารถแก้ไขสินค้าได้: " + result.error);
