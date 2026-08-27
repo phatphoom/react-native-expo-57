@@ -1,10 +1,15 @@
-import UploadApi from "@/api/uploadApi";
-import { useUserProfile } from "@/features/profile/hooks/useUserProfile";
 import { useCategories } from "@/features/product/hooks/useCategory";
 import { useProductAll } from "@/features/product/hooks/useProductAll";
 import { useAuth } from "@/features/auth/hooks";
+import { useUserProfile } from "@/features/profile/hooks/useUserProfile";
+import {
+  StatCard,
+  RecentProductItem,
+  QuickActions,
+} from "@/features/product/components";
 import { FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
+import { Image } from "expo-image";
 import React, { useCallback, useMemo } from "react";
 import {
   ActivityIndicator,
@@ -14,7 +19,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Image } from "expo-image";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Home() {
@@ -23,8 +27,16 @@ export default function Home() {
   const { user } = useAuth();
   const isAdmin = user?.role === "admin";
 
-  const { products, loading: productsLoading, refetch: refetchProducts } = useProductAll();
-  const { categories, loading: categoriesLoading, refetch: refetchCategories } = useCategories();
+  const {
+    products,
+    loading: productsLoading,
+    refetch: refetchProducts,
+  } = useProductAll();
+  const {
+    categories,
+    loading: categoriesLoading,
+    refetch: refetchCategories,
+  } = useCategories();
   const { displayName, fullAvatarUrl } = useUserProfile();
 
   useFocusEffect(
@@ -34,32 +46,9 @@ export default function Home() {
     }, [refetchProducts, refetchCategories])
   );
 
-  // Get latest 5 products for recent activity
-  const recentProducts = useMemo(() => {
-    if (!products) return [];
-    return products.slice(0, 5);
-  }, [products]);
-
-  const renderStatCard = (
-    title: string,
-    value: string | number,
-    icon: React.ReactNode,
-    color: string,
-    loading: boolean
-  ) => (
-    <View style={[styles.statCard, { borderTopColor: color }]}>
-      <View style={styles.statIconContainer}>
-        {icon}
-      </View>
-      <View style={styles.statTextContainer}>
-        <Text style={styles.statTitle}>{title}</Text>
-        {loading ? (
-          <ActivityIndicator size="small" color={color} style={{ alignSelf: "flex-start", marginTop: 4 }} />
-        ) : (
-          <Text style={[styles.statValue, { color }]}>{value}</Text>
-        )}
-      </View>
-    </View>
+  const recentProducts = useMemo(
+    () => (products ? products.slice(0, 5) : []),
+    [products]
   );
 
   return (
@@ -71,7 +60,7 @@ export default function Home() {
         ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Header Section */}
+        {/* Header */}
         <View style={styles.header}>
           <View>
             <Text style={styles.greeting}>สวัสดี, {displayName} 👋</Text>
@@ -83,64 +72,39 @@ export default function Home() {
             activeOpacity={0.8}
           >
             {fullAvatarUrl ? (
-              <Image source={{ uri: fullAvatarUrl }} style={styles.headerAvatarImage} contentFit="cover" transition={200} />
+              <Image
+                source={{ uri: fullAvatarUrl }}
+                style={styles.headerAvatarImage}
+                contentFit="cover"
+                transition={200}
+              />
             ) : (
               <Ionicons name="person-circle" size={48} color="#94A3B8" />
             )}
           </TouchableOpacity>
         </View>
 
-        {/* Stats Section */}
+        {/* Stats */}
         <View style={styles.statsContainer}>
-          {renderStatCard(
-            "สินค้าทั้งหมด",
-            products?.length || 0,
-            <FontAwesome5 name="box-open" size={20} color="#3B82F6" />,
-            "#3B82F6",
-            productsLoading
-          )}
-          {renderStatCard(
-            "หมวดหมู่",
-            categories?.length || 0,
-            <MaterialIcons name="category" size={22} color="#10B981" />,
-            "#10B981",
-            categoriesLoading
-          )}
+          <StatCard
+            title="สินค้าทั้งหมด"
+            value={products?.length || 0}
+            icon={<FontAwesome5 name="box-open" size={20} color="#3B82F6" />}
+            color="#3B82F6"
+            loading={productsLoading}
+          />
+          <StatCard
+            title="หมวดหมู่"
+            value={categories?.length || 0}
+            icon={<MaterialIcons name="category" size={22} color="#10B981" />}
+            color="#10B981"
+            loading={categoriesLoading}
+          />
         </View>
 
         {/* Quick Actions */}
         <Text style={styles.sectionTitle}>เมนูด่วน</Text>
-        <View style={styles.quickActionsContainer}>
-          {isAdmin && (
-            <TouchableOpacity
-              style={styles.quickActionBtn}
-              onPress={() => router.push("/add")}
-            >
-              <View style={[styles.quickActionIcon, { backgroundColor: "rgba(59, 130, 246, 0.1)" }]}>
-                <Ionicons name="add-circle" size={28} color="#3B82F6" />
-              </View>
-              <Text style={styles.quickActionText}>เพิ่มสินค้า</Text>
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            style={styles.quickActionBtn}
-            onPress={() => router.push("/product")}
-          >
-            <View style={[styles.quickActionIcon, { backgroundColor: "rgba(139, 92, 246, 0.1)" }]}>
-              <Ionicons name="list" size={28} color="#8B5CF6" />
-            </View>
-            <Text style={styles.quickActionText}>รายการสินค้า</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.quickActionBtn}
-            onPress={() => router.push("/category")}
-          >
-            <View style={[styles.quickActionIcon, { backgroundColor: "rgba(16, 185, 129, 0.1)" }]}>
-              <MaterialIcons name="category" size={28} color="#10B981" />
-            </View>
-            <Text style={styles.quickActionText}>หมวดหมู่</Text>
-          </TouchableOpacity>
-        </View>
+        <QuickActions isAdmin={isAdmin} router={router} />
 
         {/* Recent Products */}
         <View style={styles.recentHeader}>
@@ -151,36 +115,20 @@ export default function Home() {
         </View>
 
         {productsLoading ? (
-          <ActivityIndicator size="large" color="#3B82F6" style={{ marginTop: 24 }} />
+          <ActivityIndicator
+            size="large"
+            color="#3B82F6"
+            style={{ marginTop: 24 }}
+          />
         ) : recentProducts.length > 0 ? (
           <View style={styles.recentProductsContainer}>
-            {recentProducts.map((item, index) => {
-              const imageUrl = UploadApi.getFullImageUrl(item.image_url);
-              return (
-                <TouchableOpacity
-                  key={item.prod_id || index.toString()}
-                  style={styles.recentProductCard}
-                  onPress={() => router.push(`/product/${item.prod_id}`)}
-                  activeOpacity={0.7}
-                >
-                  <View style={styles.recentProductImagePlaceholder}>
-                    {imageUrl ? (
-                      <Image source={{ uri: imageUrl }} style={styles.recentProductImage} contentFit="cover" transition={200} />
-                    ) : (
-                      <Ionicons name="image-outline" size={24} color="#CBD5E1" />
-                    )}
-                  </View>
-                  <View style={styles.recentProductInfo}>
-                    <Text style={styles.recentProductName} numberOfLines={1}>
-                      {item.prod_name || "ไม่มีชื่อสินค้า"}
-                    </Text>
-                    <Text style={styles.recentProductPrice}>
-                      ฿{item.price ? Number(item.price).toLocaleString() : "0"}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              );
-            })}
+            {recentProducts.map((item, index) => (
+              <RecentProductItem
+                key={item.prod_id || index.toString()}
+                item={{ ...item, image_url: item.image_url ?? undefined }}
+                onPress={() => router.push(`/product/${item.prod_id}`)}
+              />
+            ))}
           </View>
         ) : (
           <View style={styles.emptyState}>
@@ -193,29 +141,16 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F8FAFC",
-  },
-  scrollContent: {
-    paddingHorizontal: 16,
-  },
+  container: { flex: 1, backgroundColor: "#F8FAFC" },
+  scrollContent: { paddingHorizontal: 16 },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 24,
   },
-  greeting: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#0F172A",
-    marginBottom: 4,
-  },
-  subtitle: {
-    fontSize: 14,
-    color: "#64748B",
-  },
+  greeting: { fontSize: 22, fontWeight: "700", color: "#0F172A", marginBottom: 4 },
+  subtitle: { fontSize: 14, color: "#64748B" },
   avatarContainer: {
     width: 48,
     height: 48,
@@ -225,148 +160,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     overflow: "hidden",
   },
-  headerAvatarImage: {
-    width: "100%",
-    height: "100%",
-  },
-  statsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 28,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
-    padding: 16,
-    marginHorizontal: 4,
-    flexDirection: "row",
-    alignItems: "center",
-    shadowColor: "#0F172A",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.05,
-    shadowRadius: 12,
-    elevation: 3,
-    borderTopWidth: 4,
-  },
-  statIconContainer: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    backgroundColor: "#F8FAFC",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 12,
-  },
-  statTextContainer: {
-    flex: 1,
-  },
-  statTitle: {
-    fontSize: 13,
-    color: "#64748B",
-    marginBottom: 4,
-    fontWeight: "500",
-  },
-  statValue: {
-    fontSize: 22,
-    fontWeight: "bold",
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#1E293B",
-    marginBottom: 16,
-  },
-  quickActionsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginBottom: 32,
-    backgroundColor: "#FFFFFF",
-    borderRadius: 24,
-    padding: 20,
-    shadowColor: "#0F172A",
-    shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.03,
-    shadowRadius: 16,
-    elevation: 2,
-  },
-  quickActionBtn: {
-    alignItems: "center",
-    flex: 1,
-  },
-  quickActionIcon: {
-    width: 56,
-    height: 56,
-    borderRadius: 18,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 8,
-  },
-  quickActionText: {
-    fontSize: 12,
-    color: "#475569",
-    fontWeight: "600",
-  },
+  headerAvatarImage: { width: "100%", height: "100%" },
+  statsContainer: { flexDirection: "row", justifyContent: "space-between", marginBottom: 28 },
+  sectionTitle: { fontSize: 18, fontWeight: "700", color: "#1E293B", marginBottom: 16 },
   recentHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 16,
   },
-  seeAllText: {
-    fontSize: 14,
-    color: "#3B82F6",
-    fontWeight: "600",
-  },
-  recentProductsContainer: {
-    gap: 12,
-  },
-  recentProductCard: {
-    flexDirection: "row",
-    backgroundColor: "#FFFFFF",
-    borderRadius: 16,
-    padding: 12,
-    alignItems: "center",
-    shadowColor: "#0F172A",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.04,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  recentProductImagePlaceholder: {
-    width: 56,
-    height: 56,
-    borderRadius: 12,
-    backgroundColor: "#F1F5F9",
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: 16,
-    overflow: "hidden",
-  },
-  recentProductImage: {
-    width: "100%",
-    height: "100%",
-  },
-  recentProductInfo: {
-    flex: 1,
-  },
-  recentProductName: {
-    fontSize: 15,
-    fontWeight: "600",
-    color: "#0F172A",
-    marginBottom: 4,
-  },
-  recentProductPrice: {
-    fontSize: 14,
-    fontWeight: "700",
-    color: "#3B82F6",
-  },
-  emptyState: {
-    alignItems: "center",
-    paddingVertical: 32,
-  },
-  emptyStateText: {
-    fontSize: 15,
-    color: "#94A3B8",
-  },
+  seeAllText: { fontSize: 14, color: "#3B82F6", fontWeight: "600" },
+  recentProductsContainer: { gap: 12 },
+  emptyState: { alignItems: "center", paddingVertical: 32 },
+  emptyStateText: { fontSize: 15, color: "#94A3B8" },
 });

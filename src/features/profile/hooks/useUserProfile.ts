@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { Alert } from "react-native";
 import ProfileApi from "@/api/profileApi";
 import UploadApi from "@/api/uploadApi";
 import { useImagePicker } from "@/shared/hooks/useImagePicker";
 import { UserProfile, UpdateProfileDto } from "@/types/profile";
 import { useAuth } from "@/features/auth/hooks/useAuth";
+import { showAlert } from "@/shared/utils";
 
 export function useUserProfile() {
   const { user } = useAuth();
@@ -19,7 +19,6 @@ export function useUserProfile() {
   const [lastNameInput, setLastNameInput] = useState<string>("");
   const [phoneNumberInput, setPhoneNumberInput] = useState<string>("");
   const [addressInput, setAddressInput] = useState<string>("");
-  const [birthDateInput, setBirthDateInput] = useState<string>("");
   const [avatarPath, setAvatarPath] = useState<string | null>(null);
 
   const {
@@ -33,13 +32,14 @@ export function useUserProfile() {
     setLoading(true);
     try {
       const data = await ProfileApi.getMyProfile();
-      setProfile(data);
-      setFirstNameInput(data.first_name || "");
-      setLastNameInput(data.last_name || "");
-      setPhoneNumberInput(data.phone_number || "");
-      setAddressInput(data.address || "");
-      setBirthDateInput(data.birth_date || "");
-      setAvatarPath(data.avatar_url || null);
+      if (data) {
+        setProfile(data);
+        setFirstNameInput(data.first_name || "");
+        setLastNameInput(data.last_name || "");
+        setPhoneNumberInput(data.phone_number || "");
+        setAddressInput(data.address || "");
+        setAvatarPath(data.avatar_url || null);
+      }
     } catch (err: any) {
       console.log("Fetch profile error (using fallback auth user):", err?.message);
     } finally {
@@ -57,7 +57,6 @@ export function useUserProfile() {
       setLastNameInput(profile.last_name || "");
       setPhoneNumberInput(profile.phone_number || "");
       setAddressInput(profile.address || "");
-      setBirthDateInput(profile.birth_date || "");
       setAvatarPath(profile.avatar_url || null);
     }
     setShowEditModal(true);
@@ -90,26 +89,30 @@ export function useUserProfile() {
 
       // Automatically update profile on server with new avatar_url
       const updated = await ProfileApi.updateMyProfile({
-        first_name: firstNameInput || profile?.first_name || undefined,
-        last_name: lastNameInput || profile?.last_name || undefined,
-        phone_number: phoneNumberInput || profile?.phone_number || undefined,
-        address: addressInput || profile?.address || undefined,
-        birth_date: birthDateInput || profile?.birth_date || undefined,
+        first_name: firstNameInput.trim() || profile?.first_name || undefined,
+        last_name: lastNameInput.trim() || profile?.last_name || undefined,
+        phone_number: phoneNumberInput.trim() || profile?.phone_number || undefined,
+        address: addressInput.trim() || profile?.address || undefined,
         avatar_url: newAvatarUrl,
       });
 
-      setProfile(updated);
-      Alert.alert("สำเร็จ", "อัปเดตรูปโปรไฟล์เรียบร้อยแล้ว!");
+      if (updated) {
+        setProfile(updated);
+      } else {
+        await fetchProfile();
+      }
+      showAlert("สำเร็จ", "อัปเดตรูปโปรไฟล์เรียบร้อยแล้ว!");
     } catch (err: any) {
+      console.error("Upload avatar error:", err);
       const msg = err?.response?.data?.message || err?.message || "อัปโหลดรูปโปรไฟล์ไม่สำเร็จ";
-      Alert.alert("ข้อผิดพลาด", msg);
+      showAlert("ข้อผิดพลาด", msg);
     } finally {
       setUploadingAvatar(false);
     }
   };
 
   /**
-   * Save text fields (first_name, last_name, phone_number, address, birth_date)
+   * Save text fields (first_name, last_name, phone_number, address)
    */
   const handleSaveProfile = async () => {
     setUpdating(true);
@@ -119,17 +122,24 @@ export function useUserProfile() {
         last_name: lastNameInput.trim() || undefined,
         phone_number: phoneNumberInput.trim() || undefined,
         address: addressInput.trim() || undefined,
-        birth_date: birthDateInput.trim() || undefined,
         ...(avatarPath ? { avatar_url: avatarPath } : {}),
       };
 
       const updated = await ProfileApi.updateMyProfile(payload);
-      setProfile(updated);
+      if (updated) {
+        setProfile(updated);
+      }
+      await fetchProfile();
       setShowEditModal(false);
-      Alert.alert("สำเร็จ", "บันทึกข้อมูลส่วนตัวเรียบร้อยแล้ว");
+      showAlert("สำเร็จ", "บันทึกข้อมูลส่วนตัวเรียบร้อยแล้ว");
     } catch (err: any) {
-      const msg = err?.response?.data?.message || err?.message || "ไม่สามารถบันทึกข้อมูลได้";
-      Alert.alert("ข้อผิดพลาด", msg);
+      console.error("Save profile error:", err);
+      const msg =
+        err?.response?.data?.message ||
+        err?.response?.data?.error ||
+        err?.message ||
+        "ไม่สามารถบันทึกข้อมูลได้";
+      showAlert("ข้อผิดพลาด", msg);
     } finally {
       setUpdating(false);
     }
@@ -152,7 +162,6 @@ export function useUserProfile() {
     lastNameInput,
     phoneNumberInput,
     addressInput,
-    birthDateInput,
     avatarPath,
     fullAvatarUrl,
     displayName,
@@ -160,7 +169,6 @@ export function useUserProfile() {
     setLastNameInput,
     setPhoneNumberInput,
     setAddressInput,
-    setBirthDateInput,
     fetchProfile,
     openEditModal,
     closeEditModal,

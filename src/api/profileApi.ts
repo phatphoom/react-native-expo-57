@@ -7,7 +7,7 @@ const ProfileApi = {
    */
   getMyProfile: async (): Promise<UserProfile> => {
     const res = await api.get<UserProfileResponse>("/profile/me");
-    return res.data.data;
+    return res.data?.data || (res.data as any);
   },
 
   /**
@@ -15,7 +15,7 @@ const ProfileApi = {
    */
   updateMyProfile: async (data: UpdateProfileDto): Promise<UserProfile> => {
     const res = await api.put<UserProfileResponse>("/profile/me", data);
-    return res.data.data;
+    return res.data?.data || (res.data as any);
   },
 
   /**
@@ -23,7 +23,7 @@ const ProfileApi = {
    */
   getProfileByUserId: async (userId: string): Promise<UserProfile> => {
     const res = await api.get<UserProfileResponse>(`/profile/${userId}`);
-    return res.data.data;
+    return res.data?.data || (res.data as any);
   },
 };
 

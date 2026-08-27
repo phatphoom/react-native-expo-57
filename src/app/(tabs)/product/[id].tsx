@@ -1,13 +1,11 @@
 import { DetailProdct } from "@/features/product/components";
-import {
-  useDeleteProduct,
-  useProduct,
-} from "@/features/product/hooks/useProduct";
+import { useProduct } from "@/features/product/hooks/useProduct";
+import { useProductActions } from "@/features/product/hooks/useProductActions";
 import { useAuth } from "@/features/auth/hooks";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Stack, useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback } from "react";
-import { Alert, Platform, StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 export default function ProductDetail() {
   const { id } = useLocalSearchParams<{ id?: string }>();
@@ -17,78 +15,17 @@ export default function ProductDetail() {
 
   const productId = Array.isArray(id) ? id[0] : (id as string);
   const { product, refetch } = useProduct({ id: productId });
-  const { deleteProduct, loading: isDeleting } = useDeleteProduct();
+  const { handleEdit, handleDelete, isDeleting } = useProductActions({
+    productId,
+    router,
+  });
 
-  // รีโหลดข้อมูลสินค้าใหม่เมื่อสลับเปิดกลับมาหน้านี้ (เช่น เมื่อกดย้อนกลับมาจากหน้าแก้ไข)
+  // Reload product data when navigating back from edit screen
   useFocusEffect(
     useCallback(() => {
-      if (productId) {
-        refetch();
-      }
+      if (productId) refetch();
     }, [productId, refetch])
   );
-
-  const handleEdit = () => {
-    router.push(`/product/edit/${productId}`);
-  };
-
-  const executeDelete = async () => {
-    const res = await deleteProduct(productId);
-    if (res.success) {
-      if (Platform.OS === "web") {
-        window.alert("ลบสินค้าเรียบร้อยแล้ว");
-        if (router.canGoBack()) {
-          router.back();
-        } else {
-          router.replace("/(tabs)/product");
-        }
-      } else {
-        Alert.alert("สำเร็จ", "ลบสินค้าเรียบร้อยแล้ว", [
-          {
-            text: "ตกลง",
-            onPress: () => {
-              if (router.canGoBack()) {
-                router.back();
-              } else {
-                router.replace("/(tabs)/product");
-              }
-            },
-          },
-        ]);
-      }
-    } else {
-      if (Platform.OS === "web") {
-        window.alert("เกิดข้อผิดพลาด: " + (res.error || "ไม่สามารถลบสินค้าได้"));
-      } else {
-        Alert.alert("เกิดข้อผิดพลาด", res.error || "ไม่สามารถลบสินค้าได้");
-      }
-    }
-  };
-
-  const handleDelete = () => {
-    if (Platform.OS === "web") {
-      const confirmed = window.confirm(
-        "ยืนยันการลบสินค้า\nคุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้? ข้อมูลจะไม่สามารถกู้คืนได้"
-      );
-      if (confirmed) {
-        executeDelete();
-      }
-      return;
-    }
-
-    Alert.alert(
-      "ยืนยันการลบสินค้า",
-      "คุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้? ข้อมูลจะไม่สามารถกู้คืนได้",
-      [
-        { text: "ยกเลิก", style: "cancel" },
-        {
-          text: "ลบสินค้า",
-          style: "destructive",
-          onPress: executeDelete,
-        },
-      ],
-    );
-  };
 
   return (
     <View style={styles.container}>

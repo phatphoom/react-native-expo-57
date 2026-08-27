@@ -2,3 +2,4 @@ export { useAuth } from "./useAuth";
 export { useLoginForm } from "./useLoginForm";
 export { useRegisterForm } from "./useRegisterForm";
 export { useProfile } from "./useProfile";
+export { useResetPasswordForm } from "./useResetPasswordForm";
