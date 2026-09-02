@@ -1,7 +1,8 @@
+import React, { useState } from "react";
 import UploadApi from "@/api/uploadApi";
 import type { Product } from "@/types/product";
 import { FONTS } from "@/shared/theme/typography";
-import { FontAwesome } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
@@ -11,9 +12,10 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
+  const [imageError, setImageError] = useState(false);
   const priceNum = Number(product.price) || 0;
   const discountPctNum = Number(product.discount_pct) || 0;
-  const imageUrl = UploadApi.getFullImageUrl(product.image_url) || "https://via.placeholder.com/150";
+  const imageUrl = UploadApi.getFullImageUrl(product.image_url);
 
   // ราคาขายจริง (ถ้ามีส่วนลดจะคำนวณราคาที่หักส่วนลดแล้ว)
   const finalPrice = discountPctNum > 0
@@ -32,12 +34,19 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
         {/* 1. รูปภาพสินค้า */}
         <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: imageUrl }}
-            style={styles.image}
-            contentFit="cover"
-            transition={200}
-          />
+          {imageUrl && !imageError ? (
+            <Image
+              source={{ uri: imageUrl }}
+              style={styles.image}
+              contentFit="cover"
+              transition={200}
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <View style={[styles.image, styles.fallbackContainer]}>
+              <Ionicons name="cube-outline" size={36} color="#3B82F6" />
+            </View>
+          )}
           {discountPctNum > 0 && (
             <View style={styles.discountBadge}>
               <Text style={styles.discountText}>-{discountPctNum}%</Text>
@@ -53,10 +62,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
                 <Text style={styles.categoryText} numberOfLines={1}>
                   {product.category_name || "ทั่วไป"}
                 </Text>
-              </View>
-              <View style={styles.ratingBadge}>
-                <FontAwesome name="star" size={11} color="#F59E0B" />
-                <Text style={styles.ratingText}>{product.rating_rate}</Text>
               </View>
             </View>
 
@@ -120,6 +125,11 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+  },
+  fallbackContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#EFF6FF",
   },
   discountBadge: {
     position: "absolute",

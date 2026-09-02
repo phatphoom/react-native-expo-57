@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { Image } from 'expo-image';
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import type { Product } from '@/types/product';
 import UploadApi from '@/api/uploadApi';
 import { FONTS } from '@/shared/theme/typography';
@@ -15,6 +15,7 @@ interface DetailProdctProps {
 }
 
 const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctProps) => {
+  const [imageError, setImageError] = useState(false);
   // ข้อมูลจาก API อาจจะเป็น Array (กรณี mock) หรือเป็น Object ตัวเดียว
   const product: Product | null = Array.isArray(data) ? data[0] : (data as Product);
 
@@ -31,7 +32,7 @@ const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctPr
   // คำนวณราคาจริงหลังหักส่วนลด (finalPrice) และราคาเต็มก่อนลด (originalPrice)
   const priceNum = Number(product.price) || 0;
   const discountPctNum = Number(product.discount_pct) || 0;
-  const imageUrl = UploadApi.getFullImageUrl(product.image_url) || 'https://via.placeholder.com/400';
+  const imageUrl = UploadApi.getFullImageUrl(product.image_url);
 
   const finalPrice = discountPctNum > 0 
     ? (priceNum * (1 - discountPctNum / 100)).toFixed(2) 
@@ -45,12 +46,19 @@ const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctPr
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* 1. รูปภาพสินค้า */}
       <View style={styles.imageContainer}>
-        <Image 
-          source={{ uri: imageUrl }} 
-          style={styles.image}
-          contentFit="cover"
-          transition={300}
-        />
+        {imageUrl && !imageError ? (
+          <Image 
+            source={{ uri: imageUrl }} 
+            style={styles.image}
+            contentFit="cover"
+            transition={300}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <View style={[styles.image, styles.fallbackContainer]}>
+            <Ionicons name="cube-outline" size={72} color="#3B82F6" />
+          </View>
+        )}
         {/* ป้าย % ส่วนลด */}
         {discountPctNum > 0 && (
           <View style={styles.discountBadge}>
@@ -62,15 +70,9 @@ const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctPr
       {/* 2. รายละเอียดต่างๆ (ครอบด้วย View เพื่อทำมุมโค้งซ้อนรูปภาพ) */}
       <View style={styles.detailsContainer}>
         
-        {/* หมวดหมู่ และ ดาวคะแนน */}
+        {/* หมวดหมู่ */}
         <View style={styles.row}>
           <Text style={styles.categoryText}>{product.category_name || 'ทั่วไป'}</Text>
-          <View style={styles.ratingContainer}>
-            <FontAwesome name="star" size={16} color="#FFD700" />
-            <Text style={styles.ratingText}>
-              {product.rating_rate} ({product.rating_count})
-            </Text>
-          </View>
         </View>
 
         {/* ชื่อสินค้า */}
@@ -179,6 +181,11 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+  },
+  fallbackContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#EFF6FF',
   },
   discountBadge: {
     position: 'absolute',
