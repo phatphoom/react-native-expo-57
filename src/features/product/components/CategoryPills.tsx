@@ -1,5 +1,6 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useCategories } from "../hooks/useCategory";
+import { FONTS } from "@/shared/theme/typography";
 
 interface CategoryPillsProps {
   selectedCategoryId: string | number | null;
@@ -76,10 +77,10 @@ const styles = StyleSheet.create({
   pillText: {
     fontSize: 13,
     color: "#64748B",
-    fontWeight: "500",
+    fontFamily: FONTS.medium,
   },
   pillTextActive: {
     color: "#2563EB",
-    fontWeight: "600",
+    fontFamily: FONTS.semiBold,
   },
 });

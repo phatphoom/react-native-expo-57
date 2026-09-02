@@ -1,4 +1,5 @@
 import type { Category } from "@/types/product";
+import { FONTS } from "@/shared/theme/typography";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 interface CategoryCardProps {
@@ -68,11 +69,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    fontWeight: "600",
+    fontFamily: FONTS.bold,
     color: "#1e293b",
   },
   subtitle: {
     fontSize: 12,
+    fontFamily: FONTS.brandMedium,
     color: "#64748B",
     marginTop: 2,
   },

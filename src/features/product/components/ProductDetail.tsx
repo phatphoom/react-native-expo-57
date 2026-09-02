@@ -4,6 +4,7 @@ import { Image } from 'expo-image';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import type { Product } from '@/types/product';
 import UploadApi from '@/api/uploadApi';
+import { FONTS } from '@/shared/theme/typography';
 
 interface DetailProdctProps {
   id: string | string[];
@@ -166,7 +167,7 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 12,
     fontSize: 15,
-    fontWeight: '500',
+    fontFamily: FONTS.medium,
     color: '#64748B',
   },
   imageContainer: {
@@ -190,7 +191,7 @@ const styles = StyleSheet.create({
   },
   discountText: {
     color: '#FFFFFF',
-    fontWeight: '700',
+    fontFamily: FONTS.brandBold,
     fontSize: 13,
   },
   detailsContainer: {
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 13,
     color: '#2563EB',
-    fontWeight: '700',
+    fontFamily: FONTS.medium,
     backgroundColor: '#EFF6FF',
     paddingHorizontal: 12,
     paddingVertical: 5,
@@ -228,11 +229,11 @@ const styles = StyleSheet.create({
   ratingText: {
     fontSize: 13,
     color: '#92400E',
-    fontWeight: '700',
+    fontFamily: FONTS.brandBold,
   },
   title: {
     fontSize: 22,
-    fontWeight: '700',
+    fontFamily: FONTS.bold,
     color: '#0F172A',
     marginBottom: 12,
     lineHeight: 30,
@@ -245,14 +246,14 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 28,
-    fontWeight: '800',
+    fontFamily: FONTS.brandBold,
     color: '#EF4444',
   },
   originalPrice: {
     fontSize: 15,
     color: '#94A3B8',
     textDecorationLine: 'line-through',
-    fontWeight: '500',
+    fontFamily: FONTS.brandMedium,
   },
   stockContainer: {
     flexDirection: 'row',
@@ -266,7 +267,7 @@ const styles = StyleSheet.create({
   },
   stockText: {
     fontSize: 14,
-    fontWeight: '600',
+    fontFamily: FONTS.medium,
   },
   divider: {
     height: 1,
@@ -275,12 +276,13 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 17,
-    fontWeight: '700',
+    fontFamily: FONTS.bold,
     color: '#0F172A',
     marginBottom: 10,
   },
   description: {
     fontSize: 15,
+    fontFamily: FONTS.regular,
     color: '#475569',
     lineHeight: 24,
   },
@@ -323,6 +325,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#FFFFFF',
     fontSize: 15,
-    fontWeight: '700',
+    fontFamily: FONTS.semiBold,
   },
 });

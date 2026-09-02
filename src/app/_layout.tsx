@@ -12,6 +12,12 @@ import {
   Outfit_600SemiBold,
   Outfit_700Bold,
 } from "@expo-google-fonts/outfit";
+import {
+  Prompt_400Regular,
+  Prompt_500Medium,
+  Prompt_600SemiBold,
+  Prompt_700Bold,
+} from "@expo-google-fonts/prompt";
 
 function InitialLayout() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -54,6 +60,10 @@ export default function RootLayout() {
     Outfit_500Medium,
     Outfit_600SemiBold,
     Outfit_700Bold,
+    Prompt_400Regular,
+    Prompt_500Medium,
+    Prompt_600SemiBold,
+    Prompt_700Bold,
   });
 
   if (!fontsLoaded) {

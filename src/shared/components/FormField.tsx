@@ -10,6 +10,8 @@ import {
   TextStyle,
 } from "react-native";
 
+import { FONTS } from "@/shared/theme/typography";
+
 export interface FormFieldProps extends TextInputProps {
   label: string;
   labelNumberOfLines?: number;
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    fontWeight: "600",
+    fontFamily: FONTS.medium,
     color: "#334155",
     marginBottom: 6,
   },
@@ -106,6 +108,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
     fontSize: 15,
+    fontFamily: FONTS.regular,
     color: "#0F172A",
   },
   formInputFocused: {
@@ -125,13 +128,14 @@ const styles = StyleSheet.create({
   },
   hintText: {
     fontSize: 12,
+    fontFamily: FONTS.regular,
     color: "#64748B",
     marginTop: 6,
   },
   errorText: {
     fontSize: 12,
+    fontFamily: FONTS.medium,
     color: "#EF4444",
     marginTop: 4,
-    fontWeight: "500",
   },
 });

@@ -1,6 +1,7 @@
 import Entypo from "@expo/vector-icons/Entypo";
 import Feather from "@expo/vector-icons/Feather";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { FONTS } from "@/shared/theme/typography";
 
 import {
   StyleSheet,
@@ -96,12 +97,13 @@ const styles = StyleSheet.create({
   },
   filterText: {
     fontSize: 13,
-    fontWeight: "600",
+    fontFamily: FONTS.brandSemiBold,
     color: "#2563EB",
   },
   txtInput: {
     flex: 1,
     fontSize: 14,
+    fontFamily: FONTS.regular,
     color: "#0F172A",
     height: "100%",
   },
@@ -129,6 +131,6 @@ const styles = StyleSheet.create({
   badgeText: {
     color: "#FFFFFF",
     fontSize: 10,
-    fontWeight: "bold",
+    fontFamily: FONTS.brandBold,
   },
 });

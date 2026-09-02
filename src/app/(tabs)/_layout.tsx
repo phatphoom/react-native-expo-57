@@ -1,10 +1,10 @@
+import { useAuth } from "@/features/auth/hooks";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { GlassView } from "expo-glass-effect";
 import { Tabs } from "expo-router";
 import { StyleSheet, View } from "react-native";
-import { useAuth } from "@/features/auth/hooks";
 
 export default function TabLayout() {
   const { user } = useAuth();
@@ -89,7 +89,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="add"
         options={{
-          title: "Add Product",
+          title: "Add",
           href: isAdmin ? "/add" : null, // Hide tab icon if not admin
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconWrapper, focused && styles.activeIconWrapper]}>

@@ -1,5 +1,6 @@
 import UploadApi from "@/api/uploadApi";
 import type { Product } from "@/types/product";
+import { FONTS } from "@/shared/theme/typography";
 import { FontAwesome } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
@@ -131,7 +132,7 @@ const styles = StyleSheet.create({
   },
   discountText: {
     color: "#FFFFFF",
-    fontWeight: "700",
+    fontFamily: FONTS.brandBold,
     fontSize: 10,
   },
   cardDetails: {
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 11,
     color: "#2563EB",
-    fontWeight: "700",
+    fontFamily: FONTS.medium,
   },
   ratingBadge: {
     flexDirection: "row",
@@ -168,12 +169,12 @@ const styles = StyleSheet.create({
   },
   ratingText: {
     fontSize: 11,
-    fontWeight: "700",
+    fontFamily: FONTS.brandBold,
     color: "#92400E",
   },
   productName: {
     fontSize: 15,
-    fontWeight: "700",
+    fontFamily: FONTS.bold,
     color: "#0F172A",
     lineHeight: 20,
     marginBottom: 4,
@@ -192,16 +193,17 @@ const styles = StyleSheet.create({
   },
   price: {
     fontSize: 17,
-    fontWeight: "800",
+    fontFamily: FONTS.brandBold,
     color: "#EF4444",
   },
   currency: {
     fontSize: 11,
-    fontWeight: "700",
+    fontFamily: FONTS.brandBold,
     color: "#EF4444",
   },
   originalPrice: {
     fontSize: 11,
+    fontFamily: FONTS.regular,
     color: "#94A3B8",
     textDecorationLine: "line-through",
     marginTop: 1,
@@ -214,6 +216,6 @@ const styles = StyleSheet.create({
   },
   stockText: {
     fontSize: 11,
-    fontWeight: "700",
+    fontFamily: FONTS.medium,
   },
 });
