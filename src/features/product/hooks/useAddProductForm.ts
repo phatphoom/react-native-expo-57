@@ -59,8 +59,6 @@ export function useAddProductForm() {
       stock_count: Number(values.stock_count) || 0,
       in_stock: Number(values.stock_count) > 0,
       cate_id: cateIdToSend,
-      rating_rate: 0,
-      rating_count: 0,
     });
 
     if (result.success) {

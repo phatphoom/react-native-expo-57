@@ -452,8 +452,6 @@
       "cate_id": "cate_0001",
       "category_name": "Electronics",
       "image_url": "/uploads/products/1770800000000-123456789.png",
-      "rating_rate": "4.5",
-      "rating_count": 12,
       "in_stock": 1,
       "stock_count": 25,
       "discount_pct": 10
@@ -473,8 +471,6 @@
       "cate_id": "cate_0001",
       "category_name": "Electronics",
       "image_url": "/uploads/products/1770800000000-123456789.png",
-      "rating_rate": "4.5",
-      "rating_count": 12,
       "in_stock": 1,
       "stock_count": 25,
       "discount_pct": 10
@@ -502,8 +498,6 @@
     "currency": "THB",
     "cate_id": "cate_0001",
     "image_url": "/uploads/products/1770800000000-123456789.png",
-    "rating_rate": "4.5",
-    "rating_count": 12,
     "in_stock": true,
     "stock_count": 25,
     "discount_pct": 10,
@@ -538,8 +532,6 @@
 | `description` | String | ❌ ไม่จำเป็น | `null` | รายละเอียดสินค้า |
 | `currency` | String | ❌ ไม่จำเป็น | `"THB"` | สกุลเงิน |
 | `image_url` | String | ❌ ไม่จำเป็น | `null` | Path รูปภาพที่ได้จาก API Upload |
-| `rating_rate` | Number | ❌ ไม่จำเป็น | `0` | คะแนนรีวิว (0 - 5) |
-| `rating_count` | Number | ❌ ไม่จำเป็น | `0` | จำนวนคนรีวิว |
 | `in_stock` | Boolean | ❌ ไม่จำเป็น | `true` | สถานะการมีสินค้าในสต็อก |
 | `stock_count` | Number | ❌ ไม่จำเป็น | `0` | จำนวนสินค้าคงเหลือ |
 | `discount_pct` | Number | ❌ ไม่จำเป็น | `0` | เปอร์เซ็นต์ส่วนลด (%) |
@@ -572,8 +564,6 @@
       "currency": "THB",
       "cate_id": "cate_0001",
       "image_url": "/uploads/products/1770800000000-123456789.png",
-      "rating_rate": 0,
-      "rating_count": 0,
       "in_stock": true,
       "stock_count": 50,
       "discount_pct": 5
@@ -618,12 +608,13 @@
 
 ---
 
-### 6.5 ลบสินค้า (Delete Product)
+### 6.5 ลบสินค้า (Delete Product - Soft Delete)
 - **Endpoint:** `DELETE /api/products/:id`
 - **Authentication:** 🔒 ต้องเป็น Admin เท่านั้น (`role: 'admin'`)  
 - **Headers:**  
   - `Authorization: Bearer <admin_jwt_token>`
 - **URL Parameter:** `:id` = รหัสสินค้า (เช่น `prod_0001`)
+- **หมายเหตุ:** เป็นการทำ Soft Delete (บันทึกเวลา `deleted_at`) สินค้าจะถูกซ่อนจาก API ดึงรายการทั่วไป
 
 #### Response (200 OK):
 ```json

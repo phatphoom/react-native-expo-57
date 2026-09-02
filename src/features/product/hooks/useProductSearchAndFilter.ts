@@ -4,7 +4,7 @@ import { useDebounce } from "@/shared/hooks";
 import ProductApi, { GetProductsParams } from "@/api/productApi";
 import { useCategories } from "./useCategory";
 
-export type SortOption = "latest" | "price_asc" | "price_desc" | "rating";
+export type SortOption = "latest" | "price_asc" | "price_desc";
 
 export function useProductSearchAndFilter(initialCategoryId?: string | number | null) {
   const { categories } = useCategories();
@@ -72,6 +72,9 @@ export function useProductSearchAndFilter(initialCategoryId?: string | number | 
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
+    // 0. Exclude soft-deleted products
+    result = result.filter((p) => !p.is_deleted && !p.deleted_at);
+
     // 1. In-memory keyword match as fallback
     const query = debouncedQuery.trim().toLowerCase();
     if (query) {
@@ -126,9 +129,6 @@ export function useProductSearchAndFilter(initialCategoryId?: string | number | 
         break;
       case "price_desc":
         result.sort((a, b) => b.price - a.price);
-        break;
-      case "rating":
-        result.sort((a, b) => (b.rating_rate || 0) - (a.rating_rate || 0));
         break;
       case "latest":
       default:

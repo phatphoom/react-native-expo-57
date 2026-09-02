@@ -82,7 +82,6 @@ export default function FilterModal({
     { label: "Latest", value: "latest" },
     { label: "Price: Low - High", value: "price_asc" },
     { label: "Price: High - Low", value: "price_desc" },
-    { label: "Top Rated", value: "rating" },
   ];
 
   return (

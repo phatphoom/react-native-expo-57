@@ -34,11 +34,11 @@ export interface Product {
   cate_id?: string | number;
   category_name?: string;
   image_url?: string | null;
-  rating_rate: number;
-  rating_count: number;
   in_stock: boolean | number;
   stock_count: number;
   discount_pct: number;
+  deleted_at?: string | null;
+  is_deleted?: boolean;
   created_at?: string;
   updated_at?: string;
 }
@@ -51,8 +51,6 @@ export interface CreateProductDto {
   currency?: string;
   cate_id: string | number;
   image_url?: string;
-  rating_rate?: number;
-  rating_count?: number;
   in_stock?: boolean | number;
   stock_count?: number;
   discount_pct?: number;
