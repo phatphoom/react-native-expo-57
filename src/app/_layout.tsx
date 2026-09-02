@@ -5,6 +5,13 @@ import { AuthProvider } from "@/features/auth/context/AuthContext";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
+import {
+  useFonts,
+  Outfit_400Regular,
+  Outfit_500Medium,
+  Outfit_600SemiBold,
+  Outfit_700Bold,
+} from "@expo-google-fonts/outfit";
 
 function InitialLayout() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -42,6 +49,21 @@ function InitialLayout() {
 }
 
 export default function RootLayout() {
+  const [fontsLoaded] = useFonts({
+    Outfit_400Regular,
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="#2563EB" />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaProvider>
       <StatusBar style="dark" />

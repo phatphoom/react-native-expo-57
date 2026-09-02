@@ -26,7 +26,9 @@ export default function Category() {
       ) : (
         <FlatList
           data={categories}
+          numColumns={2}
           keyExtractor={(item) => String(item.cate_id)}
+          columnWrapperStyle={styles.row}
           renderItem={({ item }) => (
             <CategoryCard item={item} onPress={handleCategoryPress} />
           )}
@@ -54,8 +56,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#F8FAFC",
   },
   listContent: {
-    paddingTop: 8,
-    paddingBottom: 24,
+    paddingTop: 16,
+    paddingBottom: 32,
+  },
+  row: {
+    justifyContent: "space-between",
+    marginBottom: 20,
   },
   loadingContainer: {
     flex: 1,

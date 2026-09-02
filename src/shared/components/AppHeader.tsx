@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 type HeaderProps = {
-  title: string;
+  title?: string;
 };
 
 const HeaderBar = ({ title }: HeaderProps) => {
@@ -14,19 +14,34 @@ const HeaderBar = ({ title }: HeaderProps) => {
 
   return (
     <View style={styles.header}>
-      <View>
-        <Text style={styles.greeting}>{displayName}</Text>
+      <View style={styles.leftContainer}>
+        <Text style={styles.greeting} numberOfLines={1}>
+          {displayName}
+        </Text>
       </View>
-      <Text style={styles.txtHeader}>{title}</Text>
+
+      {/* Styled Brand Title */}
+      <View style={styles.titleContainer}>
+        <Text style={styles.brandTitle}>
+          <Text style={styles.brandPrimary}>Shop</Text>
+          <Text style={styles.brandAccent}>Mate</Text>
+        </Text>
+      </View>
+
       <TouchableOpacity
         style={styles.avatarContainer}
         onPress={() => router.push("/profile")}
         activeOpacity={0.8}
       >
         {fullAvatarUrl ? (
-          <Image source={{ uri: fullAvatarUrl }} style={styles.headerAvatarImage} contentFit="cover" transition={200} />
+          <Image
+            source={{ uri: fullAvatarUrl }}
+            style={styles.headerAvatarImage}
+            contentFit="cover"
+            transition={200}
+          />
         ) : (
-          <Ionicons name="person-circle" size={48} color="#94A3B8" />
+          <Ionicons name="person-circle" size={44} color="#94A3B8" />
         )}
       </TouchableOpacity>
     </View>
@@ -44,16 +59,35 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     marginBottom: 8,
   },
-  txtHeader: {
-    fontSize: 20,
-    fontWeight: "700",
+  leftContainer: {
+    minWidth: 60,
+    justifyContent: "center",
+  },
+  greeting: {
+    fontSize: 13,
+    fontFamily: "Outfit_500Medium",
+    color: "#64748B",
+  },
+  titleContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  brandTitle: {
+    fontSize: 22,
+    letterSpacing: -0.5,
+  },
+  brandPrimary: {
+    fontFamily: "Outfit_700Bold",
     color: "#0F172A",
-    letterSpacing: -0.3,
+  },
+  brandAccent: {
+    fontFamily: "Outfit_700Bold",
+    color: "#2563EB",
   },
   avatarContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     backgroundColor: "#F1F5F9",
     justifyContent: "center",
     alignItems: "center",
@@ -62,11 +96,5 @@ const styles = StyleSheet.create({
   headerAvatarImage: {
     width: "100%",
     height: "100%",
-  },
-  greeting: {
-    fontSize: 22,
-    fontWeight: "700",
-    color: "#0F172A",
-    marginBottom: 4,
   },
 });
