@@ -1,4 +1,4 @@
-import ProductApi from "@/api/productApi";
+import ProductApi from "../api/productApi";
 import type { UpdateProductDto } from "@/types/product";
 import { useState } from "react";
 

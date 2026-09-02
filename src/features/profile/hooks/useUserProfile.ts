@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import ProfileApi from "@/api/profileApi";
-import UploadApi from "@/api/uploadApi";
+import ProfileApi from "@/features/profile/api/profileApi";
+import { UploadApi } from "@/shared/api";
 import { useImagePicker } from "@/shared/hooks/useImagePicker";
 import { UserProfile, UpdateProfileDto } from "@/types/profile";
 import { useAuth } from "@/features/auth/hooks/useAuth";

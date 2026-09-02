@@ -1,4 +1,4 @@
-import api from "@/api/axios";
+import { apiClient as api } from "@/shared/api";
 import {
   AuthResponse,
   BaseAuthResponse,

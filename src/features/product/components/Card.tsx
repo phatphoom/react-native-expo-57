@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import UploadApi from "@/api/uploadApi";
+import { UploadApi } from "@/shared/api";
 import type { Product } from "@/types/product";
 import { FONTS } from "@/shared/theme/typography";
 import { Ionicons } from "@expo/vector-icons";

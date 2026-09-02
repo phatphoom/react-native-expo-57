@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import CategoryApi from "@/api/categoryApi";
+import CategoryApi from "../api/categoryApi";
 import type { Category } from "@/types/product";
 
 export function useCategories() {

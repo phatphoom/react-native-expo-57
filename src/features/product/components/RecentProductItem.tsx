@@ -1,4 +1,4 @@
-import UploadApi from "@/api/uploadApi";
+import { UploadApi } from "@/shared/api";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Image } from "expo-image";

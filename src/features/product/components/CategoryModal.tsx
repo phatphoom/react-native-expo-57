@@ -14,7 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { FormField } from "@/shared/components/FormField";
 import ImagePickerField from "@/shared/components/ImagePickerField";
 import { useImagePicker } from "@/shared/hooks/useImagePicker";
-import UploadApi from "@/api/uploadApi";
+import { UploadApi } from "@/shared/api";
 import { FONTS } from "@/shared/theme/typography";
 import type { Category } from "@/types/product";
 

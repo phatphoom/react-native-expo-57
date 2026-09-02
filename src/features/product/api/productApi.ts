@@ -7,7 +7,7 @@ import type {
   UpdateProductDto,
   UpdateProductResponseData,
 } from "@/types/product";
-import api from "./axios";
+import { apiClient as api } from "@/shared/api";
 
 export interface GetProductsParams {
   search?: string;

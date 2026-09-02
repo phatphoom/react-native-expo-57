@@ -1,4 +1,4 @@
-import ProductApi from "@/api/productApi";
+import ProductApi from "../api/productApi";
 import { useState } from "react";
 
 export function useDeleteProduct() {

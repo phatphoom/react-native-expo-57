@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Product } from "@/types/product";
 import { useDebounce } from "@/shared/hooks";
-import ProductApi from "@/api/productApi";
+import ProductApi from "../api/productApi";
 
 export function useProductSearch(initialProducts: Product[] = []) {
   const [searchQuery, setSearchQuery] = useState("");

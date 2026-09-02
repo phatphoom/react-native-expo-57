@@ -1,5 +1,6 @@
 import type { ApiSuccessResponse, Category } from "@/types/product";
-import api from "./axios";
+import { apiClient as api } from "@/shared/api";
+
 const CategoryApi = {
   getAllCategory: async (): Promise<Category[]> => {
     const res = await api.get<any>("/category");

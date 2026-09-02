@@ -1,7 +1,7 @@
 import axios from "axios";
 import { tokenStorage } from "@/lib/storage";
 
-const api = axios.create({
+const apiClient = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API || "",
   timeout: 10000,
   headers: {
@@ -9,8 +9,8 @@ const api = axios.create({
   },
 });
 
-// Request Interceptor
-api.interceptors.request.use(
+// Request Interceptor: Attach Auth Token
+apiClient.interceptors.request.use(
   async (config) => {
     try {
       const token = await tokenStorage.getItem("authToken");
@@ -29,4 +29,4 @@ api.interceptors.request.use(
   }
 );
 
-export default api;
+export default apiClient;

@@ -4,7 +4,7 @@ import { useRouter } from "expo-router";
 import { useCreateProduct } from "./useCreateProduct";
 import { useProductForm, type ProductFormValues } from "./useProductForm";
 import { useImagePicker } from "@/shared/hooks/useImagePicker";
-import UploadApi from "@/api/uploadApi";
+import { UploadApi } from "@/shared/api";
 
 export function useAddProductForm() {
   const router = useRouter();

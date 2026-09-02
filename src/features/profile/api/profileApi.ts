@@ -1,5 +1,5 @@
 import type { UserProfile, UpdateProfileDto, UserProfileResponse } from "@/types/profile";
-import api from "./axios";
+import { apiClient as api } from "@/shared/api";
 
 const ProfileApi = {
   /**

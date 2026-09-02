@@ -1,5 +1,5 @@
 import type { UploadImageDto, UploadImageData, UploadImageResponse } from "@/types/upload";
-import api from "./axios";
+import apiClient from "./client";
 
 const API_BASE_URL = process.env.EXPO_PUBLIC_API || "";
 
@@ -15,7 +15,7 @@ const UploadApi = {
       image: base64Image,
       ...(fileName ? { filename: fileName } : {}),
     };
-    const res = await api.post<UploadImageResponse>("/upload", payload);
+    const res = await apiClient.post<UploadImageResponse>("/upload", payload);
     return res.data.data;
   },
 
@@ -30,10 +30,7 @@ const UploadApi = {
       return relativePath;
     }
 
-    // ตัดส่วน /api หรือ / ด้านหลังออก เพื่อให้ได้ Host origin (เช่น http://119.59.102.161:3036)
     let hostOrigin = API_BASE_URL.replace(/\/api\/?$/, "").replace(/\/+$/, "");
-    
-    // ตรวจสอบให้มั่นใจว่า relativePath มี / นำหน้า
     const cleanPath = relativePath.startsWith("/") ? relativePath : `/${relativePath}`;
 
     return `${hostOrigin}${cleanPath}`;

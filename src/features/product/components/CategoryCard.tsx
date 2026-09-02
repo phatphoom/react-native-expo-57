@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import type { Category } from "@/types/product";
 import { FONTS } from "@/shared/theme/typography";
-import UploadApi from "@/api/uploadApi";
+import { UploadApi } from "@/shared/api";
 import { Image } from "expo-image";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";

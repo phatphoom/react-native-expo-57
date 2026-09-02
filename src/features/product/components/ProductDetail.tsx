@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity
 import { Image } from 'expo-image';
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import type { Product } from '@/types/product';
-import UploadApi from '@/api/uploadApi';
+import { UploadApi } from '@/shared/api';
 import { FONTS } from '@/shared/theme/typography';
 
 interface DetailProdctProps {

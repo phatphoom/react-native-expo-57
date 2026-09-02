@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CategoryCard from "@/features/product/components/CategoryCard";
 import CategoryModal from "@/features/product/components/CategoryModal";
 import { useCategories } from "@/features/product/hooks/useCategory";
-import CategoryApi from "@/api/categoryApi";
+import CategoryApi from "@/features/product/api/categoryApi";
 import { useAuth } from "@/features/auth/hooks";
 import HeaderBar from "@/shared/components/AppHeader";
 import { useRouter } from "expo-router";

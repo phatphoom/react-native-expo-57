@@ -4,7 +4,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useProduct, useUpdateProduct } from "./useProduct";
 import { useProductForm, type ProductFormValues } from "./useProductForm";
 import { useImagePicker } from "@/shared/hooks/useImagePicker";
-import UploadApi from "@/api/uploadApi";
+import { UploadApi } from "@/shared/api";
 
 export function useEditProductForm() {
   const { id } = useLocalSearchParams();

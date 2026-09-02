@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Product } from "@/types/product";
 import { useDebounce } from "@/shared/hooks";
-import ProductApi, { GetProductsParams } from "@/api/productApi";
+import ProductApi, { GetProductsParams } from "../api/productApi";
 import { useCategories } from "./useCategory";
 
 export type SortOption = "latest" | "price_asc" | "price_desc";
