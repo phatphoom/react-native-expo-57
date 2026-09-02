@@ -29,10 +29,10 @@ export function DeleteAccountModal({ visible, loading, onClose, onConfirm }: Pro
           <View style={styles.iconContainer}>
             <Ionicons name="warning" size={32} color="#DC2626" />
           </View>
-          <Text style={styles.title}>ลบบัญชีผู้ใช้งาน?</Text>
+          <Text style={styles.title}>Delete Account?</Text>
           <Text style={styles.message}>
-            คุณแน่ใจหรือไม่ว่าต้องการลบบัญชีผู้ใช้นี้? การกระทำนี้ไม่สามารถย้อนกลับได้
-            ข้อมูลส่วนตัว ข้อมูลร้านค้า และประวัติทั้งหมดของคุณจะถูกลบอย่างถาวร
+            Are you sure you want to delete this account? This action cannot be undone.
+            All your personal data and store history will be permanently deleted.
           </Text>
           <View style={styles.actions}>
             <TouchableOpacity
@@ -40,7 +40,7 @@ export function DeleteAccountModal({ visible, loading, onClose, onConfirm }: Pro
               onPress={onClose}
               disabled={loading}
             >
-              <Text style={styles.cancelBtnText}>ยกเลิก</Text>
+              <Text style={styles.cancelBtnText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.confirmBtn}
@@ -50,7 +50,7 @@ export function DeleteAccountModal({ visible, loading, onClose, onConfirm }: Pro
               {loading ? (
                 <ActivityIndicator size="small" color="#FFFFFF" />
               ) : (
-                <Text style={styles.confirmBtnText}>ยืนยันการลบบัญชี</Text>
+                <Text style={styles.confirmBtnText}>Delete Account</Text>
               )}
             </TouchableOpacity>
           </View>

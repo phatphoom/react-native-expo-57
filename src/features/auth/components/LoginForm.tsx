@@ -42,7 +42,7 @@ export function LoginForm({
       ) : null}
 
       <FormField
-        label="อีเมล"
+        label="Email"
         placeholder="example@email.com"
         value={email}
         onChangeText={onChangeEmail}
@@ -51,7 +51,7 @@ export function LoginForm({
       />
 
       <FormField
-        label="รหัสผ่าน"
+        label="Password"
         placeholder="••••••••"
         value={password}
         onChangeText={onChangePassword}
@@ -59,7 +59,7 @@ export function LoginForm({
       />
 
       <TouchableOpacity style={styles.forgotPassword} onPress={onForgotPassword}>
-        <Text style={styles.forgotPasswordText}>ลืมรหัสผ่าน?</Text>
+        <Text style={styles.forgotPasswordText}>Forgot password?</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -70,14 +70,14 @@ export function LoginForm({
         {loading ? (
           <ActivityIndicator color="#FFFFFF" />
         ) : (
-          <Text style={styles.primaryBtnText}>เข้าสู่ระบบ</Text>
+          <Text style={styles.primaryBtnText}>Sign In</Text>
         )}
       </TouchableOpacity>
 
       <View style={styles.registerContainer}>
-        <Text style={styles.registerText}>ยังไม่มีบัญชีใช่หรือไม่? </Text>
+        <Text style={styles.registerText}>Don't have an account? </Text>
         <TouchableOpacity onPress={onRegister}>
-          <Text style={styles.registerLink}>สมัครสมาชิก</Text>
+          <Text style={styles.registerLink}>Sign Up</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -11,7 +11,7 @@ export function useLoginForm() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      setError("กรุณากรอกอีเมลและรหัสผ่าน");
+      setError("Please enter email and password");
       return;
     }
 
@@ -21,7 +21,7 @@ export function useLoginForm() {
     try {
       await login({ email, password });
     } catch (err: any) {
-      setError(err?.response?.data?.message || "อีเมลหรือรหัสผ่านไม่ถูกต้อง");
+      setError(err?.response?.data?.message || "Invalid email or password");
     } finally {
       setLoading(false);
     }

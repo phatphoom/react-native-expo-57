@@ -13,7 +13,7 @@ export function PersonalDetailsCard({
 }: PersonalDetailsCardProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>ข้อมูลส่วนตัว</Text>
+      <Text style={styles.sectionTitle}>Personal Details</Text>
       <View style={styles.infoCard}>
         <View style={styles.infoRow}>
           <View
@@ -25,9 +25,9 @@ export function PersonalDetailsCard({
             <Ionicons name="call-outline" size={18} color="#3B82F6" />
           </View>
           <View style={styles.infoContent}>
-            <Text style={styles.infoLabel}>เบอร์โทรศัพท์</Text>
+            <Text style={styles.infoLabel}>Phone Number</Text>
             <Text style={styles.infoValue}>
-              {phoneNumber || "ยังไม่ได้ระบุ"}
+              {phoneNumber || "Not specified"}
             </Text>
           </View>
         </View>
@@ -44,8 +44,8 @@ export function PersonalDetailsCard({
             <Ionicons name="location-outline" size={18} color="#F59E0B" />
           </View>
           <View style={styles.infoContent}>
-            <Text style={styles.infoLabel}>ที่อยู่</Text>
-            <Text style={styles.infoValue}>{address || "ยังไม่ได้ระบุ"}</Text>
+            <Text style={styles.infoLabel}>Address</Text>
+            <Text style={styles.infoValue}>{address || "Not specified"}</Text>
           </View>
         </View>
       </View>

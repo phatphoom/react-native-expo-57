@@ -39,7 +39,7 @@ export default function Category() {
           }
           ListEmptyComponent={
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>ไม่พบหมวดหมู่สินค้า</Text>
+              <Text style={styles.emptyText}>No categories found</Text>
             </View>
           }
         />

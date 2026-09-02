@@ -120,7 +120,7 @@ export default function ProfileScreen() {
           activeOpacity={0.8}
         >
           <Ionicons name="log-out-outline" size={22} color="#DC2626" />
-          <Text style={styles.logoutButtonText}>ออกจากระบบ</Text>
+          <Text style={styles.logoutButtonText}>Sign Out</Text>
         </TouchableOpacity>
 
         {/* Footer */}

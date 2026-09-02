@@ -14,12 +14,12 @@ export function useRegisterForm() {
 
   const handleRegister = async () => {
     if (!username || !email || !password) {
-      setError("กรุณากรอกข้อมูลให้ครบถ้วน");
+      setError("Please fill in all fields");
       return;
     }
 
     if (password !== confirmPassword) {
-      setError("รหัสผ่านไม่ตรงกัน");
+      setError("Passwords do not match");
       return;
     }
 
@@ -29,7 +29,7 @@ export function useRegisterForm() {
     try {
       await register({ username, email, password });
     } catch (err: any) {
-      setError(err?.response?.data?.message || "การสมัครสมาชิกผิดพลาด โปรดลองอีกครั้ง");
+      setError(err?.response?.data?.message || "Registration failed, please try again");
     } finally {
       setLoading(false);
     }

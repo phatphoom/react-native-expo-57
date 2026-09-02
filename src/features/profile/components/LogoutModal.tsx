@@ -21,9 +21,9 @@ export function LogoutModal({ visible, onClose, onConfirm }: LogoutModalProps) {
           <View style={styles.modalIconContainer}>
             <Ionicons name="log-out" size={32} color="#DC2626" />
           </View>
-          <Text style={styles.modalTitle}>ยืนยันการออกจากระบบ</Text>
+          <Text style={styles.modalTitle}>Confirm Sign Out</Text>
           <Text style={styles.modalMessage}>
-            คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบบัญชีผู้ใช้นี้?
+            Are you sure you want to sign out of your account?
           </Text>
           <View style={styles.modalActions}>
             <TouchableOpacity
@@ -31,14 +31,14 @@ export function LogoutModal({ visible, onClose, onConfirm }: LogoutModalProps) {
               onPress={onClose}
               activeOpacity={0.7}
             >
-              <Text style={styles.modalCancelBtnText}>ยกเลิก</Text>
+              <Text style={styles.modalCancelBtnText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.modalConfirmBtn}
               onPress={onConfirm}
               activeOpacity={0.7}
             >
-              <Text style={styles.modalConfirmBtnText}>ออกจากระบบ</Text>
+              <Text style={styles.modalConfirmBtnText}>Sign Out</Text>
             </TouchableOpacity>
           </View>
         </View>

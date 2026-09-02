@@ -56,7 +56,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: "หน้าแรก",
+          title: "Home",
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconWrapper, focused && styles.activeIconWrapper]}>
               <FontAwesome5 name="home" size={20} color={color} />
@@ -67,7 +67,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="product"
         options={{
-          title: "สินค้า",
+          title: "Products",
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconWrapper, focused && styles.activeIconWrapper]}>
               <FontAwesome5 name="box-open" size={20} color={color} />
@@ -78,7 +78,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="category"
         options={{
-          title: "หมวดหมู่",
+          title: "Categories",
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconWrapper, focused && styles.activeIconWrapper]}>
               <MaterialIcons name="category" size={22} color={color} />
@@ -89,7 +89,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="add"
         options={{
-          title: "เพิ่มสินค้า",
+          title: "Add Product",
           href: isAdmin ? "/add" : null, // Hide tab icon if not admin
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconWrapper, focused && styles.activeIconWrapper]}>
@@ -101,7 +101,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: "โปรไฟล์",
+          title: "Profile",
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconWrapper, focused && styles.activeIconWrapper]}>
               <FontAwesome5 name="user-alt" size={20} color={color} />

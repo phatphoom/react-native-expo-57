@@ -15,8 +15,8 @@ export function RegisterHeroSection({ onBack }: Props) {
       <View style={styles.logoContainer}>
         <Ionicons name="person-add" size={40} color="#FFFFFF" />
       </View>
-      <Text style={styles.welcomeText}>สร้างบัญชีใหม่</Text>
-      <Text style={styles.subtitle}>เข้าร่วมกับเราเพื่อเปิดร้านค้าของคุณเอง</Text>
+      <Text style={styles.welcomeText}>Create Account</Text>
+      <Text style={styles.subtitle}>Join us to manage your own store</Text>
     </View>
   );
 }

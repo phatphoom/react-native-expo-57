@@ -28,20 +28,20 @@ export function AvatarOptionsModal({
         onPress={onClose}
       >
         <View style={styles.actionSheetContent}>
-          <Text style={styles.actionSheetTitle}>เลือกรูปโปรไฟล์</Text>
+          <Text style={styles.actionSheetTitle}>Choose Profile Picture</Text>
 
           <TouchableOpacity style={styles.option} onPress={onPickFromGallery}>
             <Ionicons name="images-outline" size={22} color="#3B82F6" />
-            <Text style={styles.optionText}>เลือกจากคลังภาพ (Gallery)</Text>
+            <Text style={styles.optionText}>Choose from Gallery</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.option} onPress={onTakePhoto}>
             <Ionicons name="camera-outline" size={22} color="#10B981" />
-            <Text style={styles.optionText}>ถ่ายภาพด้วยกล้อง (Camera)</Text>
+            <Text style={styles.optionText}>Take Photo with Camera</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
-            <Text style={styles.cancelBtnText}>ยกเลิก</Text>
+            <Text style={styles.cancelBtnText}>Cancel</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>

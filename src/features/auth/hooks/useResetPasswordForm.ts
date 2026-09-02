@@ -27,15 +27,15 @@ export function useResetPasswordForm() {
 
   const handleSubmit = async () => {
     if (!resetEmail || !resetNewPass || !resetConfirmPass) {
-      showAlert("ข้อผิดพลาด", "กรุณากรอกข้อมูลให้ครบทุกช่อง");
+      showAlert("Error", "Please fill in all fields");
       return;
     }
     if (resetNewPass.length < 6) {
-      showAlert("ข้อผิดพลาด", "รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 6 ตัวอักษร");
+      showAlert("Error", "New password must be at least 6 characters long");
       return;
     }
     if (resetNewPass !== resetConfirmPass) {
-      showAlert("ข้อผิดพลาด", "รหัสผ่านใหม่และการยืนยันรหัสผ่านไม่ตรงกัน");
+      showAlert("Error", "New password and confirmation do not match");
       return;
     }
 
@@ -48,17 +48,17 @@ export function useResetPasswordForm() {
       });
       close();
       showAlert(
-        "สำเร็จ",
+        "Success",
         res?.message ||
-          "รีเซ็ตรหัสผ่านเรียบร้อยแล้ว คุณสามารถเข้าสู่ระบบด้วยรหัสผ่านใหม่ได้ทันที"
+          "Password reset successfully. You can now log in with your new password."
       );
     } catch (err: any) {
       const msg =
         err?.response?.data?.message ||
         err?.response?.data?.errors?.email ||
         err?.message ||
-        "ไม่สามารถรีเซ็ตรหัสผ่านได้";
-      showAlert("ข้อผิดพลาด", msg);
+        "Failed to reset password";
+      showAlert("Error", msg);
     } finally {
       setLoading(false);
     }

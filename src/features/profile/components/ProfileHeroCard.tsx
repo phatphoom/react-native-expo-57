@@ -28,7 +28,7 @@ export function ProfileHeroCard({
   uploadingAvatar,
   onAvatarPress,
 }: Props) {
-  const hasName = displayName !== username && displayName !== "ผู้ใช้งาน";
+  const hasName = displayName !== username && displayName !== "User";
 
   return (
     <View style={styles.heroCard}>
@@ -64,7 +64,7 @@ export function ProfileHeroCard({
       {hasName && username ? (
         <Text style={styles.userSubName}>@{username}</Text>
       ) : null}
-      <Text style={styles.userEmail}>{email || "ไม่มีอีเมล"}</Text>
+      <Text style={styles.userEmail}>{email || "No email"}</Text>
 
       <View style={styles.roleBadge}>
         <Text style={styles.roleText}>

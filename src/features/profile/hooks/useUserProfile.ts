@@ -101,11 +101,11 @@ export function useUserProfile() {
       } else {
         await fetchProfile();
       }
-      showAlert("สำเร็จ", "อัปเดตรูปโปรไฟล์เรียบร้อยแล้ว!");
+      showAlert("Success", "Profile picture updated successfully!");
     } catch (err: any) {
       console.error("Upload avatar error:", err);
-      const msg = err?.response?.data?.message || err?.message || "อัปโหลดรูปโปรไฟล์ไม่สำเร็จ";
-      showAlert("ข้อผิดพลาด", msg);
+      const msg = err?.response?.data?.message || err?.message || "Failed to upload profile picture";
+      showAlert("Error", msg);
     } finally {
       setUploadingAvatar(false);
     }
@@ -131,15 +131,15 @@ export function useUserProfile() {
       }
       await fetchProfile();
       setShowEditModal(false);
-      showAlert("สำเร็จ", "บันทึกข้อมูลส่วนตัวเรียบร้อยแล้ว");
+      showAlert("Success", "Profile updated successfully");
     } catch (err: any) {
       console.error("Save profile error:", err);
       const msg =
         err?.response?.data?.message ||
         err?.response?.data?.error ||
         err?.message ||
-        "ไม่สามารถบันทึกข้อมูลได้";
-      showAlert("ข้อผิดพลาด", msg);
+        "Failed to update profile";
+      showAlert("Error", msg);
     } finally {
       setUpdating(false);
     }
@@ -149,7 +149,7 @@ export function useUserProfile() {
 
   const displayName = profile?.first_name || profile?.last_name
     ? `${profile.first_name || ""} ${profile.last_name || ""}`.trim()
-    : profile?.username || user?.username || "ผู้ใช้งาน";
+    : profile?.username || user?.username || "User";
 
   return {
     profile,

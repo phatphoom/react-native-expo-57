@@ -25,24 +25,24 @@ export function useInfoModals() {
   const openPrivacyPolicy = () =>
     setInfoModal({
       visible: true,
-      title: "นโยบายความเป็นส่วนตัว",
-      subtitle: "Privacy Policy (อัปเดตล่าสุด สิงหาคม 2026)",
+      title: "Privacy Policy",
+      subtitle: "Privacy Policy (Last updated August 2026)",
       sections: [
         {
-          heading: "1. การเก็บรวบรวมข้อมูลส่วนบุคคล",
-          body: "เราเก็บรวบรวมข้อมูลที่คุณระบุระหว่างการลงทะเบียนและแก้ไขข้อมูลส่วนตัว เช่น ชื่อ นามสกุล อีเมล เบอร์โทรศัพท์ วันเกิด ที่อยู่ และรูปภาพโปรไฟล์ เพื่อใช้ในการระบุตัวตนและให้บริการจัดการร้านค้าอย่างมีประสิทธิภาพ",
+          heading: "1. Personal Data Collection",
+          body: "We collect information you provide during registration and profile updates, such as name, email, phone number, address, and profile photo to identify you and provide store management services effectively.",
         },
         {
-          heading: "2. วัตถุประสงค์การใช้ข้อมูล",
-          body: "ข้อมูลของคุณจะถูกใช้เพื่อการเข้าสู่ระบบ การจัดการสิทธิ์การเข้าถึง การส่งการแจ้งเตือนสำคัญเกี่ยวกับบัญชี และการปรับปรุงประสิทธิภาพการทำงานของแอปพลิเคชัน",
+          heading: "2. Purpose of Data Use",
+          body: "Your information is used for authentication, access control management, essential account notifications, and improving app performance.",
         },
         {
-          heading: "3. การรักษาความปลอดภัยของข้อมูล",
-          body: "เราใช้มาตรการรักษาความปลอดภัยตามมาตรฐานสากล มีการเข้ารหัสโทเค็นยืนยันตัวตน (JWT) และจัดเก็บข้อมูลอย่างปลอดภัยบนเซิร์ฟเวอร์",
+          heading: "3. Data Security",
+          body: "We implement international standard security measures including JWT token encryption and secure server storage.",
         },
         {
-          heading: "4. สิทธิของเจ้าของข้อมูล",
-          body: "คุณมีสิทธิ์เข้าถึง แก้ไข หรือขอลบบัญชีและข้อมูลส่วนบุคคลของคุณได้ตลอดเวลาผ่านเมนูการตั้งค่าบัญชีในแอปพลิเคชัน",
+          heading: "4. Data Subject Rights",
+          body: "You have the right to access, edit, or request account deletion at any time via the account settings menu in the app.",
         },
       ],
     });
@@ -50,24 +50,24 @@ export function useInfoModals() {
   const openTermsOfService = () =>
     setInfoModal({
       visible: true,
-      title: "เงื่อนไขการใช้งาน",
-      subtitle: "Terms of Service",
+      title: "Terms of Service",
+      subtitle: "Terms & Conditions",
       sections: [
         {
-          heading: "1. การยอมรับข้อกำหนด",
-          body: "การเข้าใช้งานแอปพลิเคชันนี้ถือว่าคุณได้อ่าน เข้าใจ และตกลงที่จะปฏิบัติตามข้อกำหนดและเงื่อนไขการใช้งานทั้งหมดที่ระบุไว้นี้",
+          heading: "1. Acceptance of Terms",
+          body: "By using this application, you agree to have read, understood, and accepted all terms and conditions specified herein.",
         },
         {
-          heading: "2. บัญชีผู้ใช้และความปลอดภัย",
-          body: "คุณมีหน้าที่รับผิดชอบในการรักษาความลับของชื่อผู้ใช้และรหัสผ่านของคุณ รวมถึงกิจกรรมทั้งหมดที่เกิดขึ้นภายใต้บัญชีของคุณ",
+          heading: "2. User Account Security",
+          body: "You are responsible for maintaining the confidentiality of your credentials and all activities occurring under your account.",
         },
         {
-          heading: "3. ข้อห้ามในการใช้งาน",
-          body: "ห้ามมิให้กระทำการใดๆ ที่อาจก่อให้เกิดความเสียหายต่อระบบ ละเมิดสิทธิ์ของผู้อื่น หรืออัปโหลดเนื้อหาที่ผิดกฎหมายเข้ามาในระบบ",
+          heading: "3. Usage Restrictions",
+          body: "You must not perform any action that may cause system damage, infringe on rights of others, or upload illegal content into the system.",
         },
         {
-          heading: "4. การระงับการให้บริการ",
-          body: "เราขอสงวนสิทธิ์ในการระงับหรือยกเลิกการให้บริการแก่ผู้ใช้งานที่ละเมิดข้อกำหนดและเงื่อนไขการใช้งานโดยไม่ต้องแจ้งให้ทราบล่วงหน้า",
+          heading: "4. Service Termination",
+          body: "We reserve the right to suspend or terminate services to users violating these terms without prior notice.",
         },
       ],
     });
@@ -75,20 +75,20 @@ export function useInfoModals() {
   const openAboutApp = () =>
     setInfoModal({
       visible: true,
-      title: "เกี่ยวกับแอปพลิเคชัน",
+      title: "About Application",
       subtitle: "About Application & Version Info",
       sections: [
         {
-          heading: "ข้อมูลเวอร์ชัน (Version)",
-          body: "เวอร์ชันปัจจุบัน: v1.0.0 (Build 100)\nสภาพแวดล้อม: React Native Expo 57 / Web",
+          heading: "Version Info",
+          body: "Current Version: v1.0.0 (Build 100)\nEnvironment: React Native Expo 57 / Web",
         },
         {
-          heading: "เกี่ยวกับระบบ",
-          body: "แอปพลิเคชันสำหรับจัดการระบบร้านค้าและสินค้า (Store & Inventory Management System) รองรับการแสดงผลสินค้า จัดการหมวดหมู่ ตรวจสอบโปรไฟล์ และเชื่อมต่อ RESTful API เต็มรูปแบบ",
+          heading: "About System",
+          body: "Store & Inventory Management System application supporting product listing, category management, profile verification, and full RESTful API integration.",
         },
         {
-          heading: "ลิขสิทธิ์และการพัฒนา",
-          body: "© 2026 E-Commerce System. All Rights Reserved.\nออกแบบและพัฒนาโดยทีมงานผู้เชี่ยวชาญ",
+          heading: "Copyright & Development",
+          body: "© 2026 E-Commerce System. All Rights Reserved.",
         },
       ],
     });
@@ -96,16 +96,16 @@ export function useInfoModals() {
   const openHelpSupport = () =>
     setInfoModal({
       visible: true,
-      title: "ศูนย์ช่วยเหลือ",
+      title: "Help & Support",
       subtitle: "Help & Support Center",
       sections: [
         {
-          heading: "ติดต่อเรา",
-          body: "หากคุณพบปัญหาในการใช้งานหรือมีข้อสงสัย สามารถติดต่อทีมงานสนับสนุนได้ที่:\nอีเมล: support@ecommerce-app.com\nเบอร์โทรศัพท์: 02-123-4567 (จันทร์-ศุกร์ 09:00 - 18:00 น.)",
+          heading: "Contact Us",
+          body: "If you encounter any issues or have questions, contact support at:\nEmail: support@ecommerce-app.com\nPhone: +66 2 123 4567 (Mon-Fri 09:00 - 18:00)",
         },
         {
-          heading: "คำถามที่พบบ่อย (FAQ)",
-          body: "• ลืมรหัสผ่าน: ติดต่อผู้ดูแลระบบเพื่อขอรีเซ็ตรหัสผ่าน\n• เปลี่ยนรูปโปรไฟล์: กดที่รูปโปรไฟล์ในหน้านี้แล้วเลือกรูปภาพที่ต้องการ\n• แก้ไขข้อมูลสินค้า: เข้าสู่ระบบด้วยสิทธิ์ผู้ดูแลระบบ (Admin)",
+          heading: "Frequently Asked Questions (FAQ)",
+          body: "• Forgot password: Contact administrator to reset your password\n• Change profile picture: Tap on profile avatar and select your photo\n• Edit product: Sign in with Administrator role",
         },
       ],
     });

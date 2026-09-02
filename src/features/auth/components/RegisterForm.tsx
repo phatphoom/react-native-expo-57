@@ -48,15 +48,15 @@ export function RegisterForm({
       ) : null}
 
       <FormField
-        label="ชื่อผู้ใช้งาน"
-        placeholder="ตั้งชื่อผู้ใช้งานของคุณ"
+        label="Username"
+        placeholder="Enter your username"
         value={username}
         onChangeText={setUsername}
         autoCapitalize="none"
       />
 
       <FormField
-        label="อีเมล"
+        label="Email"
         placeholder="example@email.com"
         value={email}
         onChangeText={setEmail}
@@ -65,16 +65,16 @@ export function RegisterForm({
       />
 
       <FormField
-        label="รหัสผ่าน"
-        placeholder="ต้องมีความยาวอย่างน้อย 6 ตัวอักษร"
+        label="Password"
+        placeholder="At least 6 characters"
         value={password}
         onChangeText={setPassword}
         isPassword
       />
 
       <FormField
-        label="ยืนยันรหัสผ่าน"
-        placeholder="กรอกรหัสผ่านอีกครั้ง"
+        label="Confirm Password"
+        placeholder="Re-enter your password"
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         isPassword
@@ -92,14 +92,14 @@ export function RegisterForm({
         {loading ? (
           <ActivityIndicator color="#FFFFFF" />
         ) : (
-          <Text style={styles.primaryBtnText}>ลงทะเบียน</Text>
+          <Text style={styles.primaryBtnText}>Sign Up</Text>
         )}
       </TouchableOpacity>
 
       <View style={styles.loginContainer}>
-        <Text style={styles.loginText}>มีบัญชีอยู่แล้วใช่หรือไม่? </Text>
+        <Text style={styles.loginText}>Already have an account? </Text>
         <TouchableOpacity onPress={onLogin}>
-          <Text style={styles.loginLink}>เข้าสู่ระบบ</Text>
+          <Text style={styles.loginLink}>Sign In</Text>
         </TouchableOpacity>
       </View>
     </View>

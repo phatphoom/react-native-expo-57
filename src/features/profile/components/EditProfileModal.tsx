@@ -72,7 +72,7 @@ export function EditProfileModal({
           <View style={styles.editModalContent}>
             {/* Header */}
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>แก้ไขข้อมูลส่วนตัว</Text>
+              <Text style={styles.modalTitle}>Edit Profile</Text>
               <TouchableOpacity
                 onPress={onClose}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
@@ -108,17 +108,17 @@ export function EditProfileModal({
               >
                 <Ionicons name="camera-outline" size={16} color="#3B82F6" />
                 <Text style={styles.changeAvatarModalBtnText}>
-                  เปลี่ยนรูปโปรไฟล์
+                  Change Avatar
                 </Text>
               </TouchableOpacity>
             </View>
 
             {/* Form Inputs */}
             <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>ชื่อ (First Name)</Text>
+              <Text style={styles.inputLabel}>First Name</Text>
               <TextInput
                 style={styles.textInput}
-                placeholder="กรอกชื่อจริง"
+                placeholder="Enter first name"
                 placeholderTextColor="#94A3B8"
                 value={firstNameInput}
                 onChangeText={setFirstNameInput}
@@ -126,10 +126,10 @@ export function EditProfileModal({
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>นามสกุล (Last Name)</Text>
+              <Text style={styles.inputLabel}>Last Name</Text>
               <TextInput
                 style={styles.textInput}
-                placeholder="กรอกนามสกุล"
+                placeholder="Enter last name"
                 placeholderTextColor="#94A3B8"
                 value={lastNameInput}
                 onChangeText={setLastNameInput}
@@ -137,10 +137,10 @@ export function EditProfileModal({
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>เบอร์โทรศัพท์ (Phone Number)</Text>
+              <Text style={styles.inputLabel}>Phone Number</Text>
               <TextInput
                 style={styles.textInput}
-                placeholder="เช่น 0812345678"
+                placeholder="e.g. +66812345678"
                 placeholderTextColor="#94A3B8"
                 keyboardType="phone-pad"
                 value={phoneNumberInput}
@@ -149,10 +149,10 @@ export function EditProfileModal({
             </View>
 
             <View style={styles.inputGroup}>
-              <Text style={styles.inputLabel}>ที่อยู่ (Address)</Text>
+              <Text style={styles.inputLabel}>Address</Text>
               <TextInput
                 style={[styles.textInput, styles.textAreaInput]}
-                placeholder="กรอกที่อยู่ของคุณ"
+                placeholder="Enter your address"
                 placeholderTextColor="#94A3B8"
                 multiline
                 numberOfLines={3}
@@ -169,7 +169,7 @@ export function EditProfileModal({
                 disabled={updating}
                 activeOpacity={0.7}
               >
-                <Text style={styles.modalCancelBtnText}>ยกเลิก</Text>
+                <Text style={styles.modalCancelBtnText}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.modalSaveBtn}
@@ -180,7 +180,7 @@ export function EditProfileModal({
                 {updating ? (
                   <ActivityIndicator size="small" color="#FFFFFF" />
                 ) : (
-                  <Text style={styles.modalSaveBtnText}>บันทึกข้อมูล</Text>
+                  <Text style={styles.modalSaveBtnText}>Save Changes</Text>
                 )}
               </TouchableOpacity>
             </View>

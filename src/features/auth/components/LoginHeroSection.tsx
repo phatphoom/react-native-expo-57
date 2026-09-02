@@ -8,8 +8,8 @@ export function LoginHeroSection() {
       <View style={styles.logoContainer}>
         <Ionicons name="basket" size={48} color="#FFFFFF" />
       </View>
-      <Text style={styles.welcomeText}>ยินดีต้อนรับกลับมา 👋</Text>
-      <Text style={styles.subtitle}>เข้าสู่ระบบเพื่อจัดการร้านค้าของคุณ</Text>
+      <Text style={styles.welcomeText}>Welcome Back 👋</Text>
+      <Text style={styles.subtitle}>Sign in to manage your store</Text>
     </View>
   );
 }

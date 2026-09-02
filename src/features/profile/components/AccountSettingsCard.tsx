@@ -16,22 +16,22 @@ export function AccountSettingsCard({
 }: AccountSettingsCardProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>การตั้งค่าบัญชี</Text>
+      <Text style={styles.sectionTitle}>Account Settings</Text>
       <View style={styles.menuCard}>
         <ProfileMenuItem
           icon={<Ionicons name="person-outline" size={20} color="#3B82F6" />}
-          title="แก้ไขข้อมูลส่วนตัว"
+          title="Edit Profile"
           onPress={onEditProfile}
         />
         <ProfileMenuItem
           icon={<Ionicons name="key-outline" size={20} color="#8B5CF6" />}
-          title="เปลี่ยนรหัสผ่าน"
+          title="Change Password"
           onPress={onChangePassword}
         />
         <View style={styles.menuDivider} />
         <ProfileMenuItem
           icon={<Ionicons name="trash-outline" size={20} color="#DC2626" />}
-          title="ลบบัญชีผู้ใช้ (Danger Zone)"
+          title="Delete Account (Danger Zone)"
           isDestructive
           onPress={onDeleteAccount}
         />

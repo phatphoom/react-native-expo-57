@@ -58,7 +58,7 @@ export function ResetPasswordModal({
               <View style={styles.modalIconBox}>
                 <Ionicons name="lock-open" size={20} color="#2563EB" />
               </View>
-              <Text style={styles.modalTitle}>รีเซ็ตรหัสผ่าน</Text>
+              <Text style={styles.modalTitle}>Reset Password</Text>
             </View>
             <TouchableOpacity
               onPress={onClose}
@@ -69,12 +69,12 @@ export function ResetPasswordModal({
           </View>
 
           <Text style={styles.modalSubText}>
-            กรุณากรอกอีเมลของบัญชีที่ต้องการตั้งรหัสผ่านใหม่
+            Please enter your account email to set a new password.
           </Text>
 
           {/* Email */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>อีเมล (Email)</Text>
+            <Text style={styles.inputLabel}>Email</Text>
             <TextInput
               style={styles.textInput}
               placeholder="example@email.com"
@@ -88,11 +88,11 @@ export function ResetPasswordModal({
 
           {/* New Password */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>รหัสผ่านใหม่ (New Password)</Text>
+            <Text style={styles.inputLabel}>New Password</Text>
             <View style={styles.passwordInputWrapper}>
               <TextInput
                 style={styles.passwordTextInput}
-                placeholder="ความยาวอย่างน้อย 6 ตัวอักษร"
+                placeholder="At least 6 characters"
                 placeholderTextColor="#94A3B8"
                 secureTextEntry={!showNewPass}
                 value={resetNewPass}
@@ -110,11 +110,11 @@ export function ResetPasswordModal({
 
           {/* Confirm Password */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>ยืนยันรหัสผ่านใหม่ (Confirm Password)</Text>
+            <Text style={styles.inputLabel}>Confirm New Password</Text>
             <View style={styles.passwordInputWrapper}>
               <TextInput
                 style={styles.passwordTextInput}
-                placeholder="กรอกรหัสผ่านใหม่อีกครั้ง"
+                placeholder="Re-enter new password"
                 placeholderTextColor="#94A3B8"
                 secureTextEntry={!showConfirmPass}
                 value={resetConfirmPass}
@@ -137,7 +137,7 @@ export function ResetPasswordModal({
               onPress={onClose}
               disabled={loading}
             >
-              <Text style={styles.modalCancelBtnText}>ยกเลิก</Text>
+              <Text style={styles.modalCancelBtnText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.modalSaveBtn}
@@ -147,7 +147,7 @@ export function ResetPasswordModal({
               {loading ? (
                 <ActivityIndicator size="small" color="#FFFFFF" />
               ) : (
-                <Text style={styles.modalSaveBtnText}>รีเซ็ตรหัสผ่าน</Text>
+                <Text style={styles.modalSaveBtnText}>Reset Password</Text>
               )}
             </TouchableOpacity>
           </View>

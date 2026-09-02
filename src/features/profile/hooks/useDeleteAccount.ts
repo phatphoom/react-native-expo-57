@@ -14,12 +14,12 @@ export function useDeleteAccount(onSuccess: () => Promise<void>) {
     try {
       await AuthApi.deleteAccount();
       setVisible(false);
-      showAlert("ลบบัญชีสำเร็จ", "บัญชีของคุณถูกลบออกจากระบบเรียบร้อยแล้ว");
+      showAlert("Account Deleted", "Your account has been successfully deleted.");
       await onSuccess();
     } catch (err: any) {
       const msg =
-        err?.response?.data?.message || err?.message || "ไม่สามารถลบบัญชีได้";
-      showAlert("ข้อผิดพลาด", msg);
+        err?.response?.data?.message || err?.message || "Failed to delete account";
+      showAlert("Error", msg);
     } finally {
       setLoading(false);
     }

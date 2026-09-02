@@ -45,9 +45,9 @@ export default function EditProductScreen() {
         <View style={styles.deniedIconContainer}>
           <Ionicons name="lock-closed" size={48} color="#DC2626" />
         </View>
-        <Text style={styles.deniedTitle}>สิทธิ์การใช้งานจำกัด</Text>
+        <Text style={styles.deniedTitle}>Access Restricted</Text>
         <Text style={styles.deniedMessage}>
-          เฉพาะบัญชีผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถแก้ไขข้อมูลสินค้าได้
+          Only Administrator accounts can edit product details.
         </Text>
         <TouchableOpacity
           style={styles.backBtn}
@@ -55,7 +55,7 @@ export default function EditProductScreen() {
           activeOpacity={0.8}
         >
           <Ionicons name="arrow-back" size={20} color="#FFFFFF" />
-          <Text style={styles.backBtnText}>ย้อนกลับ</Text>
+          <Text style={styles.backBtnText}>Go Back</Text>
         </TouchableOpacity>
       </View>
     );
@@ -65,7 +65,7 @@ export default function EditProductScreen() {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#007AFF" />
-        <Text style={styles.loadingText}>กำลังดึงข้อมูลสินค้า...</Text>
+        <Text style={styles.loadingText}>Loading product data...</Text>
       </View>
     );
   }
@@ -73,12 +73,12 @@ export default function EditProductScreen() {
   if (productError || (!loadingProduct && !product)) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.errorTitle}>⚠️ ไม่พบข้อมูลสินค้า</Text>
+        <Text style={styles.errorTitle}>⚠️ Product Not Found</Text>
         <Text style={styles.errorSubText}>
-          {productError || "ไม่พบสินค้ารหัสนี้บน Server (404)"}
+          {productError || "Product not found on server (404)"}
         </Text>
         <TouchableOpacity style={styles.btnBack} onPress={() => router.back()}>
-          <Text style={styles.btnBackText}>ย้อนกลับ</Text>
+          <Text style={styles.btnBackText}>Go Back</Text>
         </TouchableOpacity>
       </View>
     );
@@ -98,7 +98,7 @@ export default function EditProductScreen() {
         uploadingImage={uploadingImage}
         imageUri={displayImageUri}
         imageLoading={imageLoading}
-        submitButtonText="บันทึกการแก้ไข"
+        submitButtonText="Save Changes"
         onChange={handleChange}
         onPickLibrary={pickImageFromLibrary}
         onTakePhoto={takePhotoWithCamera}

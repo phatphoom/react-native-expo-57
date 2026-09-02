@@ -32,7 +32,7 @@ const CategoryCard = ({ item, onPress }: CategoryCardProps) => {
           {item.cate_name}
         </Text>
         {item.product_count !== undefined && item.product_count !== null ? (
-          <Text style={styles.subtitle}>{item.product_count} รายการ</Text>
+          <Text style={styles.subtitle}>{item.product_count} items</Text>
         ) : null}
       </View>
     </Pressable>

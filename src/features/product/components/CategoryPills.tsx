@@ -27,7 +27,7 @@ export default function CategoryPills({ selectedCategoryId, onSelectCategory }: 
           activeOpacity={0.7}
         >
           <Text style={[styles.pillText, !selectedCategoryId && styles.pillTextActive]}>
-            ทั้งหมด
+            All
           </Text>
         </TouchableOpacity>
 

@@ -40,9 +40,9 @@ export default function AddScreen() {
           <View style={styles.deniedIconContainer}>
             <Ionicons name="lock-closed" size={48} color="#DC2626" />
           </View>
-          <Text style={styles.deniedTitle}>สิทธิ์การใช้งานจำกัด</Text>
+          <Text style={styles.deniedTitle}>Access Restricted</Text>
           <Text style={styles.deniedMessage}>
-            เฉพาะบัญชีผู้ดูแลระบบ (Admin) เท่านั้นที่สามารถเพิ่มสินค้าใหม่เข้าสู่ระบบได้
+            Only Administrator accounts can add new products to the system.
           </Text>
           <TouchableOpacity
             style={styles.backBtn}
@@ -50,7 +50,7 @@ export default function AddScreen() {
             activeOpacity={0.8}
           >
             <Ionicons name="home-outline" size={20} color="#FFFFFF" />
-            <Text style={styles.backBtnText}>กลับสู่หน้าหลัก</Text>
+            <Text style={styles.backBtnText}>Back to Home</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -74,7 +74,7 @@ export default function AddScreen() {
           uploadingImage={uploadingImage}
           imageUri={displayImageUri}
           imageLoading={imageLoading}
-          submitButtonText="บันทึกข้อมูลสินค้า"
+          submitButtonText="Save Product"
           onChange={handleChange}
           onPickLibrary={pickImageFromLibrary}
           onTakePhoto={takePhotoWithCamera}

@@ -63,8 +63,8 @@ export default function Home() {
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.greeting}>สวัสดี, {displayName} 👋</Text>
-            <Text style={styles.subtitle}>จัดการร้านค้าของคุณวันนี้</Text>
+            <Text style={styles.greeting}>Hello, {displayName} 👋</Text>
+            <Text style={styles.subtitle}>Manage your store today</Text>
           </View>
           <TouchableOpacity
             style={styles.avatarContainer}
@@ -87,14 +87,14 @@ export default function Home() {
         {/* Stats */}
         <View style={styles.statsContainer}>
           <StatCard
-            title="สินค้าทั้งหมด"
+            title="Total Products"
             value={products?.length || 0}
             icon={<FontAwesome5 name="box-open" size={20} color="#3B82F6" />}
             color="#3B82F6"
             loading={productsLoading}
           />
           <StatCard
-            title="หมวดหมู่"
+            title="Categories"
             value={categories?.length || 0}
             icon={<MaterialIcons name="category" size={22} color="#10B981" />}
             color="#10B981"
@@ -103,14 +103,14 @@ export default function Home() {
         </View>
 
         {/* Quick Actions */}
-        <Text style={styles.sectionTitle}>เมนูด่วน</Text>
+        <Text style={styles.sectionTitle}>Quick Actions</Text>
         <QuickActions isAdmin={isAdmin} router={router} />
 
         {/* Recent Products */}
         <View style={styles.recentHeader}>
-          <Text style={[styles.sectionTitle, { marginBottom: 0 }]}>เพิ่มล่าสุด</Text>
+          <Text style={[styles.sectionTitle, { marginBottom: 0 }]}>Recently Added</Text>
           <TouchableOpacity onPress={() => router.push("/product")}>
-            <Text style={styles.seeAllText}>ดูทั้งหมด</Text>
+            <Text style={styles.seeAllText}>See All</Text>
           </TouchableOpacity>
         </View>
 
@@ -132,7 +132,7 @@ export default function Home() {
           </View>
         ) : (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyStateText}>ยังไม่มีสินค้าในระบบ</Text>
+            <Text style={styles.emptyStateText}>No products in system yet</Text>
           </View>
         )}
       </ScrollView>

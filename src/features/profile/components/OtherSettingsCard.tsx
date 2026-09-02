@@ -20,7 +20,7 @@ export function OtherSettingsCard({
 }: OtherSettingsCardProps) {
   return (
     <View style={styles.container}>
-      <Text style={styles.sectionTitle}>อื่นๆ</Text>
+      <Text style={styles.sectionTitle}>Others</Text>
       <View style={styles.menuCard}>
         <ProfileMenuItem
           icon={
@@ -30,21 +30,21 @@ export function OtherSettingsCard({
               color="#3B82F6"
             />
           }
-          title="นโยบายความเป็นส่วนตัว (Privacy Policy)"
+          title="Privacy Policy"
           onPress={onPrivacyPolicy}
         />
         <ProfileMenuItem
           icon={
             <Ionicons name="document-text-outline" size={20} color="#64748B" />
           }
-          title="เงื่อนไขการใช้งาน (Terms of Service)"
+          title="Terms of Service"
           onPress={onTermsOfService}
         />
         <ProfileMenuItem
           icon={
             <Ionicons name="help-circle-outline" size={20} color="#10B981" />
           }
-          title="ความช่วยเหลือ"
+          title="Help & Support"
           onPress={onHelpSupport}
         />
         <ProfileMenuItem
@@ -55,7 +55,7 @@ export function OtherSettingsCard({
               color="#6366F1"
             />
           }
-          title="เกี่ยวกับแอป (About App)"
+          title="About App"
           badgeText={appVersion}
           onPress={onAboutApp}
         />

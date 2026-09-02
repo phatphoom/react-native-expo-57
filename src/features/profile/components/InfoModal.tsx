@@ -65,7 +65,7 @@ export function InfoModal({ visible, title, subtitle, sections, onClose }: Props
             onPress={onClose}
             activeOpacity={0.8}
           >
-            <Text style={styles.closeBtnText}>ปิดหน้าต่าง</Text>
+            <Text style={styles.closeBtnText}>Close</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -62,7 +62,7 @@ export function ChangePasswordModal({
               <View style={styles.iconBox}>
                 <Ionicons name="key" size={20} color="#8B5CF6" />
               </View>
-              <Text style={styles.modalTitle}>เปลี่ยนรหัสผ่าน</Text>
+              <Text style={styles.modalTitle}>Change Password</Text>
             </View>
             <TouchableOpacity
               onPress={onClose}
@@ -74,11 +74,11 @@ export function ChangePasswordModal({
 
           {/* Current Password */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>รหัสผ่านปัจจุบัน (Current Password)</Text>
+            <Text style={styles.inputLabel}>Current Password</Text>
             <View style={styles.passwordWrapper}>
               <TextInput
                 style={styles.passwordInput}
-                placeholder="กรอกรหัสผ่านปัจจุบัน"
+                placeholder="Enter current password"
                 placeholderTextColor="#94A3B8"
                 secureTextEntry={!showCurrentPass}
                 value={currentPassword}
@@ -96,11 +96,11 @@ export function ChangePasswordModal({
 
           {/* New Password */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>รหัสผ่านใหม่ (New Password)</Text>
+            <Text style={styles.inputLabel}>New Password</Text>
             <View style={styles.passwordWrapper}>
               <TextInput
                 style={styles.passwordInput}
-                placeholder="ความยาวอย่างน้อย 6 ตัวอักษร"
+                placeholder="At least 6 characters"
                 placeholderTextColor="#94A3B8"
                 secureTextEntry={!showNewPass}
                 value={newPassword}
@@ -118,11 +118,11 @@ export function ChangePasswordModal({
 
           {/* Confirm Password */}
           <View style={styles.inputGroup}>
-            <Text style={styles.inputLabel}>ยืนยันรหัสผ่านใหม่ (Confirm Password)</Text>
+            <Text style={styles.inputLabel}>Confirm New Password</Text>
             <View style={styles.passwordWrapper}>
               <TextInput
                 style={styles.passwordInput}
-                placeholder="กรอกรหัสผ่านใหม่อีกครั้ง"
+                placeholder="Re-enter new password"
                 placeholderTextColor="#94A3B8"
                 secureTextEntry={!showConfirmPass}
                 value={confirmPassword}
@@ -145,7 +145,7 @@ export function ChangePasswordModal({
               onPress={onClose}
               disabled={loading}
             >
-              <Text style={styles.cancelBtnText}>ยกเลิก</Text>
+              <Text style={styles.cancelBtnText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.saveBtn}
@@ -155,7 +155,7 @@ export function ChangePasswordModal({
               {loading ? (
                 <ActivityIndicator size="small" color="#FFFFFF" />
               ) : (
-                <Text style={styles.saveBtnText}>บันทึกรหัสผ่าน</Text>
+                <Text style={styles.saveBtnText}>Save Password</Text>
               )}
             </TouchableOpacity>
           </View>

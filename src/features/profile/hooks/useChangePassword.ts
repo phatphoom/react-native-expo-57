@@ -26,15 +26,15 @@ export function useChangePassword() {
 
   const handleSubmit = async () => {
     if (!currentPassword || !newPassword || !confirmPassword) {
-      showAlert("ข้อผิดพลาด", "กรุณากรอกข้อมูลรหัสผ่านให้ครบทุกช่อง");
+      showAlert("Error", "Please fill in all password fields");
       return;
     }
     if (newPassword.length < 6) {
-      showAlert("ข้อผิดพลาด", "รหัสผ่านใหม่ต้องมีความยาวอย่างน้อย 6 ตัวอักษร");
+      showAlert("Error", "New password must be at least 6 characters long");
       return;
     }
     if (newPassword !== confirmPassword) {
-      showAlert("ข้อผิดพลาด", "รหัสผ่านใหม่และการยืนยันรหัสผ่านไม่ตรงกัน");
+      showAlert("Error", "New password and confirmation do not match");
       return;
     }
 
@@ -46,14 +46,14 @@ export function useChangePassword() {
         confirm_password: confirmPassword,
       });
       close();
-      showAlert("สำเร็จ", res?.message || "เปลี่ยนรหัสผ่านเรียบร้อยแล้ว");
+      showAlert("Success", res?.message || "Password changed successfully");
     } catch (err: any) {
       const msg =
         err?.response?.data?.message ||
         err?.response?.data?.errors?.current_password ||
         err?.message ||
-        "ไม่สามารถเปลี่ยนรหัสผ่านได้";
-      showAlert("ข้อผิดพลาด", msg);
+        "Failed to change password";
+      showAlert("Error", msg);
     } finally {
       setLoading(false);
     }

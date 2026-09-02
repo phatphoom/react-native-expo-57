@@ -23,7 +23,7 @@ const SearchBar = ({
   value,
   onChangeText,
   onClear,
-  placeholder = "ค้นหาสินค้า...",
+  placeholder = "Search products...",
   onFilterPress,
   activeFilterCount = 0,
 }: SearchBarProps) => {
@@ -49,7 +49,7 @@ const SearchBar = ({
 
       <TouchableOpacity style={[styles.btnFilter, activeFilterCount > 0 && styles.btnFilterActive]} onPress={onFilterPress} activeOpacity={0.7}>
         <Entypo name="sound-mix" size={15} color={activeFilterCount > 0 ? "#FFFFFF" : "#2563EB"} />
-        <Text style={[styles.filterText, activeFilterCount > 0 && styles.filterTextActive]}>ตัวกรอง</Text>
+        <Text style={[styles.filterText, activeFilterCount > 0 && styles.filterTextActive]}>Filter</Text>
         
         {activeFilterCount > 0 && (
           <View style={styles.badge}>

@@ -58,20 +58,20 @@ export default function ProductForm({
         {/* ปุ่มสำหรับสุ่มข้อมูลทดสอบ (มีเมื่อผ่าน prop onFillDummyData) */}
         {onFillDummyData && (
           <TouchableOpacity style={styles.btnTest} onPress={onFillDummyData}>
-            <Text style={styles.btnTestTxt}>🧪 สุ่มใส่ข้อมูลทดสอบ (Auto-fill Test Data)</Text>
+            <Text style={styles.btnTestTxt}>🧪 Auto-fill Test Data</Text>
           </TouchableOpacity>
         )}
 
         <View style={styles.formContainer}>
           <FormField
-            label="ชื่อสินค้า *"
+            label="Product Name *"
             value={form.prod_name}
             onChangeText={(val) => onChange("prod_name", val)}
             placeholder="Product Name"
           />
 
           <FormField
-            label="รายละเอียด"
+            label="Description"
             multiline
             value={form.description}
             onChangeText={(val) => onChange("description", val)}
@@ -79,7 +79,7 @@ export default function ProductForm({
           />
 
           <ImagePickerField
-            label="รูปภาพสินค้า"
+            label="Product Image"
             imageUri={imageUri}
             loading={imageLoading}
             uploading={uploadingImage}
@@ -89,17 +89,17 @@ export default function ProductForm({
           />
 
           <FormField
-            label="หรือระบุ URL รูปภาพโดยตรง (Optional)"
+            label="Or Specify Image URL Directly (Optional)"
             value={form.image_url}
             onChangeText={(val) => onChange("image_url", val)}
-            placeholder="https://example.com/image.jpg หรือ /uploads/..."
-            hintText="*หากเลือกรูปภาพด้านบน ระบบจะอัปโหลดและนำ URL มาใส่ให้อัตโนมัติเมื่อกดบันทึก"
+            placeholder="https://example.com/image.jpg or /uploads/..."
+            hintText="*If an image is selected above, it will upload and populate the URL automatically on save"
           />
 
           <View style={styles.row}>
             <FormField
               containerStyle={{ flex: 1 }}
-              label="ราคา *"
+              label="Price *"
               labelNumberOfLines={1}
               keyboardType="decimal-pad"
               value={form.price}
@@ -108,7 +108,7 @@ export default function ProductForm({
             />
             <FormField
               containerStyle={{ flex: 1 }}
-              label="สกุลเงิน"
+              label="Currency"
               labelNumberOfLines={1}
               value={form.currency}
               onChangeText={(val) => onChange("currency", val)}
@@ -116,7 +116,7 @@ export default function ProductForm({
             />
             <FormField
               containerStyle={{ flex: 1 }}
-              label="ลด (%)"
+              label="Discount (%)"
               labelNumberOfLines={1}
               keyboardType="number-pad"
               value={form.discount_pct}
@@ -128,20 +128,20 @@ export default function ProductForm({
           <View style={styles.row}>
             <FormField
               containerStyle={{ flex: 1 }}
-              label="จำนวนในสต็อก"
+              label="Stock Count"
               keyboardType="number-pad"
               value={form.stock_count}
               onChangeText={(val) => onChange("stock_count", val)}
               placeholder="0"
             />
             <View style={[styles.formControl, { flex: 1 }]}>
-              <Text style={styles.label}>หมวดหมู่</Text>
+              <Text style={styles.label}>Category</Text>
               <TouchableOpacity
                 style={[styles.formInput, styles.dropdownButton]}
                 onPress={() => onToggleCategoryModal(true)}
               >
                 <Text style={styles.dropdownButtonText} numberOfLines={1}>
-                  {selectedCategory ? selectedCategory.cate_name : "เลือกหมวดหมู่..."}
+                  {selectedCategory ? selectedCategory.cate_name : "Select Category..."}
                 </Text>
                 <Text style={styles.dropdownArrow}>▼</Text>
               </TouchableOpacity>
@@ -159,7 +159,7 @@ export default function ProductForm({
               <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
                 <ActivityIndicator color="#fff" />
                 <Text style={styles.btnTxt}>
-                  {uploadingImage ? "กำลังอัปโหลดรูปภาพ..." : "กำลังบันทึก..."}
+                  {uploadingImage ? "Uploading image..." : "Saving..."}
                 </Text>
               </View>
             ) : (
@@ -175,7 +175,7 @@ export default function ProductForm({
       <Modal visible={showCategoryModal} animationType="slide" transparent={true}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>เลือกหมวดหมู่</Text>
+            <Text style={styles.modalTitle}>Select Category</Text>
             <FlatList
               data={categories}
               keyExtractor={(item) => String(item.cate_id)}
@@ -202,7 +202,7 @@ export default function ProductForm({
               style={styles.modalCloseButton}
               onPress={() => onToggleCategoryModal(false)}
             >
-              <Text style={styles.modalCloseText}>ยกเลิก</Text>
+              <Text style={styles.modalCloseText}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>

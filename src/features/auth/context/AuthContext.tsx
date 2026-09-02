@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const res = await AuthApi.login(data);
     const authData = res?.data;
     if (!authData || !authData.token) {
-      throw new Error("ไม่พบทอเคนจากเซิร์ฟเวอร์ กรุณาลองใหม่อีกครั้ง");
+      throw new Error("Token not found from server. Please try again.");
     }
     const newToken = authData.token;
     const newUser = authData.user;

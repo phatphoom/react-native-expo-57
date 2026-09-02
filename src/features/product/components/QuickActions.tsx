@@ -19,7 +19,7 @@ export function QuickActions({ isAdmin, router }: Props) {
           <View style={[styles.actionIcon, { backgroundColor: "rgba(59, 130, 246, 0.1)" }]}>
             <Ionicons name="add-circle" size={28} color="#3B82F6" />
           </View>
-          <Text style={styles.actionText}>เพิ่มสินค้า</Text>
+          <Text style={styles.actionText}>Add Product</Text>
         </TouchableOpacity>
       )}
       <TouchableOpacity
@@ -29,7 +29,7 @@ export function QuickActions({ isAdmin, router }: Props) {
         <View style={[styles.actionIcon, { backgroundColor: "rgba(139, 92, 246, 0.1)" }]}>
           <Ionicons name="list" size={28} color="#8B5CF6" />
         </View>
-        <Text style={styles.actionText}>รายการสินค้า</Text>
+        <Text style={styles.actionText}>Products</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.actionBtn}
@@ -38,7 +38,7 @@ export function QuickActions({ isAdmin, router }: Props) {
         <View style={[styles.actionIcon, { backgroundColor: "rgba(16, 185, 129, 0.1)" }]}>
           <MaterialIcons name="category" size={28} color="#10B981" />
         </View>
-        <Text style={styles.actionText}>หมวดหมู่</Text>
+        <Text style={styles.actionText}>Categories</Text>
       </TouchableOpacity>
     </View>
   );
