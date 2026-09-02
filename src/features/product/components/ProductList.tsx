@@ -44,14 +44,14 @@ const ProductList = ({
     <View style={styles.emptyContainer}>
       <Ionicons name="search-outline" size={48} color="#94A3B8" />
       <Text style={styles.emptyTitle}>
-        {isSearching ? "No matching products found" : "No products available"}
+        {isSearching ? "ไม่พบสินค้าที่ตรงกับการค้นหา" : "ไม่มีรายการสินค้า"}
       </Text>
       <Text style={styles.emptySubText}>
-        {isSearching ? "Try searching with another keyword or reset filters" : "Start adding new products"}
+        {isSearching ? "ลองค้นหาด้วยคำอื่น หรือแก้ไขตัวกรอง" : "เริ่มเพิ่มสินค้าใหม่ได้เลย"}
       </Text>
       {isSearching && onClearFilters && (
         <TouchableOpacity style={styles.btnClear} onPress={onClearFilters}>
-          <Text style={styles.btnClearText}>Reset All Filters</Text>
+          <Text style={styles.btnClearText}>ล้างตัวกรองทั้งหมด</Text>
         </TouchableOpacity>
       )}
     </View>

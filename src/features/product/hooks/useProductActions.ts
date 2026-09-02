@@ -26,19 +26,19 @@ export function useProductActions({ productId, router }: UseProductActionsParams
     const res = await deleteProduct(productId);
     if (res.success) {
       if (Platform.OS === "web") {
-        window.alert("Product deleted successfully");
+        window.alert("ลบสินค้าเรียบร้อยแล้ว");
         navigateBack();
       } else {
-        Alert.alert("Success", "Product deleted successfully", [
-          { text: "OK", onPress: navigateBack },
+        Alert.alert("สำเร็จ", "ลบสินค้าเรียบร้อยแล้ว", [
+          { text: "ตกลง", onPress: navigateBack },
         ]);
       }
     } else {
-      const errorMsg = res.error || "Failed to delete product";
+      const errorMsg = res.error || "ไม่สามารถลบสินค้าได้";
       if (Platform.OS === "web") {
-        window.alert("Error: " + errorMsg);
+        window.alert("เกิดข้อผิดพลาด: " + errorMsg);
       } else {
-        Alert.alert("Error", errorMsg);
+        Alert.alert("เกิดข้อผิดพลาด", errorMsg);
       }
     }
   };
@@ -46,18 +46,18 @@ export function useProductActions({ productId, router }: UseProductActionsParams
   const handleDelete = () => {
     if (Platform.OS === "web") {
       const confirmed = window.confirm(
-        "Confirm Delete Product\nAre you sure you want to delete this product? This action cannot be undone."
+        "ยืนยันการลบสินค้า\nคุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้? ข้อมูลจะไม่สามารถกู้คืนได้"
       );
       if (confirmed) executeDelete();
       return;
     }
 
     Alert.alert(
-      "Confirm Delete Product",
-      "Are you sure you want to delete this product? This action cannot be undone.",
+      "ยืนยันการลบสินค้า",
+      "คุณแน่ใจหรือไม่ว่าต้องการลบสินค้านี้? ข้อมูลจะไม่สามารถกู้คืนได้",
       [
-        { text: "Cancel", style: "cancel" },
-        { text: "Delete", style: "destructive", onPress: executeDelete },
+        { text: "ยกเลิก", style: "cancel" },
+        { text: "ลบสินค้า", style: "destructive", onPress: executeDelete },
       ]
     );
   };

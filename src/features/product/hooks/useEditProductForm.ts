@@ -25,7 +25,7 @@ export function useEditProductForm() {
 
   const handleUpdate = async (values: ProductFormValues) => {
     if (!values.prod_name || !values.price) {
-      Alert.alert("Error", "Please enter product name and price");
+      Alert.alert("ข้อผิดพลาด", "กรุณากรอกชื่อสินค้าและราคา");
       return { success: false, error: "Validation failed" };
     }
 
@@ -40,8 +40,8 @@ export function useEditProductForm() {
         );
         finalImageUrl = uploadRes.image_url;
       } catch (err: any) {
-        const msg = err?.response?.data?.message || err?.message || "Failed to upload image";
-        Alert.alert("Image Upload Error", msg);
+        const msg = err?.response?.data?.message || err?.message || "ไม่สามารถอัปโหลดรูปภาพได้";
+        Alert.alert("ข้อผิดพลาดในการอัปโหลดรูป", msg);
         setUploadingImage(false);
         return { success: false, error: msg };
       } finally {
@@ -76,16 +76,16 @@ export function useEditProductForm() {
       };
 
       if (Platform.OS === "web") {
-        window.alert("Product updated successfully!");
+        window.alert("แก้ไขข้อมูลสินค้าเรียบร้อยแล้ว!");
         navigateBack();
       } else {
-        Alert.alert("Success", "Product updated successfully!", [
-          { text: "OK", onPress: navigateBack },
+        Alert.alert("สำเร็จ", "แก้ไขข้อมูลสินค้าเรียบร้อยแล้ว!", [
+          { text: "ตกลง", onPress: navigateBack },
         ]);
       }
       return { success: true };
     } else {
-      Alert.alert("Error", "Failed to update product: " + result.error);
+      Alert.alert("ข้อผิดพลาด", "ไม่สามารถแก้ไขสินค้าได้: " + result.error);
       return { success: false, error: result.error };
     }
   };

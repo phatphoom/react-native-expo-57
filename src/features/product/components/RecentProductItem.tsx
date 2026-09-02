@@ -35,7 +35,7 @@ export function RecentProductItem({ item, onPress }: Props) {
       </View>
       <View style={styles.info}>
         <Text style={styles.name} numberOfLines={1}>
-          {item.prod_name || "Unnamed Product"}
+          {item.prod_name || "ไม่มีชื่อสินค้า"}
         </Text>
         <Text style={styles.price}>
           ฿{item.price ? Number(item.price).toLocaleString() : "0"}

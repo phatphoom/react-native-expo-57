@@ -50,7 +50,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             <View style={styles.headerRow}>
               <View style={styles.categoryBadge}>
                 <Text style={styles.categoryText} numberOfLines={1}>
-                  {product.category_name || "General"}
+                  {product.category_name || "ทั่วไป"}
                 </Text>
               </View>
               <View style={styles.ratingBadge}>
@@ -75,7 +75,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
             <View style={[styles.stockBadge, { backgroundColor: product.in_stock ? "#DCFCE7" : "#FEE2E2" }]}>
               <Text style={[styles.stockText, { color: product.in_stock ? "#166534" : "#991B1B" }]}>
-                {product.in_stock ? "In Stock" : "Out of Stock"}
+                {product.in_stock ? "มีสินค้า" : "หมด"}
               </Text>
             </View>
           </View>

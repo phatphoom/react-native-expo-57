@@ -22,7 +22,7 @@ const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctPr
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#007AFF" />
-        <Text style={styles.loadingText}>Loading product details...</Text>
+        <Text style={styles.loadingText}>กำลังโหลดข้อมูลสินค้า...</Text>
       </View>
     );
   }
@@ -63,7 +63,7 @@ const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctPr
         
         {/* หมวดหมู่ และ ดาวคะแนน */}
         <View style={styles.row}>
-          <Text style={styles.categoryText}>{product.category_name || 'General'}</Text>
+          <Text style={styles.categoryText}>{product.category_name || 'ทั่วไป'}</Text>
           <View style={styles.ratingContainer}>
             <FontAwesome name="star" size={16} color="#FFD700" />
             <Text style={styles.ratingText}>
@@ -95,16 +95,16 @@ const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctPr
             color={product.in_stock ? "#4CAF50" : "#F44336"} 
           />
           <Text style={[styles.stockText, { color: product.in_stock ? "#4CAF50" : "#F44336" }]}>
-            {product.in_stock ? `In Stock (${product.stock_count} units)` : 'Out of Stock'}
+            {product.in_stock ? `มีสินค้า (${product.stock_count} ชิ้น)` : 'สินค้าหมด'}
           </Text>
         </View>
 
         <View style={styles.divider} />
 
         {/* คำอธิบายสินค้า */}
-        <Text style={styles.sectionTitle}>Product Description</Text>
+        <Text style={styles.sectionTitle}>รายละเอียดสินค้า</Text>
         <Text style={styles.description}>
-          {product.description || 'No description available'}
+          {product.description || 'ไม่มีรายละเอียดสินค้า'}
         </Text>
 
         {/* ปุ่มจัดการ (แก้ไข & ลบ) */}
@@ -117,7 +117,7 @@ const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctPr
                 activeOpacity={0.8}
               >
                 <FontAwesome name="pencil" size={18} color="#fff" style={styles.buttonIcon} />
-                <Text style={styles.buttonText}>Edit Product</Text>
+                <Text style={styles.buttonText}>แก้ไขสินค้า</Text>
               </TouchableOpacity>
             )}
             {onDelete && (
@@ -132,7 +132,7 @@ const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctPr
                 ) : (
                   <>
                     <FontAwesome name="trash" size={18} color="#fff" style={styles.buttonIcon} />
-                    <Text style={styles.buttonText}>Delete Product</Text>
+                    <Text style={styles.buttonText}>ลบสินค้า</Text>
                   </>
                 )}
               </TouchableOpacity>

@@ -31,7 +31,7 @@ export default function ProductDetail() {
     <View style={styles.container}>
       <Stack.Screen
         options={{
-          title: "Product Details",
+          title: "รายละเอียดสินค้า",
           headerRight: isAdmin
             ? () => (
                 <View style={styles.headerRightContainer}>

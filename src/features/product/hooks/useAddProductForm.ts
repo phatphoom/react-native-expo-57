@@ -21,7 +21,7 @@ export function useAddProductForm() {
 
   const handleCreate = async (values: ProductFormValues) => {
     if (!values.prod_name || !values.price) {
-      Alert.alert("Error", "Please enter product name and price");
+      Alert.alert("ข้อผิดพลาด", "กรุณากรอกชื่อสินค้าและราคา");
       return { success: false, error: "Validation failed" };
     }
 
@@ -36,8 +36,8 @@ export function useAddProductForm() {
         );
         finalImageUrl = uploadRes.image_url;
       } catch (err: any) {
-        const msg = err?.response?.data?.message || err?.message || "Failed to upload image";
-        Alert.alert("Image Upload Error", msg);
+        const msg = err?.response?.data?.message || err?.message || "ไม่สามารถอัปโหลดรูปภาพได้";
+        Alert.alert("ข้อผิดพลาดในการอัปโหลดรูป", msg);
         setUploadingImage(false);
         return { success: false, error: msg };
       } finally {
@@ -66,12 +66,12 @@ export function useAddProductForm() {
     if (result.success) {
       clearImage();
       if (Platform.OS === "web") {
-        window.alert("Product added successfully!");
+        window.alert("เพิ่มสินค้าใหม่เรียบร้อยแล้ว!");
         router.replace("/(tabs)/product");
       } else {
-        Alert.alert("Success", "Product added successfully!", [
+        Alert.alert("สำเร็จ", "เพิ่มสินค้าใหม่เรียบร้อยแล้ว!", [
           {
-            text: "OK",
+            text: "ตกลง",
             onPress: () => {
               router.replace("/(tabs)/product");
             },
@@ -80,7 +80,7 @@ export function useAddProductForm() {
       }
       return { success: true };
     } else {
-      Alert.alert("Error", "Failed to add product: " + result.error);
+      Alert.alert("ข้อผิดพลาด", "ไม่สามารถเพิ่มสินค้าได้: " + result.error);
       return { success: false, error: result.error };
     }
   };
@@ -110,8 +110,8 @@ export function useAddProductForm() {
   const fillDummyData = () => {
     const randomId = Math.floor(Math.random() * 1000);
     setFormValues({
-      prod_name: `Test Product #${randomId}`,
-      description: "This is a test product description for testing the add product system.",
+      prod_name: `สินค้าทดสอบ #${randomId}`,
+      description: "นี่คือรายละเอียดสินค้าทดสอบ สำหรับทดสอบระบบการเพิ่มสินค้าและรีโหลดข้อมูล",
       price: (Math.floor(Math.random() * 500) + 99).toString(),
       currency: "THB",
       discount_pct: "10",
