@@ -1,9 +1,9 @@
+import UploadApi from "@/api/uploadApi";
 import type { Product } from "@/types/product";
+import { FontAwesome } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import { Image } from "expo-image";
-import { FontAwesome } from "@expo/vector-icons";
-import UploadApi from "@/api/uploadApi";
 
 interface ProductCardProps {
   product: Product;
@@ -26,7 +26,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <Link href={`/product/${product.prod_id}`} asChild>
-      <Pressable style={({ pressed }) => [styles.cardWrapper, pressed && styles.cardPressed]}>
+      {/* <Pressable style={({ pressed }) => [styles.cardWrapper, pressed && styles.cardPressed]}> */}
+      <Pressable style={styles.cardWrapper}>
 
         {/* 1. รูปภาพสินค้า */}
         <View style={styles.imageContainer}>
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     borderRadius: 16,
     padding: 12,
-    marginHorizontal: 16,
+    // marginHorizontal: 16,
     marginBottom: 14,
     shadowColor: "#0F172A",
     shadowOffset: { width: 0, height: 4 },
