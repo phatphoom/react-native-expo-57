@@ -20,7 +20,7 @@ export interface ImagePickerFieldProps {
 }
 
 export const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
-  label = "รูปภาพสินค้า",
+  label = "Product Image",
   imageUri,
   loading = false,
   uploading = false,
@@ -38,7 +38,7 @@ export const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
           {uploading && (
             <View style={styles.uploadingOverlay}>
               <ActivityIndicator size="large" color="#ffffff" />
-              <Text style={styles.uploadingText}>กำลังอัปโหลดรูปภาพ...</Text>
+              <Text style={styles.uploadingText}>Uploading image...</Text>
             </View>
           )}
           <TouchableOpacity style={styles.clearButton} onPress={onClear} disabled={uploading}>
@@ -48,7 +48,7 @@ export const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
       ) : (
         <View style={styles.placeholderContainer}>
           <Ionicons name="image-outline" size={44} color="#94A3B8" />
-          <Text style={styles.placeholderText}>ยังไม่ได้เลือกรูปภาพ</Text>
+          <Text style={styles.placeholderText}>No image selected</Text>
         </View>
       )}
 
@@ -63,7 +63,7 @@ export const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
             activeOpacity={0.7}
           >
             <Ionicons name="images-outline" size={18} color="#2563EB" />
-            <Text style={styles.libraryButtonText}>เลือกรูปจากอัลบั้ม</Text>
+            <Text style={styles.libraryButtonText}>Choose from Library</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -73,7 +73,7 @@ export const ImagePickerField: React.FC<ImagePickerFieldProps> = ({
             activeOpacity={0.7}
           >
             <Ionicons name="camera-outline" size={18} color="#ffffff" />
-            <Text style={styles.cameraButtonText}>ถ่ายรูปด้วยกล้อง</Text>
+            <Text style={styles.cameraButtonText}>Take Photo</Text>
           </TouchableOpacity>
         </View>
       )}
