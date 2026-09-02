@@ -19,8 +19,8 @@ export interface Category {
   cate_name: string;
   description?: string | null;
   product_count?: number;
-  image?: string;
-  image_url?: string;
+  image?: string | null;
+  image_url?: string | null;
   created_at?: string;
   updated_at?: string;
 }

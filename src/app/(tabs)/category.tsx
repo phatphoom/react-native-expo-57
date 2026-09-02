@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   Alert,
   FlatList,
+  Platform,
   RefreshControl,
   StyleSheet,
   Text,
@@ -47,40 +48,64 @@ export default function Category() {
     setModalVisible(true);
   };
 
-  const handleDeleteCategory = (item: CategoryType) => {
-    Alert.alert(
-      "Confirm Delete",
-      `Are you sure you want to delete category "${item.cate_name}"?`,
-      [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await CategoryApi.deleteCategory(item.cate_id);
-              Alert.alert("Success", "Category deleted successfully!");
-              refetch();
-            } catch (err: any) {
-              const msg = err?.response?.data?.message || err?.message || "Failed to delete category";
-              Alert.alert("Error", msg);
-            }
+  const handleDeleteCategory = async (item: CategoryType) => {
+    const doDelete = async () => {
+      try {
+        await CategoryApi.deleteCategory(item.cate_id);
+        if (Platform.OS === "web") {
+          window.alert("Category deleted successfully!");
+        } else {
+          Alert.alert("Success", "Category deleted successfully!");
+        }
+        refetch();
+      } catch (err: any) {
+        const msg = err?.response?.data?.message || err?.message || "Failed to delete category";
+        if (Platform.OS === "web") {
+          window.alert(msg);
+        } else {
+          Alert.alert("Error", msg);
+        }
+      }
+    };
+
+    if (Platform.OS === "web") {
+      if (window.confirm(`Are you sure you want to delete category "${item.cate_name}"?`)) {
+        await doDelete();
+      }
+    } else {
+      Alert.alert(
+        "Confirm Delete",
+        `Are you sure you want to delete category "${item.cate_name}"?`,
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "Delete",
+            style: "destructive",
+            onPress: doDelete,
           },
-        },
-      ]
-    );
+        ]
+      );
+    }
   };
 
-  const handleSubmitModal = async (data: { cate_name: string; image_url?: string }) => {
+  const handleSubmitModal = async (data: { cate_name: string; image_url?: string | null }) => {
     try {
       if (selectedCategory) {
         // Edit category
         await CategoryApi.updateCategory(selectedCategory.cate_id, data);
-        Alert.alert("Success", "Category updated successfully!");
+        if (Platform.OS === "web") {
+          window.alert("Category updated successfully!");
+        } else {
+          Alert.alert("Success", "Category updated successfully!");
+        }
       } else {
         // Create category
         await CategoryApi.createCategory(data);
-        Alert.alert("Success", "New category created successfully!");
+        if (Platform.OS === "web") {
+          window.alert("New category created successfully!");
+        } else {
+          Alert.alert("Success", "New category created successfully!");
+        }
       }
       refetch();
       return { success: true };

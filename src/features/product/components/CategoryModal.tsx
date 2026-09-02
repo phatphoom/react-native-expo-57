@@ -7,6 +7,7 @@ import {
   View,
   ScrollView,
   Alert,
+  Platform,
   ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -21,7 +22,7 @@ interface CategoryModalProps {
   visible: boolean;
   onClose: () => void;
   category?: Category | null; // Null for Create, Category object for Edit
-  onSubmit: (data: { cate_name: string; image_url?: string }) => Promise<{ success: boolean; error?: string }>;
+  onSubmit: (data: { cate_name: string; image_url?: string | null }) => Promise<{ success: boolean; error?: string }>;
 }
 
 export default function CategoryModal({
@@ -56,9 +57,17 @@ export default function CategoryModal({
     }
   }, [visible, category]);
 
+  const showAlert = (title: string, msg: string) => {
+    if (Platform.OS === "web") {
+      window.alert(`${title}: ${msg}`);
+    } else {
+      Alert.alert(title, msg);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!cateName.trim()) {
-      Alert.alert("Validation Error", "Please enter category name");
+      showAlert("Validation Error", "Please enter category name");
       return;
     }
 
@@ -75,7 +84,7 @@ export default function CategoryModal({
         finalImageUrl = uploadRes.image_url;
       } catch (err: any) {
         const msg = err?.response?.data?.message || err?.message || "Failed to upload image";
-        Alert.alert("Image Upload Error", msg);
+        showAlert("Image Upload Error", msg);
         setUploading(false);
         setSubmitting(false);
         return;
@@ -84,17 +93,22 @@ export default function CategoryModal({
       }
     }
 
-    const res = await onSubmit({
+    const payload: { cate_name: string; image_url?: string | null } = {
       cate_name: cateName.trim(),
-      image_url: finalImageUrl,
-    });
+    };
+
+    if (finalImageUrl && finalImageUrl.trim() !== "") {
+      payload.image_url = finalImageUrl.trim();
+    }
+
+    const res = await onSubmit(payload);
 
     setSubmitting(false);
 
     if (res.success) {
       onClose();
     } else {
-      Alert.alert("Error", res.error || "Failed to save category");
+      showAlert("Error", res.error || "Failed to save category");
     }
   };
 

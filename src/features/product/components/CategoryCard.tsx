@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import type { Category } from "@/types/product";
 import { FONTS } from "@/shared/theme/typography";
+import UploadApi from "@/api/uploadApi";
 import { Image } from "expo-image";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -14,7 +15,8 @@ interface CategoryCardProps {
 
 const CategoryCard = ({ item, onPress, onEdit, onDelete }: CategoryCardProps) => {
   const [imageError, setImageError] = useState(false);
-  const imageUri = item.image || item.image_url;
+  const rawImage = item.image_url || item.image;
+  const imageUri = UploadApi.getFullImageUrl(rawImage);
 
   return (
     <Pressable
@@ -46,7 +48,10 @@ const CategoryCard = ({ item, onPress, onEdit, onDelete }: CategoryCardProps) =>
             {onEdit && (
               <TouchableOpacity
                 style={[styles.actionBtn, styles.editBtn]}
-                onPress={() => onEdit(item)}
+                onPress={(e) => {
+                  e?.stopPropagation?.();
+                  onEdit(item);
+                }}
                 activeOpacity={0.8}
               >
                 <FontAwesome name="pencil" size={13} color="#2563EB" />
@@ -55,7 +60,10 @@ const CategoryCard = ({ item, onPress, onEdit, onDelete }: CategoryCardProps) =>
             {onDelete && (
               <TouchableOpacity
                 style={[styles.actionBtn, styles.deleteBtn]}
-                onPress={() => onDelete(item)}
+                onPress={(e) => {
+                  e?.stopPropagation?.();
+                  onDelete(item);
+                }}
                 activeOpacity={0.8}
               >
                 <FontAwesome name="trash" size={13} color="#EF4444" />

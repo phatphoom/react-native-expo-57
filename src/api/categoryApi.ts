@@ -15,8 +15,8 @@ const CategoryApi = {
 
   createCategory: async (data: {
     cate_name: string;
-    description?: string;
-    image_url?: string;
+    description?: string | null;
+    image_url?: string | null;
   }): Promise<Category> => {
     const res = await api.post<ApiSuccessResponse<Category>>("/category", data);
     return res.data.data;
@@ -24,7 +24,7 @@ const CategoryApi = {
 
   updateCategory: async (
     id: string | number,
-    data: { cate_name?: string; description?: string; image_url?: string }
+    data: { cate_name?: string; description?: string | null; image_url?: string | null }
   ): Promise<Category> => {
     const res = await api.put<ApiSuccessResponse<Category>>(`/category/${id}`, data);
     return res.data.data;

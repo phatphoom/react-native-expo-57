@@ -503,10 +503,11 @@
 
 ---
 
-### 5.5 ลบหมวดหมู่สินค้า (Delete Category)
+### 5.5 ลบหมวดหมู่สินค้า (Delete Category - Soft Delete)
 - **Endpoint:** `DELETE /api/category/:id`
 - **Authentication:** 🔒 ต้องเป็น Admin เท่านั้น (`role: 'admin'`)
 - **URL Parameter:** `:id` = รหัสหมวดหมู่ (เช่น `cate_0001`)
+- **หมายเหตุ:** เป็นการทำ Soft Delete (บันทึกเวลา `deleted_at`) หมวดหมู่จะถูกซ่อนจาก API ดึงรายการทั่วไป
 
 #### Response (200 OK):
 ```json
