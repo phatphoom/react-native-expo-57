@@ -79,10 +79,10 @@ export default function FilterModal({
   };
 
   const sortOptions: { label: string; value: SortOption }[] = [
-    { label: "ล่าสุด", value: "latest" },
-    { label: "ราคาต่ำ - สูง", value: "price_asc" },
-    { label: "ราคาสูง - ต่ำ", value: "price_desc" },
-    { label: "คะแนนยอดนิยม", value: "rating" },
+    { label: "Latest", value: "latest" },
+    { label: "Price: Low - High", value: "price_asc" },
+    { label: "Price: High - Low", value: "price_desc" },
+    { label: "Top Rated", value: "rating" },
   ];
 
   return (
@@ -90,7 +90,7 @@ export default function FilterModal({
       <View style={styles.overlay}>
         <View style={styles.bottomSheet}>
           <View style={styles.header}>
-            <Text style={styles.headerTitle}>ตัวกรองสินค้า</Text>
+            <Text style={styles.headerTitle}>Filter Products</Text>
             <TouchableOpacity onPress={onClose} style={styles.closeBtn}>
               <Ionicons name="close" size={24} color="#64748B" />
             </TouchableOpacity>
@@ -99,7 +99,7 @@ export default function FilterModal({
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.content}>
             {/* Sort Section */}
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>เรียงลำดับตาม</Text>
+              <Text style={styles.sectionTitle}>Sort By</Text>
               <View style={styles.pillContainer}>
                 {sortOptions.map((opt) => (
                   <TouchableOpacity
@@ -117,11 +117,11 @@ export default function FilterModal({
 
             {/* Price Range Section */}
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>ช่วงราคา (บาท)</Text>
+              <Text style={styles.sectionTitle}>Price Range</Text>
               <View style={styles.priceContainer}>
                 <TextInput
                   style={styles.priceInput}
-                  placeholder="ขั้นต่ำ"
+                  placeholder="Min"
                   keyboardType="numeric"
                   value={localMinPrice}
                   onChangeText={setLocalMinPrice}
@@ -129,7 +129,7 @@ export default function FilterModal({
                 <Text style={styles.priceDivider}>-</Text>
                 <TextInput
                   style={styles.priceInput}
-                  placeholder="สูงสุด"
+                  placeholder="Max"
                   keyboardType="numeric"
                   value={localMaxPrice}
                   onChangeText={setLocalMaxPrice}
@@ -139,14 +139,14 @@ export default function FilterModal({
 
             {/* Categories Section */}
             <View style={styles.section}>
-              <Text style={styles.sectionTitle}>หมวดหมู่</Text>
+              <Text style={styles.sectionTitle}>Category</Text>
               <View style={styles.pillContainer}>
                 <TouchableOpacity
                   style={[styles.pill, !localCategoryId && styles.pillActive]}
                   onPress={() => setLocalCategoryId(null)}
                 >
                   <Text style={[styles.pillText, !localCategoryId && styles.pillTextActive]}>
-                    ทั้งหมด
+                    All
                   </Text>
                 </TouchableOpacity>
                 {categories?.map((cat) => {
@@ -170,10 +170,10 @@ export default function FilterModal({
           {/* Footer Actions */}
           <View style={styles.footer}>
             <TouchableOpacity style={styles.btnReset} onPress={handleReset}>
-              <Text style={styles.btnResetText}>ล้างข้อมูล</Text>
+              <Text style={styles.btnResetText}>Reset</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.btnApply} onPress={handleApply}>
-              <Text style={styles.btnApplyText}>ดูผลลัพธ์</Text>
+              <Text style={styles.btnApplyText}>Apply Filters</Text>
             </TouchableOpacity>
           </View>
         </View>
