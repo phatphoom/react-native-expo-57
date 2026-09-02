@@ -393,7 +393,7 @@
 
 ## 5. ระบบหมวดหมู่สินค้า (Categories)
 
- Base Path: `/api/category`
+ Base Path: `/api/category` หรือ `/api/categories`
 
 ### 5.1 ดึงรายการหมวดหมู่ทั้งหมด (Get All Categories)
 - **Endpoint:** `GET /api/category`
@@ -406,13 +406,113 @@
   "data": [
     {
       "cate_id": "cate_0001",
-      "cate_name": "Electronics"
+      "cate_name": "Electronics",
+      "image_url": "/uploads/products/1770800000000-category1.png",
+      "product_count": 12
     },
     {
       "cate_id": "cate_0002",
-      "cate_name": "Accessories"
+      "cate_name": "Accessories",
+      "image_url": null,
+      "product_count": 5
     }
   ]
+}
+```
+
+---
+
+### 5.2 ดึงหมวดหมู่สินค้าตาม ID (Get Category by ID)
+- **Endpoint:** `GET /api/category/:id`
+- **Authentication:** ไม่ต้องระบุ (Public)
+
+#### Response (200 OK):
+```json
+{
+  "success": true,
+  "data": {
+    "cate_id": "cate_0001",
+    "cate_name": "Electronics",
+    "image_url": "/uploads/products/1770800000000-category1.png"
+  }
+}
+```
+
+---
+
+### 5.3 เพิ่มหมวดหมู่สินค้าใหม่ (Create Category)
+- **Endpoint:** `POST /api/category`
+- **Authentication:** 🔒 ต้องเป็น Admin เท่านั้น (`role: 'admin'`)
+- **Headers:**  
+  - `Content-Type: application/json`  
+  - `Authorization: Bearer <admin_jwt_token>`
+
+#### Request Body:
+| Field | Type | Required | Default | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| `cate_name` | String | ✅ ใช่ | - | ชื่อหมวดหมู่สินค้า |
+| `image_url` | String | ❌ ไม่จำเป็น | `null` | Path รูปภาพ (อัปโหลดจาก `POST /api/upload`) |
+
+```json
+{
+  "cate_name": "Gadgets",
+  "image_url": "/uploads/products/1770800000000-gadgets.png"
+}
+```
+
+#### Response (201 Created):
+```json
+{
+  "success": true,
+  "message": "Category created successfully",
+  "data": {
+    "cate_id": "cate_0003",
+    "cate_name": "Gadgets",
+    "image_url": "/uploads/products/1770800000000-gadgets.png"
+  }
+}
+```
+
+---
+
+### 5.4 แก้ไขข้อมูลหมวดหมู่สินค้า (Update Category)
+- **Endpoint:** `PUT /api/category/:id`
+- **Authentication:** 🔒 ต้องเป็น Admin เท่านั้น (`role: 'admin'`)
+- **URL Parameter:** `:id` = รหัสหมวดหมู่ (เช่น `cate_0001`)
+
+#### Request Body:
+```json
+{
+  "cate_name": "Electronics & Tech",
+  "image_url": "/uploads/products/1770800000000-new_electronics.png"
+}
+```
+
+#### Response (200 OK):
+```json
+{
+  "success": true,
+  "message": "Category updated successfully",
+  "data": {
+    "id": "cate_0001",
+    "cate_name": "Electronics & Tech",
+    "image_url": "/uploads/products/1770800000000-new_electronics.png"
+  }
+}
+```
+
+---
+
+### 5.5 ลบหมวดหมู่สินค้า (Delete Category)
+- **Endpoint:** `DELETE /api/category/:id`
+- **Authentication:** 🔒 ต้องเป็น Admin เท่านั้น (`role: 'admin'`)
+- **URL Parameter:** `:id` = รหัสหมวดหมู่ (เช่น `cate_0001`)
+
+#### Response (200 OK):
+```json
+{
+  "success": true,
+  "message": "Category deleted successfully"
 }
 ```
 

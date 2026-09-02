@@ -21,10 +21,12 @@ export interface GetProductsParams {
 const ProductApi = {
   // 1. Get All Products (GET /api/products)
   getProducts: async (params?: GetProductsParams): Promise<Product[]> => {
-    const res = await api.get<ApiSuccessResponse<Product[]>>("/products", {
+    const res = await api.get<any>("/products", {
       params,
     });
-    return res.data.data;
+    const raw = res.data;
+    const list = raw?.data || raw?.items || raw;
+    return Array.isArray(list) ? list : [];
   },
 
   // 2. Get Product By ID (GET /api/products/:id)

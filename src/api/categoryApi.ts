@@ -2,7 +2,14 @@ import type { ApiSuccessResponse, Category } from "@/types/product";
 import api from "./axios";
 const CategoryApi = {
   getAllCategory: async (): Promise<Category[]> => {
-    const res = await api.get<ApiSuccessResponse<Category[]>>("/category");
+    const res = await api.get<any>("/category");
+    const raw = res.data;
+    const list = raw?.data || raw?.items || raw;
+    return Array.isArray(list) ? list : [];
+  },
+
+  getCategoryById: async (id: string | number): Promise<Category> => {
+    const res = await api.get<ApiSuccessResponse<Category>>(`/category/${id}`);
     return res.data.data;
   },
 
