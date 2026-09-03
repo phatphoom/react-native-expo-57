@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity
 import { Image } from 'expo-image';
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import type { Product } from '@/types/product';
-import { UploadApi } from '@/shared/api';
 import { FONTS } from '@/shared/theme/typography';
+import { formatProductDetails } from "../utils/formatProduct";
+
 
 interface DetailProdctProps {
   id: string | string[];
@@ -29,18 +30,8 @@ const DetailProdct = ({ id, data, onEdit, onDelete, isDeleting }: DetailProdctPr
     );
   }
 
-  // คำนวณราคาจริงหลังหักส่วนลด (finalPrice) และราคาเต็มก่อนลด (originalPrice)
-  const priceNum = Number(product.price) || 0;
-  const discountPctNum = Number(product.discount_pct) || 0;
-  const imageUrl = UploadApi.getFullImageUrl(product.image_url);
+  const { discountPctNum, imageUrl, finalPrice, originalPrice } = formatProductDetails(product);
 
-  const finalPrice = discountPctNum > 0 
-    ? (priceNum * (1 - discountPctNum / 100)).toFixed(2) 
-    : priceNum.toFixed(2);
-
-  const originalPrice = discountPctNum > 0 
-    ? priceNum.toFixed(2)
-    : null;
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>

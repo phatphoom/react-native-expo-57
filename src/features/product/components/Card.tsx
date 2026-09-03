@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { UploadApi } from "@/shared/api";
 import type { Product } from "@/types/product";
 import { FONTS } from "@/shared/theme/typography";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import { formatProductDetails } from "../utils/formatProduct";
 
 interface ProductCardProps {
   product: Product;
@@ -13,19 +13,8 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const [imageError, setImageError] = useState(false);
-  const priceNum = Number(product.price) || 0;
-  const discountPctNum = Number(product.discount_pct) || 0;
-  const imageUrl = UploadApi.getFullImageUrl(product.image_url);
+  const { discountPctNum, imageUrl, finalPrice, originalPrice } = formatProductDetails(product);
 
-  // ราคาขายจริง (ถ้ามีส่วนลดจะคำนวณราคาที่หักส่วนลดแล้ว)
-  const finalPrice = discountPctNum > 0
-    ? (priceNum * (1 - discountPctNum / 100)).toFixed(2)
-    : priceNum.toFixed(2);
-
-  // ราคาเต็มเดิม (แสดงแบบขีดฆ่าเมื่อมีส่วนลด)
-  const originalPrice = discountPctNum > 0
-    ? priceNum.toFixed(2)
-    : null;
 
   return (
     <Link href={`/product/${product.prod_id}`} asChild>

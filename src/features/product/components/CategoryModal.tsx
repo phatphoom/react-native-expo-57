@@ -1,22 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
+  ActivityIndicator,
   Modal,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  ScrollView,
-  Alert,
-  Platform,
-  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { FormField } from "@/shared/components/FormField";
 import ImagePickerField from "@/shared/components/ImagePickerField";
-import { useImagePicker } from "@/shared/hooks/useImagePicker";
-import { UploadApi } from "@/shared/api";
 import { FONTS } from "@/shared/theme/typography";
 import type { Category } from "@/types/product";
+import { useCategoryModalForm } from "../hooks/useCategoryModalForm";
 
 interface CategoryModalProps {
   visible: boolean;
@@ -31,95 +28,18 @@ export default function CategoryModal({
   category,
   onSubmit,
 }: CategoryModalProps) {
-  const [cateName, setCateName] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [uploading, setUploading] = useState(false);
-
   const {
-    image: pickedImage,
-    loading: imageLoading,
+    cateName,
+    setCateName,
+    submitting,
+    uploading,
+    imageLoading,
+    displayImageUri,
     pickImageFromLibrary,
     takePhotoWithCamera,
-    clearImage,
-  } = useImagePicker();
-
-  useEffect(() => {
-    if (visible) {
-      if (category) {
-        setCateName(category.cate_name || "");
-        setImageUrl(category.image || category.image_url || "");
-      } else {
-        setCateName("");
-        setImageUrl("");
-      }
-      clearImage();
-    }
-  }, [visible, category]);
-
-  const showAlert = (title: string, msg: string) => {
-    if (Platform.OS === "web") {
-      window.alert(`${title}: ${msg}`);
-    } else {
-      Alert.alert(title, msg);
-    }
-  };
-
-  const handleSubmit = async () => {
-    if (!cateName.trim()) {
-      showAlert("Validation Error", "Please enter category name");
-      return;
-    }
-
-    setSubmitting(true);
-    let finalImageUrl = imageUrl;
-
-    if (pickedImage?.base64) {
-      setUploading(true);
-      try {
-        const uploadRes = await UploadApi.uploadImageBase64(
-          pickedImage.base64,
-          pickedImage.fileName
-        );
-        finalImageUrl = uploadRes.image_url;
-      } catch (err: any) {
-        const msg = err?.response?.data?.message || err?.message || "Failed to upload image";
-        showAlert("Image Upload Error", msg);
-        setUploading(false);
-        setSubmitting(false);
-        return;
-      } finally {
-        setUploading(false);
-      }
-    }
-
-    const payload: { cate_name: string; image_url?: string | null } = {
-      cate_name: cateName.trim(),
-    };
-
-    if (finalImageUrl && finalImageUrl.trim() !== "") {
-      payload.image_url = finalImageUrl.trim();
-    }
-
-    const res = await onSubmit(payload);
-
-    setSubmitting(false);
-
-    if (res.success) {
-      onClose();
-    } else {
-      showAlert("Error", res.error || "Failed to save category");
-    }
-  };
-
-  const displayImageUri =
-    pickedImage?.uri ||
-    (imageUrl ? UploadApi.getFullImageUrl(imageUrl) : null);
-
-  const handleClearImage = () => {
-    clearImage();
-    setImageUrl("");
-  };
+    handleClearImage,
+    handleSubmit,
+  } = useCategoryModalForm({ visible, category, onClose, onSubmit });
 
   return (
     <Modal visible={visible} transparent animationType="slide">

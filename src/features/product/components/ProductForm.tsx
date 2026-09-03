@@ -1,8 +1,6 @@
 import React from "react";
 import {
   ActivityIndicator,
-  FlatList,
-  Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -12,6 +10,7 @@ import {
 import { FormField, ImagePickerField } from "@/shared/components";
 import type { Category } from "@/types/product";
 import type { ProductFormValues } from "@/features/product/hooks/useProductForm";
+import { CategorySelectModal } from "./CategorySelectModal";
 
 export interface ProductFormProps {
   form: ProductFormValues;
@@ -53,7 +52,6 @@ export default function ProductForm({
   return (
     <>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-
         <View style={styles.formContainer}>
           <FormField
             label="Product Name *"
@@ -163,42 +161,14 @@ export default function ProductForm({
         <View style={{ height: 40 }} />
       </ScrollView>
 
-      {/* Modal เลือก Category */}
-      <Modal visible={showCategoryModal} animationType="slide" transparent={true}>
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Select Category</Text>
-            <FlatList
-              data={categories}
-              keyExtractor={(item) => String(item.cate_id)}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={styles.modalItem}
-                  onPress={() => {
-                    onChange("cate_id", String(item.cate_id));
-                    onToggleCategoryModal(false);
-                  }}
-                >
-                  <Text
-                    style={[
-                      styles.modalItemText,
-                      String(item.cate_id) === String(form.cate_id) && styles.modalItemTextSelected,
-                    ]}
-                  >
-                    {item.cate_name}
-                  </Text>
-                </TouchableOpacity>
-              )}
-            />
-            <TouchableOpacity
-              style={styles.modalCloseButton}
-              onPress={() => onToggleCategoryModal(false)}
-            >
-              <Text style={styles.modalCloseText}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+      {/* Modal เลือก Category (Delegated to CategorySelectModal for SRP) */}
+      <CategorySelectModal
+        visible={showCategoryModal}
+        categories={categories}
+        selectedCategoryId={form.cate_id}
+        onSelectCategory={(cateId) => onChange("cate_id", cateId)}
+        onClose={() => onToggleCategoryModal(false)}
+      />
     </>
   );
 }
@@ -273,70 +243,5 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 16,
     fontWeight: "700",
-  },
-
-  /* Modal Styles */
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: "rgba(15, 23, 42, 0.5)",
-    justifyContent: "flex-end",
-  },
-  modalContent: {
-    backgroundColor: "#FFFFFF",
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    padding: 24,
-    maxHeight: "60%",
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#0F172A",
-    marginBottom: 16,
-    textAlign: "center",
-  },
-  modalItem: {
-    paddingVertical: 14,
-    borderBottomWidth: 1,
-    borderBottomColor: "#F1F5F9",
-  },
-  modalItemText: {
-    fontSize: 15,
-    color: "#334155",
-    textAlign: "center",
-  },
-  modalItemTextSelected: {
-    color: "#2563EB",
-    fontWeight: "700",
-  },
-  modalCloseButton: {
-    marginTop: 16,
-    paddingVertical: 13,
-    backgroundColor: "#F1F5F9",
-    borderRadius: 12,
-    alignItems: "center",
-  },
-  modalCloseText: {
-    fontSize: 15,
-    color: "#EF4444",
-    fontWeight: "600",
-  },
-
-  /* Test Button Styles */
-  btnTest: {
-    backgroundColor: "#EFF6FF",
-    borderWidth: 1,
-    borderColor: "#2563EB",
-    borderStyle: "dashed",
-    borderRadius: 12,
-    paddingVertical: 11,
-    paddingHorizontal: 16,
-    marginBottom: 12,
-    alignItems: "center",
-  },
-  btnTestTxt: {
-    color: "#2563EB",
-    fontSize: 14,
-    fontWeight: "600",
   },
 });

@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Modal,
+  ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   View,
-  TextInput,
-  Switch,
-  ScrollView,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useCategories } from "../hooks/useCategory";
-import { SortOption } from "../hooks/useProductSearchAndFilter";
+import type { SortOption } from "../hooks/useProductSearchAndFilter";
+import { useFilterModalState } from "../hooks/useFilterModalState";
 
 interface FilterModalProps {
   visible: boolean;
@@ -41,48 +40,29 @@ export default function FilterModal({
   onApplyFilters,
   onResetFilters,
 }: FilterModalProps) {
-  const { categories } = useCategories();
-
-  // Local state for modal before applying
-  const [localCategoryId, setLocalCategoryId] = useState<string | number | null>(null);
-  const [localMinPrice, setLocalMinPrice] = useState<string>("");
-  const [localMaxPrice, setLocalMaxPrice] = useState<string>("");
-  const [localSortBy, setLocalSortBy] = useState<SortOption>("latest");
-
-  // Sync local state when modal opens
-  useEffect(() => {
-    if (visible) {
-      setLocalCategoryId(activeCategoryId);
-      setLocalMinPrice(activeMinPrice);
-      setLocalMaxPrice(activeMaxPrice);
-      setLocalSortBy(activeSortBy);
-    }
-  }, [visible, activeCategoryId, activeMinPrice, activeMaxPrice, activeSortBy]);
-
-  const handleApply = () => {
-    onApplyFilters(
-      localCategoryId,
-      localMinPrice,
-      localMaxPrice,
-      localSortBy
-    );
-    onClose();
-  };
-
-  const handleReset = () => {
-    setLocalCategoryId(null);
-    setLocalMinPrice("");
-    setLocalMaxPrice("");
-    setLocalSortBy("latest");
-    onResetFilters();
-    onClose();
-  };
-
-  const sortOptions: { label: string; value: SortOption }[] = [
-    { label: "Latest", value: "latest" },
-    { label: "Price: Low - High", value: "price_asc" },
-    { label: "Price: High - Low", value: "price_desc" },
-  ];
+  const {
+    categories,
+    localCategoryId,
+    localMinPrice,
+    localMaxPrice,
+    localSortBy,
+    setLocalCategoryId,
+    setLocalMinPrice,
+    setLocalMaxPrice,
+    setLocalSortBy,
+    handleApply,
+    handleReset,
+    sortOptions,
+  } = useFilterModalState({
+    visible,
+    activeCategoryId,
+    activeMinPrice,
+    activeMaxPrice,
+    activeSortBy,
+    onApplyFilters,
+    onResetFilters,
+    onClose,
+  });
 
   return (
     <Modal visible={visible} transparent animationType="slide">
@@ -217,21 +197,11 @@ const styles = StyleSheet.create({
   section: {
     marginBottom: 24,
   },
-  rowSection: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
   sectionTitle: {
     fontSize: 15,
     fontWeight: "600",
     color: "#1E293B",
     marginBottom: 12,
-  },
-  sectionSubtitle: {
-    fontSize: 13,
-    color: "#64748B",
-    marginTop: 2,
   },
   pillContainer: {
     flexDirection: "row",
